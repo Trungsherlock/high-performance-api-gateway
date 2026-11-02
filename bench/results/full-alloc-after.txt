@@ -1,0 +1,23 @@
+File: bench.exe
+Build ID: C:\Users\trung\projects\high-performance-api-gateway\bin\bench.exe2026-11-02 14:29:58.8551493 -0600 CST
+Type: alloc_space
+Time: 2026-11-02 14:30:45 CST
+Showing nodes accounting for 1108.66MB, 68.75% of 1612.61MB total
+Dropped 102 nodes (cum <= 8.06MB)
+Showing top 15 nodes out of 71
+      flat  flat%   sum%        cum   cum%
+  209.56MB 12.99% 12.99%   209.56MB 12.99%  net/http.Header.Clone (inline)
+  129.53MB  8.03% 21.03%   129.53MB  8.03%  net/textproto.readMIMEHeader
+  109.53MB  6.79% 27.82%   109.53MB  6.79%  net/http.(*Request).WithContext
+   79.51MB  4.93% 32.75%   105.02MB  6.51%  context.(*cancelCtx).propagateCancel
+   69.52MB  4.31% 37.06%    69.52MB  4.31%  net/textproto.MIMEHeader.Add
+   60.01MB  3.72% 40.78%    60.01MB  3.72%  context.(*cancelCtx).Done
+   53.52MB  3.32% 44.10%   142.04MB  8.81%  net/http.readRequest
+   53.51MB  3.32% 47.42%    78.52MB  4.87%  net/http.NewRequestWithContext
+      51MB  3.16% 50.58%   135.02MB  8.37%  context.WithDeadlineCause
+   50.90MB  3.16% 53.74%    50.90MB  3.16%  io.init.func1
+   50.03MB  3.10% 56.84%    50.53MB  3.13%  high-performance-api-gateway/internal/gateway.(*proxyBuffers).Get
+   50.02MB  3.10% 59.94%   137.04MB  8.50%  net/http.(*Request).Clone
+   49.51MB  3.07% 63.01%    67.01MB  4.16%  net/http.(*Transport).getConn
+   46.51MB  2.88% 65.90%    46.51MB  2.88%  net/http.send.func1
+      46MB  2.85% 68.75%       46MB  2.85%  net/http.(*persistConn).roundTrip

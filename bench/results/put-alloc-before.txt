@@ -1,0 +1,15 @@
+File: cache-bench.test.exe
+Build ID: C:\Users\trung\projects\high-performance-api-gateway\bin\cache-bench.test.exe2026-11-02 14:24:28.3938657 -0600 CST
+Type: alloc_objects
+Time: 2026-11-02 14:25:35 CST
+Showing nodes accounting for 45177307, 99.92% of 45213222 total
+Dropped 21 nodes (cum <= 226066)
+      flat  flat%   sum%        cum   cum%
+  23248390 51.42% 51.42%   23248390 51.42%  net/http.Header.Clone (inline)
+   7543769 16.68% 68.10%   45177307 99.92%  high-performance-api-gateway/internal/cache.(*Cache).Put
+   7361552 16.28% 84.39%   30609942 67.70%  high-performance-api-gateway/internal/cache.copyResponse
+   7023596 15.53% 99.92%    7023596 15.53%  container/list.(*List).insertValue (inline)
+         0     0% 99.92%    7023596 15.53%  container/list.(*List).PushFront (inline)
+         0     0% 99.92%   45177307 99.92%  high-performance-api-gateway/internal/cache.BenchmarkCachePut
+         0     0% 99.92%   45177307 99.92%  testing.(*B).launch
+         0     0% 99.92%   45177307 99.92%  testing.(*B).runN

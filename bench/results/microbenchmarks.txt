@@ -1,0 +1,27 @@
+goos: windows
+goarch: amd64
+pkg: high-performance-api-gateway/internal/cache
+cpu: Intel(R) Core(TM) Ultra 7 155H
+BenchmarkCacheGet-22            	 1394494	       408.0 ns/op	    1440 B/op	       4 allocs/op
+BenchmarkCacheGet-22            	 1400089	       421.0 ns/op	    1440 B/op	       4 allocs/op
+BenchmarkCacheGet-22            	 1407820	       681.6 ns/op	    1440 B/op	       4 allocs/op
+BenchmarkCacheGetParallel-22    	  926869	       767.1 ns/op	    1440 B/op	       4 allocs/op
+BenchmarkCacheGetParallel-22    	 1000000	       660.6 ns/op	    1440 B/op	       4 allocs/op
+BenchmarkCacheGetParallel-22    	 1000000	       659.6 ns/op	    1440 B/op	       4 allocs/op
+BenchmarkCachePut-22            	  693938	       934.8 ns/op	    1520 B/op	       5 allocs/op
+BenchmarkCachePut-22            	  681778	       861.7 ns/op	    1520 B/op	       5 allocs/op
+BenchmarkCachePut-22            	  640724	       868.5 ns/op	    1520 B/op	       5 allocs/op
+PASS
+ok  	high-performance-api-gateway/internal/cache	8.745s
+goos: windows
+goarch: amd64
+pkg: high-performance-api-gateway/internal/coalesce
+cpu: Intel(R) Core(TM) Ultra 7 155H
+BenchmarkGroupLeader-22    	  627313	       873.8 ns/op	     208 B/op	       3 allocs/op
+BenchmarkGroupLeader-22    	  665934	      1116 ns/op	     208 B/op	       3 allocs/op
+BenchmarkGroupLeader-22    	  735402	       892.5 ns/op	     208 B/op	       3 allocs/op
+BenchmarkGroupJoin-22      	15526141	        61.84 ns/op	      16 B/op	       1 allocs/op
+BenchmarkGroupJoin-22      	12893659	        60.65 ns/op	      16 B/op	       1 allocs/op
+BenchmarkGroupJoin-22      	10430301	        68.89 ns/op	      16 B/op	       1 allocs/op
+PASS
+ok  	high-performance-api-gateway/internal/coalesce	5.740s

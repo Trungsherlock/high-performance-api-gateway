@@ -1,0 +1,177 @@
+File: bench.exe
+Build ID: C:\Users\trung\projects\high-performance-api-gateway\bin\bench.exe2026-11-02 14:27:17.8311891 -0600 CST
+Type: cpu
+Time: 2026-11-02 14:28:42 CST
+Duration: 3.63s, Total samples = 36.55s (1008.12%)
+Showing nodes accounting for 31.72s, 86.79% of 36.55s total
+Dropped 603 nodes (cum <= 0.18s)
+      flat  flat%   sum%        cum   cum%
+    17.07s 46.70% 46.70%     17.07s 46.70%  runtime.stdcall2
+     4.38s 11.98% 58.69%      4.42s 12.09%  runtime.stdcall0
+     4.08s 11.16% 69.85%      4.45s 12.18%  runtime.cgocall
+     0.98s  2.68% 72.53%      0.98s  2.68%  runtime.stdcall1
+     0.72s  1.97% 74.50%      0.72s  1.97%  runtime.procyield
+     0.40s  1.09% 75.60%      0.40s  1.09%  runtime.(*lfstack).pop (inline)
+     0.40s  1.09% 76.69%      0.50s  1.37%  runtime.findObject
+     0.25s  0.68% 77.37%      0.25s  0.68%  runtime.stdcall6
+     0.24s  0.66% 78.03%      0.24s  0.66%  runtime.memclrNoHeapPointers
+     0.21s  0.57% 78.60%      0.24s  0.66%  runtime.step
+     0.20s  0.55% 79.15%     17.32s 47.39%  runtime.systemstack
+     0.17s  0.47% 79.62%      0.81s  2.22%  runtime.scanobject
+     0.16s  0.44% 80.05%     17.22s 47.11%  runtime.lock2
+     0.15s  0.41% 80.47%      0.42s  1.15%  runtime.pcvalue
+     0.13s  0.36% 80.82%      0.38s  1.04%  runtime.scanblock
+     0.12s  0.33% 81.15%      0.30s  0.82%  runtime.osPreemptExtEnter
+     0.11s   0.3% 81.45%      5.73s 15.68%  runtime.gcDrainN
+     0.09s  0.25% 81.70%      0.37s  1.01%  runtime.adjustframe
+     0.09s  0.25% 81.94%      0.55s  1.50%  runtime.stealWork
+     0.08s  0.22% 82.16%      5.29s 14.47%  runtime.gcDrain
+     0.08s  0.22% 82.38%      0.44s  1.20%  runtime.unlock2
+     0.08s  0.22% 82.60%      0.45s  1.23%  runtime.wbBufFlush1
+     0.07s  0.19% 82.79%      0.26s  0.71%  runtime.(*unwinder).resolveInternal
+     0.07s  0.19% 82.98%      0.33s   0.9%  runtime.selectgo
+     0.06s  0.16% 83.15%      0.38s  1.04%  runtime.runqgrab
+     0.05s  0.14% 83.28%      4.98s 13.63%  net/http.(*conn).serve
+     0.05s  0.14% 83.42%      0.54s  1.48%  net/http.readRequest
+     0.05s  0.14% 83.56%      2.86s  7.82%  runtime.gcAssistAlloc
+     0.05s  0.14% 83.69%      0.35s  0.96%  runtime.greyobject
+     0.04s  0.11% 83.80%      8.18s 22.38%  runtime.findRunnable
+     0.04s  0.11% 83.91%      3.85s 10.53%  runtime.mallocgc
+     0.04s  0.11% 84.02%      2.08s  5.69%  runtime.newobject
+     0.04s  0.11% 84.13%      8.53s 23.34%  runtime.schedule
+     0.03s 0.082% 84.21%      0.37s  1.01%  internal/sync.(*Mutex).Lock (inline)
+     0.03s 0.082% 84.30%      1.86s  5.09%  net/http.(*persistConn).readLoop
+     0.03s 0.082% 84.38%      1.26s  3.45%  net/http/httputil.(*ReverseProxy).ServeHTTP
+     0.03s 0.082% 84.46%      0.26s  0.71%  runtime.(*stkframe).getStackMap
+     0.03s 0.082% 84.54%      5.80s 15.87%  runtime.gcAssistAlloc1
+     0.03s 0.082% 84.62%      0.44s  1.20%  runtime.getempty
+     0.03s 0.082% 84.71%      1.55s  4.24%  runtime.markroot
+     0.03s 0.082% 84.79%      0.54s  1.48%  runtime.scanframeworker
+     0.02s 0.055% 84.84%      4.61s 12.61%  internal/poll.execIO
+     0.02s 0.055% 84.90%      0.34s  0.93%  internal/sync.(*Mutex).lockSlow
+     0.02s 0.055% 84.95%      0.35s  0.96%  net/http.(*Transport).tryPutIdleConn
+     0.02s 0.055% 85.01%      0.87s  2.38%  net/http.ReadResponse
+     0.02s 0.055% 85.06%      1.52s  4.16%  net/http.send
+     0.02s 0.055% 85.12%      0.42s  1.15%  net/http/httputil.(*ReverseProxy).copyResponse
+     0.02s 0.055% 85.17%      7.93s 21.70%  runtime.(*gcControllerState).enlistWorker
+     0.02s 0.055% 85.23%      0.19s  0.52%  runtime.(*mcentral).cacheSpan
+     0.02s 0.055% 85.28%      0.25s  0.68%  runtime.(*mheap).allocSpan
+     0.02s 0.055% 85.34%      0.21s  0.57%  runtime.concatstrings
+     0.02s 0.055% 85.39%      2.88s  7.88%  runtime.deductAssistCredit
+     0.02s 0.055% 85.44%      0.31s  0.85%  runtime.mallocgcLarge
+     0.02s 0.055% 85.50%      1.37s  3.75%  runtime.newstack
+     0.02s 0.055% 85.55%      3.87s 10.59%  runtime.osPreemptExtEnter.osyield.func1
+     0.02s 0.055% 85.61%      0.73s  2.00%  runtime.osyield (inline)
+     0.02s 0.055% 85.66%      8.51s 23.28%  runtime.park_m
+     0.02s 0.055% 85.72%      0.40s  1.09%  runtime.runqsteal
+     0.02s 0.055% 85.77%      0.61s  1.67%  runtime.wakep
+     0.02s 0.055% 85.83%      0.46s  1.26%  runtime.wbBufFlush.func1
+     0.02s 0.055% 85.88%      4.09s 11.19%  syscall.Syscall9
+     0.01s 0.027% 85.91%      0.66s  1.81%  bufio.(*Reader).fill
+     0.01s 0.027% 85.94%      1.53s  4.19%  high-performance-api-gateway/internal/gateway.NewWithOptions.func4
+     0.01s 0.027% 85.96%      0.58s  1.59%  internal/poll.(*FD).Read.func2
+     0.01s 0.027% 85.99%      2.21s  6.05%  main.run.func3.1
+     0.01s 0.027% 86.02%      1.09s  2.98%  net.(*netFD).Read
+     0.01s 0.027% 86.05%      3.56s  9.74%  net.(*netFD).Write
+     0.01s 0.027% 86.07%      1.62s  4.43%  net/http.(*Client).do
+     0.01s 0.027% 86.10%      1.53s  4.19%  net/http.(*Client).send
+     0.01s 0.027% 86.13%      0.44s  1.20%  net/http.(*Request).write
+     0.01s 0.027% 86.16%      0.35s  0.96%  net/http.(*Transport).queueForIdleConn
+     0.01s 0.027% 86.18%      0.73s  2.00%  net/http.(*connReader).backgroundRead
+     0.01s 0.027% 86.21%      0.37s  1.01%  net/http.(*persistConn).Read
+     0.01s 0.027% 86.24%      0.45s  1.23%  net/http.(*persistConn).roundTrip
+     0.01s 0.027% 86.27%      2.17s  5.94%  net/http.(*persistConn).writeLoop
+     0.01s 0.027% 86.29%      2.13s  5.83%  net/http.(*response).finishRequest
+     0.01s 0.027% 86.32%      0.22s   0.6%  net/http.Header.Clone (inline)
+     0.01s 0.027% 86.35%      1.54s  4.21%  net/http.serverHandler.ServeHTTP
+     0.01s 0.027% 86.37%      0.54s  1.48%  net/textproto.readMIMEHeader
+     0.01s 0.027% 86.40%      7.99s 21.86%  runtime.(*gcWork).balance
+     0.01s 0.027% 86.43%      0.31s  0.85%  runtime.(*unwinder).next
+     0.01s 0.027% 86.46%      0.20s  0.55%  runtime.forEachPInternal
+     0.01s 0.027% 86.48%      1.16s  3.17%  runtime.gcBgMarkWorker
+     0.01s 0.027% 86.51%      5.75s 15.73%  runtime.gcstopm
+     0.01s 0.027% 86.54%      0.52s  1.42%  runtime.makeslice
+     0.01s 0.027% 86.57%      0.46s  1.26%  runtime.mallocgcSmallScanNoHeader
+     0.01s 0.027% 86.59%      0.21s  0.57%  runtime.mapIterStart
+     0.01s 0.027% 86.62%      0.30s  0.82%  runtime.netpoll
+     0.01s 0.027% 86.65%      0.37s  1.01%  runtime.ready
+     0.01s 0.027% 86.68%     16.04s 43.89%  runtime.semasleep
+     0.01s 0.027% 86.70%      4.46s 12.20%  runtime.syscall_syscalln
+     0.01s 0.027% 86.73%      0.36s  0.98%  runtime.unlock2Wake
+     0.01s 0.027% 86.76%      0.19s  0.52%  syscall.CancelIoEx
+     0.01s 0.027% 86.79%      0.57s  1.56%  syscall.WSARecv
+         0     0% 86.79%      0.66s  1.81%  bufio.(*Reader).Peek
+         0     0% 86.79%      3.70s 10.12%  bufio.(*Writer).Flush
+         0     0% 86.79%      0.23s  0.63%  context.(*cancelCtx).propagateCancel
+         0     0% 86.79%      0.21s  0.57%  context.withCancel (inline)
+         0     0% 86.79%      0.36s  0.98%  high-performance-api-gateway/internal/gateway.(*cacheTransport).RoundTrip
+         0     0% 86.79%      1.08s  2.95%  internal/poll.(*FD).Read
+         0     0% 86.79%      3.56s  9.74%  internal/poll.(*FD).Write
+         0     0% 86.79%      3.52s  9.63%  internal/poll.(*FD).Write.func2
+         0     0% 86.79%      0.21s  0.57%  internal/poll.cancelIO
+         0     0% 86.79%      0.23s  0.63%  internal/runtime/maps.(*Map).growToSmall
+         0     0% 86.79%      0.23s  0.63%  internal/runtime/maps.newGroups (inline)
+         0     0% 86.79%      0.23s  0.63%  internal/runtime/maps.newarray
+         0     0% 86.79%      0.23s  0.63%  internal/syscall/windows.WSAGetOverlappedResult
+         0     0% 86.79%      2.18s  5.96%  main.run.func1
+         0     0% 86.79%      1.32s  3.61%  net.(*conn).Read
+         0     0% 86.79%      3.56s  9.74%  net.(*conn).Write
+         0     0% 86.79%      1.62s  4.43%  net/http.(*Client).Do (inline)
+         0     0% 86.79%      1.77s  4.84%  net/http.(*Client).Get
+         0     0% 86.79%      1.10s  3.01%  net/http.(*Transport).RoundTrip
+         0     0% 86.79%      0.43s  1.18%  net/http.(*Transport).getConn
+         0     0% 86.79%      1.10s  3.01%  net/http.(*Transport).roundTrip
+         0     0% 86.79%      0.77s  2.11%  net/http.(*conn).readRequest
+         0     0% 86.79%      0.28s  0.77%  net/http.(*connReader).Read
+         0     0% 86.79%      0.35s  0.96%  net/http.(*persistConn).readLoop.func2
+         0     0% 86.79%      0.87s  2.38%  net/http.(*persistConn).readResponse
+         0     0% 86.79%      1.53s  4.19%  net/http.HandlerFunc.ServeHTTP
+         0     0% 86.79%      1.90s  5.20%  net/http.checkConnErrorWriter.Write
+         0     0% 86.79%      1.66s  4.54%  net/http.persistConnWriter.Write
+         0     0% 86.79%      0.40s  1.09%  net/http/httputil.(*ReverseProxy).copyBuffer
+         0     0% 86.79%      0.54s  1.48%  net/textproto.(*Reader).ReadMIMEHeader (inline)
+         0     0% 86.79%      0.19s  0.52%  net/url.(*URL).RequestURI
+         0     0% 86.79%      0.29s  0.79%  runtime.(*mcache).nextFree
+         0     0% 86.79%      0.26s  0.71%  runtime.(*mcache).refill
+         0     0% 86.79%      0.20s  0.55%  runtime.(*mheap).alloc.func1
+         0     0% 86.79%      0.20s  0.55%  runtime.concatstring3
+         0     0% 86.79%      1.22s  3.34%  runtime.copystack
+         0     0% 86.79%      0.76s  2.08%  runtime.entersyscall_gcwait
+         0     0% 86.79%      0.19s  0.52%  runtime.funcspdelta (inline)
+         0     0% 86.79%      5.80s 15.87%  runtime.gcAssistAlloc.func2
+         0     0% 86.79%      5.30s 14.50%  runtime.gcBgMarkWorker.func2
+         0     0% 86.79%      5.05s 13.82%  runtime.gcDrainMarkWorkerDedicated (inline)
+         0     0% 86.79%      0.24s  0.66%  runtime.gcDrainMarkWorkerIdle (inline)
+         0     0% 86.79%      0.91s  2.49%  runtime.gcParkAssist
+         0     0% 86.79%      0.36s  0.98%  runtime.gopreempt_m (inline)
+         0     0% 86.79%      0.45s  1.23%  runtime.goschedImpl
+         0     0% 86.79%     17.07s 46.70%  runtime.lock (partial-inline)
+         0     0% 86.79%      0.25s  0.68%  runtime.lock2.osyield.func1
+         0     0% 86.79%     17.22s 47.11%  runtime.lockWithRank (inline)
+         0     0% 86.79%      0.22s   0.6%  runtime.makechan
+         0     0% 86.79%      1.44s  3.94%  runtime.markroot.func1
+         0     0% 86.79%      8.79s 24.05%  runtime.mcall
+         0     0% 86.79%      0.19s  0.52%  runtime.memclrNoHeapPointersChunked
+         0     0% 86.79%      0.77s  2.11%  runtime.morestack
+         0     0% 86.79%      0.23s  0.63%  runtime.newarray
+         0     0% 86.79%      0.23s  0.63%  runtime.notewakeup
+         0     0% 86.79%      0.21s  0.57%  runtime.pcdatavalue
+         0     0% 86.79%      8.40s 22.98%  runtime.preemptM
+         0     0% 86.79%      8.04s 22.00%  runtime.preemptone
+         0     0% 86.79%      0.25s  0.68%  runtime.resetspinning
+         0     0% 86.79%      0.78s  2.13%  runtime.runSafePointFn
+         0     0% 86.79%      0.32s  0.88%  runtime.runqgrab.osyield.func1
+         0     0% 86.79%      1.07s  2.93%  runtime.scanstack
+         0     0% 86.79%      0.57s  1.56%  runtime.semawakeup
+         0     0% 86.79%      0.24s  0.66%  runtime.send.goready.func1
+         0     0% 86.79%      0.28s  0.77%  runtime.shrinkstack
+         0     0% 86.79%      0.35s  0.96%  runtime.slicebytetostring
+         0     0% 86.79%      0.50s  1.37%  runtime.stackalloc
+         0     0% 86.79%      0.50s  1.37%  runtime.stackcacherefill
+         0     0% 86.79%      0.37s  1.01%  runtime.suspendG
+         0     0% 86.79%      0.44s  1.20%  runtime.unlock (inline)
+         0     0% 86.79%      0.44s  1.20%  runtime.unlockWithRank (inline)
+         0     0% 86.79%      0.46s  1.26%  runtime.wbBufFlush
+         0     0% 86.79%      0.37s  1.01%  sync.(*Mutex).Lock (inline)
+         0     0% 86.79%      0.26s  0.71%  syscall.Syscall
+         0     0% 86.79%      3.52s  9.63%  syscall.WSASend

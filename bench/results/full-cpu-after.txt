@@ -1,0 +1,24 @@
+File: bench.exe
+Build ID: C:\Users\trung\projects\high-performance-api-gateway\bin\bench.exe2026-11-02 14:29:58.8551493 -0600 CST
+Type: cpu
+Time: 2026-11-02 14:30:41 CST
+Duration: 3.52s, Total samples = 45.50s (1293.78%)
+Showing nodes accounting for 35.40s, 77.80% of 45.50s total
+Dropped 665 nodes (cum <= 0.23s)
+Showing top 15 nodes out of 153
+      flat  flat%   sum%        cum   cum%
+    17.56s 38.59% 38.59%     17.56s 38.59%  runtime.stdcall2
+    11.50s 25.27% 63.87%     11.97s 26.31%  runtime.cgocall
+     2.83s  6.22% 70.09%      2.86s  6.29%  runtime.stdcall0
+     0.91s  2.00% 72.09%      0.91s  2.00%  runtime.stdcall1
+     0.64s  1.41% 73.49%      0.64s  1.41%  runtime.procyield
+     0.35s  0.77% 74.26%      0.35s  0.77%  runtime.stdcall6
+     0.28s  0.62% 74.88%      0.40s  0.88%  runtime.findObject
+     0.25s  0.55% 75.43%     17.88s 39.30%  runtime.lock2
+     0.17s  0.37% 75.80%      0.34s  0.75%  runtime.pcvalue
+     0.17s  0.37% 76.18%     13.36s 29.36%  runtime.systemstack
+     0.16s  0.35% 76.53%      0.61s  1.34%  runtime.selectgo
+     0.15s  0.33% 76.86%      1.01s  2.22%  runtime.mallocgcSmallScanNoHeader
+     0.15s  0.33% 77.19%      0.27s  0.59%  runtime.osPreemptExtEnter
+     0.15s  0.33% 77.52%      0.66s  1.45%  runtime.unlock2
+     0.13s  0.29% 77.80%      4.53s  9.96%  runtime.mallocgc

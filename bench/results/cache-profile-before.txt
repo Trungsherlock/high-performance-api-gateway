@@ -1,0 +1,7 @@
+goos: windows
+goarch: amd64
+pkg: high-performance-api-gateway/internal/cache
+cpu: Intel(R) Core(TM) Ultra 7 155H
+BenchmarkCacheGet-22    	 6018024	       762.7 ns/op	    1440 B/op	       4 allocs/op
+PASS
+ok  	high-performance-api-gateway/internal/cache	7.065s

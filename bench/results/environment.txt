@@ -1,0 +1,19 @@
+
+
+Caption                : Microsoft Windows 11 Home
+Version                : 10.0.26300
+TotalVisibleMemorySize : 16206552
+
+
+
+
+
+
+Name                      : Intel(R) Core(TM) Ultra 7 155H
+NumberOfCores             : 16
+NumberOfLogicalProcessors : 22
+
+
+
+
+go version go1.25.7 windows/amd64

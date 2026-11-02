@@ -1,0 +1,13 @@
+File: cache.test.exe
+Build ID: C:\Users\trung\AppData\Local\Temp\go-build3653394281\b001\cache.test.exe2026-11-02 14:26:28.399199 -0600 CST
+Type: alloc_objects
+Time: 2026-11-02 14:26:33 CST
+Showing nodes accounting for 30761626, 99.89% of 30796945 total
+Dropped 35 nodes (cum <= 153984)
+      flat  flat%   sum%        cum   cum%
+  18823734 61.12% 61.12%   18823734 61.12%  net/http.Header.Clone (inline)
+   6157176 19.99% 81.11%   24980910 81.11%  high-performance-api-gateway/internal/cache.copyResponse
+   5780716 18.77% 99.89%   30761626 99.89%  high-performance-api-gateway/internal/cache.(*Cache).Put
+         0     0% 99.89%   30761626 99.89%  high-performance-api-gateway/internal/cache.BenchmarkCachePut
+         0     0% 99.89%   30761626 99.89%  testing.(*B).launch
+         0     0% 99.89%   30761626 99.89%  testing.(*B).runN

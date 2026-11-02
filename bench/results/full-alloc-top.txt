@@ -1,0 +1,64 @@
+File: bench.exe
+Build ID: C:\Users\trung\projects\high-performance-api-gateway\bin\bench.exe2026-11-02 14:27:17.8311891 -0600 CST
+Type: alloc_space
+Time: 2026-11-02 14:28:45 CST
+Showing nodes accounting for 3176.39MB, 95.84% of 3314.11MB total
+Dropped 138 nodes (cum <= 16.57MB)
+      flat  flat%   sum%        cum   cum%
+ 2413.37MB 72.82% 72.82%  2413.37MB 72.82%  net/http/httputil.(*ReverseProxy).copyBuffer
+  102.03MB  3.08% 75.90%   102.03MB  3.08%  net/http.Header.Clone (inline)
+   87.68MB  2.65% 78.55%    87.68MB  2.65%  io.init.func1
+   78.52MB  2.37% 80.91%    78.52MB  2.37%  net/textproto.readMIMEHeader
+   42.01MB  1.27% 82.18%    57.51MB  1.74%  context.(*cancelCtx).propagateCancel
+   41.01MB  1.24% 83.42%    41.01MB  1.24%  net/http.(*Request).WithContext (inline)
+      35MB  1.06% 84.48%       35MB  1.06%  context.(*cancelCtx).Done
+   30.51MB  0.92% 85.40%    30.51MB  0.92%  net/textproto.MIMEHeader.Add (inline)
+      29MB  0.88% 86.27%       29MB  0.88%  net/http.(*persistConn).roundTrip
+   28.01MB  0.85% 87.12%    37.51MB  1.13%  net/http.NewRequestWithContext
+   27.51MB  0.83% 87.95%    66.02MB  1.99%  net/http.(*Request).Clone
+   23.51MB  0.71% 88.66%    23.51MB  0.71%  net/http.send.func1 (inline)
+   22.54MB  0.68% 89.34%    22.54MB  0.68%  bufio.NewWriterSize (inline)
+   22.51MB  0.68% 90.02%    77.02MB  2.32%  net/http.readRequest
+   22.50MB  0.68% 90.69%    30.50MB  0.92%  net/http.(*Transport).getConn
+   22.50MB  0.68% 91.37%    68.51MB  2.07%  context.WithDeadlineCause
+      21MB  0.63% 92.01%       21MB  0.63%  net/url.parse
+      20MB   0.6% 92.61%    84.51MB  2.55%  net/http.(*persistConn).readLoop
+   19.50MB  0.59% 93.20%   124.08MB  3.74%  net/http.(*conn).readRequest
+   17.50MB  0.53% 93.73%    44.01MB  1.33%  context.withCancel (inline)
+      16MB  0.48% 94.21%  2669.43MB 80.55%  net/http/httputil.(*ReverseProxy).ServeHTTP
+   12.50MB  0.38% 94.59%    21.50MB  0.65%  high-performance-api-gateway/internal/gateway.cachedResponse
+      11MB  0.33% 94.92%    61.51MB  1.86%  net/http.ReadResponse
+    6.50MB   0.2% 95.12%   114.51MB  3.46%  net/http.(*Transport).roundTrip
+    4.16MB  0.13% 95.24%   308.39MB  9.31%  main.run.func3.1
+    3.50MB  0.11% 95.35%    42.01MB  1.27%  high-performance-api-gateway/internal/cache.copyResponse
+    3.50MB  0.11% 95.45%   160.52MB  4.84%  net/http.send
+    3.50MB  0.11% 95.56%    24.51MB  0.74%  net/http.(*Request).write
+       3MB 0.091% 95.65%    73.51MB  2.22%  high-performance-api-gateway/internal/gateway.(*cacheTransport).RoundTrip
+       2MB  0.06% 95.71%  2744.44MB 82.81%  high-performance-api-gateway/internal/gateway.NewWithOptions.func4
+    1.50MB 0.045% 95.75%       19MB  0.57%  net/http.setRequestCancel
+    1.50MB 0.045% 95.80%   168.02MB  5.07%  net/http.(*Client).do
+       1MB  0.03% 95.83%   304.22MB  9.18%  main.run.func1
+    0.50MB 0.015% 95.84%    25.01MB  0.75%  net/http.(*persistConn).writeLoop
+         0     0% 95.84%    34.50MB  1.04%  context.WithCancelCause
+         0     0% 95.84%    68.51MB  2.07%  context.WithDeadline (inline)
+         0     0% 95.84%    51.01MB  1.54%  context.WithTimeout
+         0     0% 95.84%    42.01MB  1.27%  high-performance-api-gateway/internal/cache.(*Cache).Get
+         0     0% 95.84%    91.68MB  2.77%  io.Copy (inline)
+         0     0% 95.84%    91.68MB  2.77%  io.copyBuffer
+         0     0% 95.84%    91.68MB  2.77%  io.discard.ReadFrom
+         0     0% 95.84%   168.02MB  5.07%  net/http.(*Client).Do (inline)
+         0     0% 95.84%   205.53MB  6.20%  net/http.(*Client).Get
+         0     0% 95.84%   160.52MB  4.84%  net/http.(*Client).send
+         0     0% 95.84%   114.51MB  3.46%  net/http.(*Transport).RoundTrip
+         0     0% 95.84%  2881.03MB 86.93%  net/http.(*conn).serve
+         0     0% 95.84%    61.51MB  1.86%  net/http.(*persistConn).readResponse
+         0     0% 95.84%    32.51MB  0.98%  net/http.(*response).WriteHeader
+         0     0% 95.84%  2744.44MB 82.81%  net/http.HandlerFunc.ServeHTTP
+         0     0% 95.84%    30.51MB  0.92%  net/http.Header.Add (inline)
+         0     0% 95.84%    37.51MB  1.13%  net/http.NewRequest (inline)
+         0     0% 95.84%    23.55MB  0.71%  net/http.newBufioWriterSize
+         0     0% 95.84%  2744.44MB 82.81%  net/http.serverHandler.ServeHTTP
+         0     0% 95.84%  2413.37MB 72.82%  net/http/httputil.(*ReverseProxy).copyResponse
+         0     0% 95.84%    30.51MB  0.92%  net/http/httputil.copyHeader
+         0     0% 95.84%    78.52MB  2.37%  net/textproto.(*Reader).ReadMIMEHeader (inline)
+         0     0% 95.84%    99.71MB  3.01%  sync.(*Pool).Get

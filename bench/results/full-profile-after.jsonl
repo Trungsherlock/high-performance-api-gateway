@@ -1,0 +1,1 @@
+{"mode":"full","scenario":"hot","trial":1,"go":"go1.25.7","os":"windows/amd64","cpus":22,"concurrency":100,"seconds":3.0035734,"requests":141015,"success":141015,"errors":0,"rejected":0,"successful_rps":46949.07738895277,"p50_ms":1.1571,"p95_ms":6.8663,"p99_ms":10.1956,"backend_calls":0,"process_cpu_seconds":43.640625,"process_rss_bytes":47964160}
