@@ -328,6 +328,48 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
   See [full policy and evidence](docs/v2/admission.md) and
   [tradeoffs](docs/tradeoffs.md).
 
+## 2026-11-03 - V2.3 independent gateway instances
+
+**Status:** Implemented and verified. V2.4 and later remain planned.
+
+- **Implementation:** Added health-aware round-robin `internal/front` and
+  `cmd/frontproxy`, with dedicated loopback administration, per-target probe/
+  selection/error state, bounded forwarding/probe deadlines, and no alternate-
+  target application retry. Independent probes own health; caller cancellation
+  cannot mark an instance unhealthy. Gateway cache/coalescing logic is unchanged.
+- **Harness:** Added `cmd/burst`, multi-admin generator snapshots,
+  `bench/run-v23.ps1`, a one-command study wrapper, and strict reconciliation.
+  Captured per-process metadata/resources, source/binary hashes, front state,
+  restart resets, and all child cleanup. Compared aggregate budgets of 1x32 and
+  2x16 permits, with the same total 32 queued slots.
+- **Evidence:** Recorded 18 final canonical trials: three direct bursts, three
+  front bursts, three stop/restart cases, and nine six-second steady comparisons
+  after one-second warmup. Every cold 100-request burst split 50/50 and made
+  exactly two backend fills with 49 local followers per instance. Rejoining an
+  empty-cache instance made one new fill; total backend calls became three.
+- **Findings:** Final steady median successful throughput was about 611 RPS direct,
+  601 through one front target, and 609 through two targets; the backend budget
+  stayed fixed, so scaling did not double capacity. One generator drop and one
+  failed readiness probe (59 front-level 503s) were retained and reconciled
+  separately from gateway admission failures. Probe failure cause is unknown.
+- **Corrections/decisions:** An initial 64-connection front pool masked admission
+  with another queue and produced generator drops. Retained those diagnostic
+  records, increased the per-target ceiling to the generator's 256-client bound,
+  and reran final cases. Updated analysis to report generator drops and distinguish
+  no-healthy-target responses from downstream admission rejections. A test-only
+  stale loop-variable reference was corrected before final checks passed.
+- **Verification:** Ordinary/race tests, vet, build, formatting, and whitespace
+  checks passed. Tests cover held-backend direct/front bursts, routing counts,
+  dead-target 502 without retry, no-target readiness, probe deadlines, input
+  validation, and cancellation independent of readiness. All 18 final trials
+  reconciled; configured instance and aggregate backend bounds held, final work
+  gauges drained, and no owned children remained.
+- **Limits:** Local state still duplicates work across processes. Health checks
+  are best effort, the front adds its own resource/failure costs, and fixed budget
+  allocation is not distributed admission enforcement. Short same-host trials do
+  not establish production capacity or zero-downtime failover. See
+  [V2.3 guide/results](docs/v2/multi-instance.md) and [tradeoffs](docs/tradeoffs.md).
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title

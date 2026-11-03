@@ -21,3 +21,11 @@ V2.2 has a separate [study index](v22-study-20261102-195158.jsonl) and
 repeated trials. See [admission results](../../../docs/v2/admission.md).
 `v22-tests.txt` and `v22-race.txt` record its checks. V2.0/V2.1 summary records above
 remain unchanged; the initial V2.2 smoke failure and corrected smoke are diagnostics.
+
+
+V2.3 canonical evidence is in [its index](v23-study-20261103.jsonl) and
+[18-trial summary](v23-study-20261103.summary.json), with
+[interpretation](../../../docs/v2/multi-instance.md). `v23-tests.txt` and
+`v23-race.txt` record verification. Earlier V2.3 smoke, failure, and 64-connection
+pool runs remain diagnostic records; `v23-initial-steady.summary.json` preserves
+the original generator drops and queueing. Do not merge those with final trials.

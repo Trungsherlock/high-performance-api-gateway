@@ -152,3 +152,12 @@ legacy waiter policy in the V2.0/V2.1 results. The harness accepts `-MaxWaiters`
 `-MaxConcurrent`, and `-PermitWaitMS`, plus `-Workload unique` and timed slowdown
 flags. See [V2.2 policy, experiments, and defaults](admission.md) for commands,
 rejection reasons, cancellation semantics, and the remaining unbounded resources.
+
+
+## V2.3 update
+
+Independent gateway instances and a health-aware round-robin front are implemented.
+Use `./bench/run-v23-study.ps1` for controlled cold bursts, stop/restart, and
+`1x32` versus `2x16` permit comparisons. See [the topology guide](multi-instance.md)
+for per-instance readiness, separate front CPU/RSS, generator drops, probe failures,
+and explicit retry/coordination limits. No Redis dependency is introduced yet.

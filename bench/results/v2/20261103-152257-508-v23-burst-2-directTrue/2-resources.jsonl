@@ -1,0 +1,4 @@
+{"cpuSeconds":0.015625,"time":"2026-11-03T21:23:03.6165226Z","pid":34012,"rssBytes":8466432,"role":"backend"}
+{"cpuSeconds":0,"time":"2026-11-03T21:23:03.6385260Z","pid":13784,"rssBytes":9060352,"role":"gateway-1"}
+{"cpuSeconds":0.03125,"time":"2026-11-03T21:23:03.6485370Z","pid":28292,"rssBytes":8957952,"role":"gateway-2"}
+{"cpuSeconds":0.015625,"time":"2026-11-03T21:23:03.6610686Z","pid":7748,"rssBytes":2633728,"role":"generator"}

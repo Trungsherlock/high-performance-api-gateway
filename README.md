@@ -3,7 +3,7 @@
 A learning project exploring a single-upstream reverse proxy, bounded caching,
 request coalescing, and overload protection. See the project plan for the full scope.
 
-## Current status: Milestone 5
+## Current status: V1 complete; V2.0-V2.3 implemented
 
 The gateway forwards ordinary HTTP requests to one fixed upstream using a shared
 connection pool, bounded LRU/TTL cache, request coalescing, and downstream concurrency
@@ -283,3 +283,10 @@ with `-admin-addr` for each instance, or pass an empty value to disable it.
 V2.2 adds bounded admission queues and slowdown/recovery experiments. See
 [admission policy and results](docs/v2/admission.md). Historical V2.0/V2.1 runs
 used the legacy waiter policy; current gateway CLI defaults to 32 queued waiters.
+
+
+V2.3 adds `cmd/frontproxy`, independent gateway instances, per-target readiness,
+and controlled failover/rejoin experiments. Run `./bench/run-v23-study.ps1` for
+one-command reproduction. See [the multi-instance guide and results](docs/v2/multi-instance.md).
+Gateway caching/coalescing remains local to each process; the front does not
+coordinate fills or retry failed requests through another target.

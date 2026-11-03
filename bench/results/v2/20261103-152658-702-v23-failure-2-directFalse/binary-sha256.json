@@ -1,0 +1,22 @@
+﻿[
+    {
+        "name":  "gateway",
+        "sha256":  "471F85EBC1964E56843C3E137661BA766929D4CF354FF02692B6A3D575996FBC"
+    },
+    {
+        "name":  "mockbackend",
+        "sha256":  "2AE6C163F02267E241889A6209F7772A8146E49FACFD34F43B80CA20206ECF2F"
+    },
+    {
+        "name":  "frontproxy",
+        "sha256":  "5E5CBDB3A7E6DC72A6506F450C027A71FACC1F12FC20D4C5006F8A717E892C8D"
+    },
+    {
+        "name":  "loadgen",
+        "sha256":  "8BEF0DAEDC6A3923D3F9A98A10A9AC6692666001F7A73D1BED6A6001E4917E31"
+    },
+    {
+        "name":  "burst",
+        "sha256":  "DFFCB1F575CE02559EEE7C9BD79E6774C50C2C72FAA59C354B2A794C21A345FA"
+    }
+]

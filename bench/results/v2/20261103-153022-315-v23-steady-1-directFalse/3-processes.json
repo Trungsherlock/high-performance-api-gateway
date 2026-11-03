@@ -1,0 +1,86 @@
+﻿[
+    {
+        "role":  "backend",
+        "pid":  34584,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:63823",
+                          "-delay",
+                          "50ms"
+                      ],
+        "executable":  "mockbackend",
+        "time":  "2026-11-03T21:30:43.2469758Z"
+    },
+    {
+        "role":  "gateway-1",
+        "pid":  18240,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:63826",
+                          "-admin-addr",
+                          "127.0.0.1:63829",
+                          "-upstream",
+                          "http://127.0.0.1:63823",
+                          "-instance",
+                          "gateway-1",
+                          "-max-concurrent",
+                          32,
+                          "-max-waiters",
+                          32,
+                          "-permit-wait",
+                          "50ms",
+                          "-request-log-every",
+                          1000
+                      ],
+        "executable":  "gateway",
+        "time":  "2026-11-03T21:30:43.8174008Z"
+    },
+    {
+        "role":  "front",
+        "pid":  31976,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:63840",
+                          "-admin-addr",
+                          "127.0.0.1:63847",
+                          "-targets",
+                          "http://127.0.0.1:63826",
+                          "-readiness",
+                          "http://127.0.0.1:63829/readyz",
+                          "-timeout",
+                          "2s"
+                      ],
+        "executable":  "frontproxy",
+        "time":  "2026-11-03T21:30:44.4348773Z"
+    },
+    {
+        "role":  "generator",
+        "pid":  8800,
+        "arguments":  [
+                          "-target",
+                          "http://127.0.0.1:63840",
+                          "-admins",
+                          "http://127.0.0.1:63829",
+                          "-backend",
+                          "http://127.0.0.1:63823",
+                          "-workload",
+                          "unique",
+                          "-mode",
+                          "scheduled",
+                          "-duration",
+                          "6s",
+                          "-warmup",
+                          "1s",
+                          "-rate",
+                          800,
+                          "-concurrency",
+                          256,
+                          "-seed",
+                          45,
+                          "-front-admin",
+                          "http://127.0.0.1:63847"
+                      ],
+        "executable":  "loadgen",
+        "time":  "2026-11-03T21:30:45.0402304Z"
+    }
+]

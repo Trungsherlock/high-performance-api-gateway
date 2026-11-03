@@ -126,3 +126,18 @@ also showed that load shedding can protect the backend while lowering availabili
 Be ready to draw the request paths, explain the unshareable-response fallback,
 distinguish cache capacity from process memory, and describe the limits of the
 measurement setup. Use only results supported by the recorded experiments.
+
+
+## V2.3 process boundary
+
+The optional front selects one probe-healthy gateway once per request. It does not
+reroute a failed request. Health checks own readiness; caller cancellations do not
+mark instances unhealthy. Check observations can become stale before forwarding,
+and short probe deadlines can exclude an otherwise-running instance.
+
+Each gateway owns its own LRU, flight group, permit pool, and queued-waiter pool.
+The harness compares one 32-permit instance with two 16-permit instances, keeping
+aggregate configured permits and queued slots at 32. This is not a distributed
+limiter or cache: a controlled cold burst causes one fill per reached instance.
+See [V2.3 evidence](v2/multi-instance.md) for restart resets, front connection-pool
+queueing, resource attribution, and readiness/availability observations.

@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 )
@@ -201,6 +202,8 @@ func main() {
 	limit := flag.Int("concurrency", 100, "max in-flight and connections")
 	seed := flag.Int64("seed", 42, "workload seed")
 	admin := flag.String("admin", "", "optional loopback admin URL for phase snapshots")
+	admins := flag.String("admins", "", "comma-separated gateway admin origins for multi-instance snapshots")
+	frontAdmin := flag.String("front-admin", "", "front admin origin for routing snapshots")
 	backend := flag.String("backend", "", "optional backend URL for phase counters")
 	flag.Parse()
 	parsed, parseErr := url.Parse(*target)
@@ -218,10 +221,22 @@ func main() {
 	enc := json.NewEncoder(os.Stdout)
 	snapshot := func() map[string]any {
 		out := map[string]any{}
-		for name, url := range map[string]string{"gateway": *admin + "/metrics", "backend": *backend + "/stats"} {
-			if (name == "gateway" && *admin == "") || (name == "backend" && *backend == "") {
-				continue
+		endpoints := map[string]string{}
+		if *admin != "" {
+			endpoints["gateway"] = *admin + "/metrics"
+		}
+		if *backend != "" {
+			endpoints["backend"] = *backend + "/stats"
+		}
+		if *frontAdmin != "" {
+			endpoints["front"] = *frontAdmin + "/metrics"
+		}
+		if *admins != "" {
+			for i, base := range strings.Split(*admins, ",") {
+				endpoints[fmt.Sprintf("gateway_%d", i+1)] = base + "/metrics"
 			}
+		}
+		for name, url := range endpoints {
 			resp, err := c.Get(url)
 			if err != nil {
 				out[name+"_error"] = err.Error()

@@ -1,0 +1,152 @@
+﻿[
+    {
+        "role":  "backend",
+        "pid":  31552,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:61060",
+                          "-delay",
+                          "500ms"
+                      ],
+        "executable":  "mockbackend",
+        "time":  "2026-11-03T21:27:13.8864129Z"
+    },
+    {
+        "role":  "gateway-1",
+        "pid":  3404,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:61062",
+                          "-admin-addr",
+                          "127.0.0.1:61063",
+                          "-upstream",
+                          "http://127.0.0.1:61060",
+                          "-instance",
+                          "gateway-1",
+                          "-max-concurrent",
+                          16,
+                          "-max-waiters",
+                          16,
+                          "-permit-wait",
+                          "50ms",
+                          "-request-log-every",
+                          1000
+                      ],
+        "executable":  "gateway",
+        "time":  "2026-11-03T21:27:14.5770368Z"
+    },
+    {
+        "role":  "gateway-2",
+        "pid":  34600,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:61066",
+                          "-admin-addr",
+                          "127.0.0.1:61067",
+                          "-upstream",
+                          "http://127.0.0.1:61060",
+                          "-instance",
+                          "gateway-2",
+                          "-max-concurrent",
+                          16,
+                          "-max-waiters",
+                          16,
+                          "-permit-wait",
+                          "50ms",
+                          "-request-log-every",
+                          1000
+                      ],
+        "executable":  "gateway",
+        "time":  "2026-11-03T21:27:15.2982993Z"
+    },
+    {
+        "role":  "front",
+        "pid":  11192,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:61070",
+                          "-admin-addr",
+                          "127.0.0.1:61071",
+                          "-targets",
+                          "http://127.0.0.1:61062,http://127.0.0.1:61066",
+                          "-readiness",
+                          "http://127.0.0.1:61063/readyz,http://127.0.0.1:61067/readyz",
+                          "-timeout",
+                          "2s"
+                      ],
+        "executable":  "frontproxy",
+        "time":  "2026-11-03T21:27:16.2389352Z"
+    },
+    {
+        "role":  "generator",
+        "pid":  3736,
+        "arguments":  [
+                          "-targets",
+                          "http://127.0.0.1:61070",
+                          "-requests",
+                          100
+                      ],
+        "executable":  "burst",
+        "time":  "2026-11-03T21:27:16.8749225Z"
+    },
+    {
+        "role":  "generator",
+        "pid":  9116,
+        "arguments":  [
+                          "-targets",
+                          "http://127.0.0.1:61070",
+                          "-requests",
+                          100
+                      ],
+        "executable":  "burst",
+        "time":  "2026-11-03T21:27:17.6499099Z"
+    },
+    {
+        "role":  "generator",
+        "pid":  33416,
+        "arguments":  [
+                          "-targets",
+                          "http://127.0.0.1:61070",
+                          "-requests",
+                          100
+                      ],
+        "executable":  "burst",
+        "time":  "2026-11-03T21:27:18.1246023Z"
+    },
+    {
+        "role":  "gateway-1",
+        "pid":  18516,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:61062",
+                          "-admin-addr",
+                          "127.0.0.1:61063",
+                          "-upstream",
+                          "http://127.0.0.1:61060",
+                          "-instance",
+                          "gateway-1",
+                          "-max-concurrent",
+                          16,
+                          "-max-waiters",
+                          16,
+                          "-permit-wait",
+                          "50ms",
+                          "-request-log-every",
+                          1000
+                      ],
+        "executable":  "gateway",
+        "time":  "2026-11-03T21:27:18.3742955Z"
+    },
+    {
+        "role":  "generator",
+        "pid":  12644,
+        "arguments":  [
+                          "-targets",
+                          "http://127.0.0.1:61070",
+                          "-requests",
+                          100
+                      ],
+        "executable":  "burst",
+        "time":  "2026-11-03T21:27:18.9729084Z"
+    }
+]

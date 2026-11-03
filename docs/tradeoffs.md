@@ -172,3 +172,33 @@ queueing and gives immediate rejection under saturation. Queue-full and wait
 expiry have distinct fixed reasons in headers, metrics, and sampled logs.
 See [the admission experiments](v2/admission.md) for measured outcomes and why
 these defaults are a local policy choice rather than a production capacity claim.
+
+
+## V2.3: independent instances and an extra routing hop
+
+- **Local state per gateway:** keeps each cache and flight group simple and
+  independent, but duplicates cold fills across reached instances. Controlled
+  100-request bursts made two backend calls even though local coalescing worked.
+- **Fixed aggregate backend budget:** comparing 1x32 with 2x16 avoids silently
+  doubling backend pressure. A surviving node retains 16 permits after its peer
+  stops; there is no automatic budget redistribution or global enforcement.
+- **Best-effort health probes:** skip observed-unhealthy targets and allow rejoin,
+  but observations can become stale. One failed probe on a running gateway caused
+  59 front-level 503s in the study. Its exact failure cause was not retained;
+  detection speed and false exclusion remain a tuning tradeoff.
+- **One target selection with no alternate-target retry:** makes failures visible
+  and avoids application replay/load amplification, at an availability cost if a
+  chosen target has just stopped. Standard transport recovery may reconnect to
+  the same selected target; this is not a wire-level exactly-once guarantee.
+- **Connection pooling at the front:** reuses connections, but its own connection
+  ceiling can create a hidden queue ahead of gateway admission. The initial
+  64-connection pool caused substantial queueing and generator drops. A ceiling
+  of 256 per target lets the study's 256-client limit reach gateway admission.
+  It does not bound all front memory or solve admission above that client count.
+- **Extra routing process:** provides one entry point and readiness observations,
+  while adding CPU, memory, latency, and another failure point. Separate-process
+  measurements expose those costs; two gateways did not double throughput with
+  the same aggregate backend budget.
+
+See [V2.3 topology and results](v2/multi-instance.md). Shared caching and leases
+remain later milestones, not properties of this implementation.

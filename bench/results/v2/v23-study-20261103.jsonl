@@ -1,0 +1,6 @@
+{"scenario": "burst", "gateways": 2, "direct": true, "folder": "20261103-152903-146-v23-burst-2-directTrue"}
+{"scenario": "burst", "gateways": 2, "direct": false, "folder": "20261103-152916-059-v23-burst-2-directFalse"}
+{"scenario": "failure", "gateways": 2, "direct": false, "folder": "20261103-152932-271-v23-failure-2-directFalse"}
+{"scenario": "steady", "gateways": 1, "direct": true, "folder": "20261103-152951-832-v23-steady-1-directTrue"}
+{"scenario": "steady", "gateways": 1, "direct": false, "folder": "20261103-153022-315-v23-steady-1-directFalse"}
+{"scenario": "steady", "gateways": 2, "direct": false, "folder": "20261103-153053-296-v23-steady-2-directFalse"}

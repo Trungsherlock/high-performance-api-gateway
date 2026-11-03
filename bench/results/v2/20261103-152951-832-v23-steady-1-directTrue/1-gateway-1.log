@@ -1,0 +1,6 @@
+2026/11/03 15:29:54 gateway listening on 127.0.0.1:63862 (upstream=http://127.0.0.1:63860, cache=true)
+{"duration_ms":126.5698,"instance":"gateway-1","outcome":"response","rejection_reason":"","request_id":"1000","route":"public_item","status":200,"time":"2026-11-03T21:29:57.9797975Z"}
+{"duration_ms":98.8921,"instance":"gateway-1","outcome":"response","rejection_reason":"","request_id":"2000","route":"public_item","status":200,"time":"2026-11-03T21:29:59.2023021Z"}
+{"duration_ms":101.5267,"instance":"gateway-1","outcome":"response","rejection_reason":"","request_id":"3000","route":"public_item","status":200,"time":"2026-11-03T21:30:00.4547635Z"}
+{"duration_ms":0,"instance":"gateway-1","outcome":"response","rejection_reason":"queue_full","request_id":"4000","route":"public_item","status":503,"time":"2026-11-03T21:30:01.6038437Z"}
+{"duration_ms":99.6845,"instance":"gateway-1","outcome":"response","rejection_reason":"","request_id":"5000","route":"public_item","status":200,"time":"2026-11-03T21:30:02.953766Z"}

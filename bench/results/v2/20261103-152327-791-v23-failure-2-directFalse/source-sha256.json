@@ -1,0 +1,146 @@
+﻿[
+    {
+        "path":  "cmd\\bench\\main.go",
+        "sha256":  "D6203AB2F95DCF8A0D3A7C7264B63CF48F4C48B45807431FB68ACF6556789988"
+    },
+    {
+        "path":  "cmd\\bench\\usage_other.go",
+        "sha256":  "CBAFC764C8E0D3925DC17F64D6AEC954A3B9BE7D69F511D23F3A92E2774D65CB"
+    },
+    {
+        "path":  "cmd\\bench\\usage_windows.go",
+        "sha256":  "97882F0B523C5100396C0CD749779974820D638AE68939FADFD31D9B02DD2899"
+    },
+    {
+        "path":  "cmd\\burst\\main.go",
+        "sha256":  "42482397206E1A70564BF886226AA7AABE04858D72510DECFF1AE0B0E3EC29E2"
+    },
+    {
+        "path":  "cmd\\frontproxy\\main.go",
+        "sha256":  "7BEF757E67690572DF4A4C69720E38E0B76B88FBEBBEC92F84963771D8429520"
+    },
+    {
+        "path":  "cmd\\gateway\\main.go",
+        "sha256":  "D51A7456753098B56176952E9960E4A26788884D64AEEFAD287711D42A760BB6"
+    },
+    {
+        "path":  "cmd\\gateway\\main_test.go",
+        "sha256":  "F00AF9104DC0BD3D414AEDF1A95145BC3CB75254930CD2346800602B9DB86AAB"
+    },
+    {
+        "path":  "cmd\\loadgen\\main.go",
+        "sha256":  "AEA4B4C115391B61C816118E39157EBB95CAE16D1041E8A55005C71B0BFE0280"
+    },
+    {
+        "path":  "cmd\\loadgen\\main_test.go",
+        "sha256":  "DCAFA157EA7F30AD4D8FC050DE2D57B98F70C5A0A7A1772BDBA916B7AB8FD578"
+    },
+    {
+        "path":  "cmd\\mockbackend\\main.go",
+        "sha256":  "706ABF021E88958414800DAB6CC0E54CC9A0D42B442E4E2C2F14A50C9F54D18F"
+    },
+    {
+        "path":  "internal\\cache\\lru.go",
+        "sha256":  "3600BD414162A202E241D8B775EB57DB87338F85539759880D692737786F8639"
+    },
+    {
+        "path":  "internal\\cache\\lru_bench_test.go",
+        "sha256":  "B309E4DFE94784787993828DF09B6E7631A79A23779220E7869500211984207D"
+    },
+    {
+        "path":  "internal\\cache\\lru_test.go",
+        "sha256":  "E96EE08392D502221AEED20AF0EBBD62B021F410344C262B04A8A6C8E9F902D4"
+    },
+    {
+        "path":  "internal\\cache\\policy.go",
+        "sha256":  "B0F0E6CA183881D0E20A0BD163578DFBB2D0F7ADAFDF4DF486063375F1F2201D"
+    },
+    {
+        "path":  "internal\\cache\\policy_test.go",
+        "sha256":  "65FF9CEFCE91955716E7E41F5D1481F4D9BBE8A08715F93927B8261C3356FEA1"
+    },
+    {
+        "path":  "internal\\coalesce\\group.go",
+        "sha256":  "2EEEC31A8FD33A8DE63EB535F15B33EB5BEF42A6BEB2B04849C971B25981C3E0"
+    },
+    {
+        "path":  "internal\\coalesce\\group_bench_test.go",
+        "sha256":  "3AFCCD9A995EECF6A002EF7E09F0A0DC9D7BA5706E2072B1DE908B5234E436CC"
+    },
+    {
+        "path":  "internal\\coalesce\\group_test.go",
+        "sha256":  "0FA02DDCD9816FEA09B1C157BCC3348471DE8267930F52A1339D9666EED6D9C3"
+    },
+    {
+        "path":  "internal\\front\\front.go",
+        "sha256":  "3B609002579564BAC8A88785B499B08242C78412092CD72893E4501A2C8AD11E"
+    },
+    {
+        "path":  "internal\\front\\front_test.go",
+        "sha256":  "C2A97E0B8838EBAB83596C5C00A7D143FA899B4F77ED3245E15641833181AF50"
+    },
+    {
+        "path":  "internal\\gateway\\buffer.go",
+        "sha256":  "0030CA21EFCE4B483A5224A68064F943708E5D13476B395CEB4D6B81A950278D"
+    },
+    {
+        "path":  "internal\\gateway\\buffer_test.go",
+        "sha256":  "A2BA730BFEA1EAD85F0F2EB5F03DF84E8A4B727A92597746C01BA15C8D2FB82B"
+    },
+    {
+        "path":  "internal\\gateway\\cache.go",
+        "sha256":  "B6AE2558EBA7FAEF52895F6F441035B1D2C0035F180E8175CCF94F5D8C0D1BD6"
+    },
+    {
+        "path":  "internal\\gateway\\cache_test.go",
+        "sha256":  "AAA04EC226ADC35C81833C3CF2F495DD586CC30E6D1C43034F8928A19CA16E4F"
+    },
+    {
+        "path":  "internal\\gateway\\concurrency_test.go",
+        "sha256":  "9878FBC128EB87413D5570524F48848B1B3962CA20CAAB8B6CAD5F00D3B399C4"
+    },
+    {
+        "path":  "internal\\gateway\\metrics_test.go",
+        "sha256":  "298CEA7B517F57DD5677792D10E1DEEC71DC833B35CDFBFC1FDC0A0340C403C0"
+    },
+    {
+        "path":  "internal\\gateway\\proxy.go",
+        "sha256":  "49908CFE6E2D93B70743064418890366461D052A682CC4FC7237AA57121F1A33"
+    },
+    {
+        "path":  "internal\\gateway\\proxy_test.go",
+        "sha256":  "B5AFAD9D2591CE7B8EFD63B3A7A268F30858A70D794116301AF6D029FE7A33A5"
+    },
+    {
+        "path":  "internal\\limiter\\metrics_test.go",
+        "sha256":  "376927D7A1D803C994A770BE17129E7F9E6EC8876AEE08205B54D8EACA035691"
+    },
+    {
+        "path":  "internal\\limiter\\queue_test.go",
+        "sha256":  "55AB0F6171E93E24BBC4B8FF2D924A880AB02E3D15EDA72412723CD1FD575A7D"
+    },
+    {
+        "path":  "internal\\limiter\\transport.go",
+        "sha256":  "EE6868425C80EC52AC2519F546F14D78056C819E300A0B8D93D96615DD36381A"
+    },
+    {
+        "path":  "internal\\limiter\\transport_test.go",
+        "sha256":  "247553628EF27BB150BCBB789C5166EE45A2C755F6AF28B92852F7A023D8AEC8"
+    },
+    {
+        "path":  "internal\\mockbackend\\handler.go",
+        "sha256":  "AB092ECC248ED1F0B7D0B94DB7404935CF06CA19E3C9C16A272AB03A6B08DC8C"
+    },
+    {
+        "path":  "internal\\mockbackend\\handler_test.go",
+        "sha256":  "57D9A590ADC7BD5E179DED9E153A715F75C9C9245C752C64548BF5FFF020B6F2"
+    },
+    {
+        "path":  "internal\\observe\\metrics.go",
+        "sha256":  "A14AD9580907799857CF6821C96653E6DB826BE9E9C0DB0B706FC6E845EE226C"
+    },
+    {
+        "path":  "internal\\observe\\metrics_test.go",
+        "sha256":  "685EF24A3E88ACE60D9267B113C23352B918034F42B5BC3ADF8AF982C2E4BA55"
+    }
+]

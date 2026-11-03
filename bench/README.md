@@ -132,3 +132,9 @@ run `./bench/run-v22.ps1`; analyze its emitted index with
 `python bench/summarize-v22.py <index-path>`. See
 [admission results and settings](../docs/v2/admission.md). These focused short
 experiments have different workloads and durations from the V2.1 steady matrix.
+
+
+V2.3 topology experiments use `./bench/run-v23-study.ps1`. Analyze the emitted
+portable index with `python bench/summarize-v23.py --index <index> --output <summary>`.
+Individual burst, steady, and failure/rejoin scenarios are available through
+`./bench/run-v23.ps1`. See [multi-instance results](../docs/v2/multi-instance.md).
