@@ -1,0 +1,4132 @@
+[
+  {
+    "case": {
+      "rate": 1200,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "screen-c8",
+      "c": 8,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195158-433-v22-screen-c8"
+    },
+    "summary": {
+      "run": "20261102-195158-433-v22-screen-c8",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 158.21364296264127,
+          "send_p95_ms": 99.6412,
+          "rejection_reasons": {
+            "queue_full": 2255,
+            "wait_timeout": 1897
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 488,
+              "Rejected": 3112,
+              "TransportErrors": 0,
+              "SendP95MS": 99.6488,
+              "SendP99MS": 100.3485
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 160,
+              "Rejected": 1040,
+              "TransportErrors": 0,
+              "SendP95MS": 99.6118,
+              "SendP99MS": 100.4656
+            }
+          },
+          "backend_peak": 8,
+          "send_p99_ms": 100.3815,
+          "scheduled_p99_ms": 100.756067,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 4152,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 55,
+          "backend_calls": 648,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 648,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 2255,
+            "permit_rejections": 4152,
+            "permit_wait_timeout": 1897,
+            "status_1xx": 0,
+            "status_2xx": 648,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 4152
+          },
+          "max_sampled_gauges": {
+            "active_backend": 8,
+            "permit_waiters": 32,
+            "flights": 40,
+            "cache_entries": 664,
+            "cache_payload_bytes": 30678
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.6875,
+              "max_sampled_rss_mib": 19.48828125,
+              "first_quarter_median_rss_mib": 18.01171875,
+              "last_quarter_median_rss_mib": 19.48828125,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.015625,
+              "max_sampled_rss_mib": 11.5390625,
+              "first_quarter_median_rss_mib": 10.2421875,
+              "last_quarter_median_rss_mib": 11.5390625,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.703125,
+              "max_sampled_rss_mib": 16.87890625,
+              "first_quarter_median_rss_mib": 15.7265625,
+              "last_quarter_median_rss_mib": 16.87890625,
+              "samples": 4
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 158.21364296264127,
+      "successful_rps_range": [
+        158.21364296264127,
+        158.21364296264127
+      ],
+      "send_p99_ms_median": 100.3815,
+      "scheduled_p99_ms_median": 100.756067
+    }
+  },
+  {
+    "case": {
+      "rate": 1200,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "screen-c16",
+      "c": 16,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195206-762-v22-screen-c16"
+    },
+    "summary": {
+      "run": "20261102-195206-762-v22-screen-c16",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 314.05648756149634,
+          "send_p95_ms": 99.6973,
+          "rejection_reasons": {
+            "queue_full": 2250,
+            "wait_timeout": 1263
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 976,
+              "Rejected": 2624,
+              "TransportErrors": 0,
+              "SendP95MS": 99.7736,
+              "SendP99MS": 100.4557
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 311,
+              "Rejected": 889,
+              "TransportErrors": 0,
+              "SendP95MS": 99.2171,
+              "SendP99MS": 100.5434
+            }
+          },
+          "backend_peak": 16,
+          "send_p99_ms": 100.4844,
+          "scheduled_p99_ms": 100.821434,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 3513,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 49,
+          "backend_calls": 1287,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 1287,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 2250,
+            "permit_rejections": 3513,
+            "permit_wait_timeout": 1263,
+            "status_1xx": 0,
+            "status_2xx": 1287,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3513
+          },
+          "max_sampled_gauges": {
+            "active_backend": 16,
+            "permit_waiters": 32,
+            "flights": 48,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 47615
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.546875,
+              "max_sampled_rss_mib": 21.984375,
+              "first_quarter_median_rss_mib": 20.01171875,
+              "last_quarter_median_rss_mib": 21.984375,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.0625,
+              "max_sampled_rss_mib": 14.12109375,
+              "first_quarter_median_rss_mib": 12.875,
+              "last_quarter_median_rss_mib": 14.12109375,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.5,
+              "max_sampled_rss_mib": 17.56640625,
+              "first_quarter_median_rss_mib": 16.61328125,
+              "last_quarter_median_rss_mib": 17.56640625,
+              "samples": 3
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 314.05648756149634,
+      "successful_rps_range": [
+        314.05648756149634,
+        314.05648756149634
+      ],
+      "send_p99_ms_median": 100.4844,
+      "scheduled_p99_ms_median": 100.821434
+    }
+  },
+  {
+    "case": {
+      "rate": 1200,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "screen-c32",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195215-002-v22-screen-c32"
+    },
+    "summary": {
+      "run": "20261102-195215-002-v22-screen-c32",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 628.3749530671018,
+          "send_p95_ms": 99.6862,
+          "rejection_reasons": {
+            "queue_full": 2175,
+            "wait_timeout": 50
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1945,
+              "Rejected": 1655,
+              "TransportErrors": 0,
+              "SendP95MS": 99.6602,
+              "SendP99MS": 100.3013
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 630,
+              "Rejected": 570,
+              "TransportErrors": 0,
+              "SendP95MS": 99.7452,
+              "SendP99MS": 100.3665
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 100.314,
+          "scheduled_p99_ms": 100.712767,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 2225,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 77,
+          "backend_calls": 2575,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2575,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 2175,
+            "permit_rejections": 2225,
+            "permit_wait_timeout": 50,
+            "status_1xx": 0,
+            "status_2xx": 2575,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2225
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 32,
+            "flights": 64,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.90625,
+              "max_sampled_rss_mib": 24.2109375,
+              "first_quarter_median_rss_mib": 22.859375,
+              "last_quarter_median_rss_mib": 24.2109375,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.21875,
+              "max_sampled_rss_mib": 16.51953125,
+              "first_quarter_median_rss_mib": 14.2578125,
+              "last_quarter_median_rss_mib": 16.51953125,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.421875,
+              "max_sampled_rss_mib": 18.90625,
+              "first_quarter_median_rss_mib": 17.73046875,
+              "last_quarter_median_rss_mib": 18.90625,
+              "samples": 3
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 628.3749530671018,
+      "successful_rps_range": [
+        628.3749530671018,
+        628.3749530671018
+      ],
+      "send_p99_ms_median": 100.314,
+      "scheduled_p99_ms_median": 100.712767
+    }
+  },
+  {
+    "case": {
+      "rate": 1200,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "screen-c64",
+      "c": 64,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195223-305-v22-screen-c64"
+    },
+    "summary": {
+      "run": "20261102-195223-305-v22-screen-c64",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 1184.8258757677488,
+          "send_p95_ms": 50.7181,
+          "rejection_reasons": {},
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 3600,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 50.6997,
+              "SendP99MS": 51.0238
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 50.7728,
+              "SendP99MS": 51.0756
+            }
+          },
+          "backend_peak": 63,
+          "send_p99_ms": 51.0314,
+          "scheduled_p99_ms": 51.459567,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 0,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 45,
+          "backend_calls": 4800,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 4800,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 0,
+            "permit_wait_timeout": 0,
+            "status_1xx": 0,
+            "status_2xx": 4800,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 0
+          },
+          "max_sampled_gauges": {
+            "active_backend": 61,
+            "permit_waiters": 0,
+            "flights": 61,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.859375,
+              "max_sampled_rss_mib": 25.30859375,
+              "first_quarter_median_rss_mib": 24.2890625,
+              "last_quarter_median_rss_mib": 25.30859375,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.5625,
+              "max_sampled_rss_mib": 17.50390625,
+              "first_quarter_median_rss_mib": 16.59375,
+              "last_quarter_median_rss_mib": 17.50390625,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.625,
+              "max_sampled_rss_mib": 18.0234375,
+              "first_quarter_median_rss_mib": 16.7421875,
+              "last_quarter_median_rss_mib": 18.0234375,
+              "samples": 3
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 1184.8258757677488,
+      "successful_rps_range": [
+        1184.8258757677488,
+        1184.8258757677488
+      ],
+      "send_p99_ms_median": 51.0314,
+      "scheduled_p99_ms_median": 51.459567
+    }
+  },
+  {
+    "case": {
+      "rate": 1200,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 0,
+      "name": "screen-q0",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195231-598-v22-screen-q0"
+    },
+    "summary": {
+      "run": "20261102-195231-598-v22-screen-q0",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 619.0188354004728,
+          "send_p95_ms": 50.7349,
+          "rejection_reasons": {
+            "queue_full": 2292
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1888,
+              "Rejected": 1712,
+              "TransportErrors": 0,
+              "SendP95MS": 50.6735,
+              "SendP99MS": 51.0231
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 620,
+              "Rejected": 580,
+              "TransportErrors": 0,
+              "SendP95MS": 50.864,
+              "SendP99MS": 51.2274
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 51.1149,
+          "scheduled_p99_ms": 51.5361,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 2292,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 58,
+          "backend_calls": 2508,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2508,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 2292,
+            "permit_rejections": 2292,
+            "permit_wait_timeout": 0,
+            "status_1xx": 0,
+            "status_2xx": 2508,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2292
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 0,
+            "flights": 32,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.5625,
+              "max_sampled_rss_mib": 20.59765625,
+              "first_quarter_median_rss_mib": 19.69140625,
+              "last_quarter_median_rss_mib": 20.41015625,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.265625,
+              "max_sampled_rss_mib": 15.72265625,
+              "first_quarter_median_rss_mib": 14.34375,
+              "last_quarter_median_rss_mib": 15.72265625,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.53125,
+              "max_sampled_rss_mib": 16.96484375,
+              "first_quarter_median_rss_mib": 16.109375,
+              "last_quarter_median_rss_mib": 16.96484375,
+              "samples": 3
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 619.0188354004728,
+      "successful_rps_range": [
+        619.0188354004728,
+        619.0188354004728
+      ],
+      "send_p99_ms_median": 51.1149,
+      "scheduled_p99_ms_median": 51.5361
+    }
+  },
+  {
+    "case": {
+      "rate": 1200,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 8,
+      "name": "screen-q8",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195239-885-v22-screen-q8"
+    },
+    "summary": {
+      "run": "20261102-195239-885-v22-screen-q8",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 628.0179305527519,
+          "send_p95_ms": 77.3536,
+          "rejection_reasons": {
+            "queue_full": 2252
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1919,
+              "Rejected": 1681,
+              "TransportErrors": 0,
+              "SendP95MS": 77.9465,
+              "SendP99MS": 79.6243
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 629,
+              "Rejected": 571,
+              "TransportErrors": 0,
+              "SendP95MS": 75.445,
+              "SendP99MS": 76.7714
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 79.4877,
+          "scheduled_p99_ms": 79.7367,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 2252,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 65,
+          "backend_calls": 2548,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2548,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 2252,
+            "permit_rejections": 2252,
+            "permit_wait_timeout": 0,
+            "status_1xx": 0,
+            "status_2xx": 2548,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2252
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 8,
+            "flights": 40,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.90625,
+              "max_sampled_rss_mib": 22.1328125,
+              "first_quarter_median_rss_mib": 21.3359375,
+              "last_quarter_median_rss_mib": 22.1328125,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.109375,
+              "max_sampled_rss_mib": 16.06640625,
+              "first_quarter_median_rss_mib": 14.4140625,
+              "last_quarter_median_rss_mib": 16.06640625,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.390625,
+              "max_sampled_rss_mib": 17.578125,
+              "first_quarter_median_rss_mib": 16.28125,
+              "last_quarter_median_rss_mib": 17.578125,
+              "samples": 3
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 628.0179305527519,
+      "successful_rps_range": [
+        628.0179305527519,
+        628.0179305527519
+      ],
+      "send_p99_ms_median": 79.4877,
+      "scheduled_p99_ms_median": 79.7367
+    }
+  },
+  {
+    "case": {
+      "rate": 1200,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 64,
+      "name": "screen-q64",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195248-152-v22-screen-q64"
+    },
+    "summary": {
+      "run": "20261102-195248-152-v22-screen-q64",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 626.5241498598941,
+          "send_p95_ms": 99.9971,
+          "rejection_reasons": {
+            "wait_timeout": 2231
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1943,
+              "Rejected": 1657,
+              "TransportErrors": 0,
+              "SendP95MS": 100.0225,
+              "SendP99MS": 100.5423
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 626,
+              "Rejected": 574,
+              "TransportErrors": 0,
+              "SendP95MS": 99.9271,
+              "SendP99MS": 100.8264
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 100.5981,
+          "scheduled_p99_ms": 100.893334,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 2231,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 45,
+          "backend_calls": 2569,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2569,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 2231,
+            "permit_wait_timeout": 2231,
+            "status_1xx": 0,
+            "status_2xx": 2569,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2231
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 60,
+            "flights": 92,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.796875,
+              "max_sampled_rss_mib": 26.19921875,
+              "first_quarter_median_rss_mib": 24.5078125,
+              "last_quarter_median_rss_mib": 26.19921875,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.15625,
+              "max_sampled_rss_mib": 15.59765625,
+              "first_quarter_median_rss_mib": 14.1796875,
+              "last_quarter_median_rss_mib": 15.59765625,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.59375,
+              "max_sampled_rss_mib": 20.0234375,
+              "first_quarter_median_rss_mib": 18.3671875,
+              "last_quarter_median_rss_mib": 20.0234375,
+              "samples": 3
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 626.5241498598941,
+      "successful_rps_range": [
+        626.5241498598941,
+        626.5241498598941
+      ],
+      "send_p99_ms_median": 100.5981,
+      "scheduled_p99_ms_median": 100.893334
+    }
+  },
+  {
+    "case": {
+      "rate": 1200,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": -1,
+      "name": "screen-q-1",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195256-441-v22-screen-q-1"
+    },
+    "summary": {
+      "run": "20261102-195256-441-v22-screen-q-1",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 628.6008300020948,
+          "send_p95_ms": 99.908,
+          "rejection_reasons": {
+            "wait_timeout": 2225
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1945,
+              "Rejected": 1655,
+              "TransportErrors": 0,
+              "SendP95MS": 99.9053,
+              "SendP99MS": 100.393
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 630,
+              "Rejected": 570,
+              "TransportErrors": 0,
+              "SendP95MS": 99.915,
+              "SendP99MS": 100.5342
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 100.408,
+          "scheduled_p99_ms": 100.7915,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 2225,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 36,
+          "backend_calls": 2575,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2575,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 2225,
+            "permit_wait_timeout": 2225,
+            "status_1xx": 0,
+            "status_2xx": 2575,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2225
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 60,
+            "flights": 92,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.796875,
+              "max_sampled_rss_mib": 26.453125,
+              "first_quarter_median_rss_mib": 24.6953125,
+              "last_quarter_median_rss_mib": 26.453125,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.25,
+              "max_sampled_rss_mib": 16.265625,
+              "first_quarter_median_rss_mib": 14.1171875,
+              "last_quarter_median_rss_mib": 16.265625,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.578125,
+              "max_sampled_rss_mib": 20.703125,
+              "first_quarter_median_rss_mib": 18.94921875,
+              "last_quarter_median_rss_mib": 20.703125,
+              "samples": 3
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 628.6008300020948,
+      "successful_rps_range": [
+        628.6008300020948,
+        628.6008300020948
+      ],
+      "send_p99_ms_median": 100.408,
+      "scheduled_p99_ms_median": 100.7915
+    }
+  },
+  {
+    "case": {
+      "rate": 1200,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 0,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "screen-w0",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195304-695-v22-screen-w0"
+    },
+    "summary": {
+      "run": "20261102-195304-695-v22-screen-w0",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 621.0528984274649,
+          "send_p95_ms": 50.6753,
+          "rejection_reasons": {
+            "wait_timeout": 2284
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1888,
+              "Rejected": 1712,
+              "TransportErrors": 0,
+              "SendP95MS": 50.6548,
+              "SendP99MS": 50.9569
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 628,
+              "Rejected": 572,
+              "TransportErrors": 0,
+              "SendP95MS": 50.7476,
+              "SendP99MS": 51.0761
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 50.9928,
+          "scheduled_p99_ms": 51.4587,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 2284,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 54,
+          "backend_calls": 2516,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2516,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 2284,
+            "permit_wait_timeout": 2284,
+            "status_1xx": 0,
+            "status_2xx": 2516,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2284
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 0,
+            "flights": 32,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.875,
+              "max_sampled_rss_mib": 20.78125,
+              "first_quarter_median_rss_mib": 20.53125,
+              "last_quarter_median_rss_mib": 20.78125,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.265625,
+              "max_sampled_rss_mib": 15.51171875,
+              "first_quarter_median_rss_mib": 14.015625,
+              "last_quarter_median_rss_mib": 15.4375,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.5,
+              "max_sampled_rss_mib": 16.55078125,
+              "first_quarter_median_rss_mib": 15.82421875,
+              "last_quarter_median_rss_mib": 16.55078125,
+              "samples": 3
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 621.0528984274649,
+      "successful_rps_range": [
+        621.0528984274649,
+        621.0528984274649
+      ],
+      "send_p99_ms_median": 50.9928,
+      "scheduled_p99_ms_median": 51.4587
+    }
+  },
+  {
+    "case": {
+      "rate": 1200,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 10,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "screen-w10",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195312-855-v22-screen-w10"
+    },
+    "summary": {
+      "run": "20261102-195312-855-v22-screen-w10",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 629.9270016349278,
+          "send_p95_ms": 60.0593,
+          "rejection_reasons": {
+            "wait_timeout": 2243
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1920,
+              "Rejected": 1680,
+              "TransportErrors": 0,
+              "SendP95MS": 60.0999,
+              "SendP99MS": 60.5167
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 637,
+              "Rejected": 563,
+              "TransportErrors": 0,
+              "SendP95MS": 59.7799,
+              "SendP99MS": 60.4392
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 60.4928,
+          "scheduled_p99_ms": 60.848934,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 2243,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 32,
+          "backend_calls": 2557,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2557,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 2243,
+            "permit_wait_timeout": 2243,
+            "status_1xx": 0,
+            "status_2xx": 2557,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2243
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 13,
+            "flights": 45,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.828125,
+              "max_sampled_rss_mib": 22.3203125,
+              "first_quarter_median_rss_mib": 20.69921875,
+              "last_quarter_median_rss_mib": 22.3203125,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.1875,
+              "max_sampled_rss_mib": 15.94921875,
+              "first_quarter_median_rss_mib": 14.2890625,
+              "last_quarter_median_rss_mib": 15.94921875,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.703125,
+              "max_sampled_rss_mib": 17.49609375,
+              "first_quarter_median_rss_mib": 16.8828125,
+              "last_quarter_median_rss_mib": 17.49609375,
+              "samples": 3
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 629.9270016349278,
+      "successful_rps_range": [
+        629.9270016349278,
+        629.9270016349278
+      ],
+      "send_p99_ms_median": 60.4928,
+      "scheduled_p99_ms_median": 60.848934
+    }
+  },
+  {
+    "case": {
+      "rate": 1200,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 100,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "screen-w100",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195321-103-v22-screen-w100"
+    },
+    "summary": {
+      "run": "20261102-195321-103-v22-screen-w100",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 627.51547942732,
+          "send_p95_ms": 100.1147,
+          "rejection_reasons": {
+            "queue_full": 2230
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1944,
+              "Rejected": 1656,
+              "TransportErrors": 0,
+              "SendP95MS": 100.2104,
+              "SendP99MS": 100.9262
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 626,
+              "Rejected": 574,
+              "TransportErrors": 0,
+              "SendP95MS": 99.2333,
+              "SendP99MS": 100.7049
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 100.8881,
+          "scheduled_p99_ms": 101.220134,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 2230,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 81,
+          "backend_calls": 2570,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2570,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 2230,
+            "permit_rejections": 2230,
+            "permit_wait_timeout": 0,
+            "status_1xx": 0,
+            "status_2xx": 2570,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2230
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 32,
+            "flights": 64,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.875,
+              "max_sampled_rss_mib": 24.05859375,
+              "first_quarter_median_rss_mib": 23.0234375,
+              "last_quarter_median_rss_mib": 24.05859375,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.3125,
+              "max_sampled_rss_mib": 15.734375,
+              "first_quarter_median_rss_mib": 15.24609375,
+              "last_quarter_median_rss_mib": 15.734375,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.65625,
+              "max_sampled_rss_mib": 18.33984375,
+              "first_quarter_median_rss_mib": 17.3984375,
+              "last_quarter_median_rss_mib": 18.33984375,
+              "samples": 3
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 627.51547942732,
+      "successful_rps_range": [
+        627.51547942732,
+        627.51547942732
+      ],
+      "send_p99_ms_median": 100.8881,
+      "scheduled_p99_ms_median": 101.220134
+    }
+  },
+  {
+    "case": {
+      "rate": 400,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "screen-r400",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195329-343-v22-screen-r400"
+    },
+    "summary": {
+      "run": "20261102-195329-343-v22-screen-r400",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 395.1369019711034,
+          "send_p95_ms": 50.8787,
+          "rejection_reasons": {},
+          "windows": {
+            "0": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 50.8548,
+              "SendP99MS": 51.1913
+            },
+            "1": {
+              "Sent": 400,
+              "Success": 400,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 50.9103,
+              "SendP99MS": 51.2654
+            }
+          },
+          "backend_peak": 21,
+          "send_p99_ms": 51.2084,
+          "scheduled_p99_ms": 51.8899,
+          "offered": 1600,
+          "sent": 1600,
+          "rejected": 0,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 0,
+          "backend_calls": 1600,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 1600,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 1600,
+            "completed": 1600,
+            "dependency_errors": 0,
+            "incoming": 1600,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 0,
+            "permit_wait_timeout": 0,
+            "status_1xx": 0,
+            "status_2xx": 1600,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 0
+          },
+          "max_sampled_gauges": {
+            "active_backend": 21,
+            "permit_waiters": 0,
+            "flights": 21,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 47243
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.3125,
+              "max_sampled_rss_mib": 18.0859375,
+              "first_quarter_median_rss_mib": 16.8828125,
+              "last_quarter_median_rss_mib": 18.0859375,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.171875,
+              "max_sampled_rss_mib": 14.77734375,
+              "first_quarter_median_rss_mib": 13.66796875,
+              "last_quarter_median_rss_mib": 14.77734375,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.109375,
+              "max_sampled_rss_mib": 15.4765625,
+              "first_quarter_median_rss_mib": 13.9921875,
+              "last_quarter_median_rss_mib": 15.4765625,
+              "samples": 3
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 395.1369019711034,
+      "successful_rps_range": [
+        395.1369019711034,
+        395.1369019711034
+      ],
+      "send_p99_ms_median": 51.2084,
+      "scheduled_p99_ms_median": 51.8899
+    }
+  },
+  {
+    "case": {
+      "rate": 800,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "screen-r800",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195337-585-v22-screen-r800"
+    },
+    "summary": {
+      "run": "20261102-195337-585-v22-screen-r800",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 626.7235201750084,
+          "send_p95_ms": 99.7074,
+          "rejection_reasons": {
+            "queue_full": 592,
+            "wait_timeout": 39
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 1936,
+              "Rejected": 464,
+              "TransportErrors": 0,
+              "SendP95MS": 99.7064,
+              "SendP99MS": 100.2634
+            },
+            "1": {
+              "Sent": 800,
+              "Success": 633,
+              "Rejected": 167,
+              "TransportErrors": 0,
+              "SendP95MS": 99.7261,
+              "SendP99MS": 100.3101
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 100.2847,
+          "scheduled_p99_ms": 100.6703,
+          "offered": 3200,
+          "sent": 3200,
+          "rejected": 631,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 0,
+          "backend_calls": 2569,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2569,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 3200,
+            "completed": 3200,
+            "dependency_errors": 0,
+            "incoming": 3200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 592,
+            "permit_rejections": 631,
+            "permit_wait_timeout": 39,
+            "status_1xx": 0,
+            "status_2xx": 2569,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 631
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 32,
+            "flights": 64,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.578125,
+              "max_sampled_rss_mib": 23.95703125,
+              "first_quarter_median_rss_mib": 21.546875,
+              "last_quarter_median_rss_mib": 23.95703125,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.296875,
+              "max_sampled_rss_mib": 15.16015625,
+              "first_quarter_median_rss_mib": 13.89453125,
+              "last_quarter_median_rss_mib": 15.03515625,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.40625,
+              "max_sampled_rss_mib": 17.5546875,
+              "first_quarter_median_rss_mib": 16.375,
+              "last_quarter_median_rss_mib": 17.5546875,
+              "samples": 3
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 626.7235201750084,
+      "successful_rps_range": [
+        626.7235201750084,
+        626.7235201750084
+      ],
+      "send_p99_ms_median": 100.2847,
+      "scheduled_p99_ms_median": 100.6703
+    }
+  },
+  {
+    "case": {
+      "rate": 1600,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "screen-r1600",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195345-814-v22-screen-r1600"
+    },
+    "summary": {
+      "run": "20261102-195345-814-v22-screen-r1600",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 628.5972900239391,
+          "send_p95_ms": 99.7585,
+          "rejection_reasons": {
+            "queue_full": 3761,
+            "wait_timeout": 61
+          },
+          "windows": {
+            "0": {
+              "Sent": 4800,
+              "Success": 1951,
+              "Rejected": 2849,
+              "TransportErrors": 0,
+              "SendP95MS": 99.776,
+              "SendP99MS": 100.3741
+            },
+            "1": {
+              "Sent": 1600,
+              "Success": 627,
+              "Rejected": 973,
+              "TransportErrors": 0,
+              "SendP95MS": 99.7012,
+              "SendP99MS": 100.3379
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 100.3641,
+          "scheduled_p99_ms": 100.7486,
+          "offered": 6400,
+          "sent": 6400,
+          "rejected": 3822,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 478,
+          "backend_calls": 2578,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2578,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 6400,
+            "completed": 6400,
+            "dependency_errors": 0,
+            "incoming": 6400,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 3761,
+            "permit_rejections": 3822,
+            "permit_wait_timeout": 61,
+            "status_1xx": 0,
+            "status_2xx": 2578,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3822
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 32,
+            "flights": 64,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.828125,
+              "max_sampled_rss_mib": 24.9453125,
+              "first_quarter_median_rss_mib": 22.953125,
+              "last_quarter_median_rss_mib": 24.9453125,
+              "samples": 3
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.21875,
+              "max_sampled_rss_mib": 16.75,
+              "first_quarter_median_rss_mib": 15.49609375,
+              "last_quarter_median_rss_mib": 16.75,
+              "samples": 3
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.9375,
+              "max_sampled_rss_mib": 19.484375,
+              "first_quarter_median_rss_mib": 17.66015625,
+              "last_quarter_median_rss_mib": 19.484375,
+              "samples": 3
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 628.5972900239391,
+      "successful_rps_range": [
+        628.5972900239391,
+        628.5972900239391
+      ],
+      "send_p99_ms_median": 100.3641,
+      "scheduled_p99_ms_median": 100.7486
+    }
+  },
+  {
+    "case": {
+      "rate": 800,
+      "seconds": 4,
+      "slowFor": 0,
+      "trials": 1,
+      "delayMS": 200,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "screen-slow",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195354-099-v22-screen-slow"
+    },
+    "summary": {
+      "run": "20261102-195354-099-v22-screen-slow",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 4,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 157.01937800663524,
+          "send_p95_ms": 245.8354,
+          "rejection_reasons": {
+            "queue_full": 639,
+            "wait_timeout": 1895
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 509,
+              "Rejected": 1891,
+              "TransportErrors": 0,
+              "SendP95MS": 245.8764,
+              "SendP99MS": 248.897
+            },
+            "1": {
+              "Sent": 800,
+              "Success": 157,
+              "Rejected": 643,
+              "TransportErrors": 0,
+              "SendP95MS": 245.2584,
+              "SendP99MS": 247.134
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 248.5816,
+          "scheduled_p99_ms": 248.8554,
+          "offered": 3200,
+          "sent": 3200,
+          "rejected": 2534,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 2,
+          "backend_calls": 666,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 666,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 3200,
+            "completed": 3200,
+            "dependency_errors": 0,
+            "incoming": 3200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 639,
+            "permit_rejections": 2534,
+            "permit_wait_timeout": 1895,
+            "status_1xx": 0,
+            "status_2xx": 666,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2534
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 32,
+            "flights": 64,
+            "cache_entries": 800,
+            "cache_payload_bytes": 36942
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.046875,
+              "max_sampled_rss_mib": 22.48046875,
+              "first_quarter_median_rss_mib": 20.40234375,
+              "last_quarter_median_rss_mib": 22.48046875,
+              "samples": 4
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.078125,
+              "max_sampled_rss_mib": 13.9375,
+              "first_quarter_median_rss_mib": 10.93359375,
+              "last_quarter_median_rss_mib": 13.9375,
+              "samples": 4
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.40625,
+              "max_sampled_rss_mib": 17.7890625,
+              "first_quarter_median_rss_mib": 16.3671875,
+              "last_quarter_median_rss_mib": 17.7890625,
+              "samples": 4
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 157.01937800663524,
+      "successful_rps_range": [
+        157.01937800663524,
+        157.01937800663524
+      ],
+      "send_p99_ms_median": 248.5816,
+      "scheduled_p99_ms_median": 248.8554
+    }
+  },
+  {
+    "case": {
+      "rate": 400,
+      "seconds": 6,
+      "slowFor": 0,
+      "trials": 3,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "healthy-q32",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195403-350-v22-healthy-q32"
+    },
+    "summary": {
+      "run": "20261102-195403-350-v22-healthy-q32",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 6,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 396.81100848972187,
+          "send_p95_ms": 50.9258,
+          "rejection_reasons": {},
+          "windows": {
+            "0": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 50.8722,
+              "SendP99MS": 51.304
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 50.9425,
+              "SendP99MS": 51.2345
+            }
+          },
+          "backend_peak": 21,
+          "send_p99_ms": 51.2382,
+          "scheduled_p99_ms": 51.8729,
+          "offered": 2400,
+          "sent": 2400,
+          "rejected": 0,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 0,
+          "backend_calls": 2400,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2400,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 2400,
+            "completed": 2400,
+            "dependency_errors": 0,
+            "incoming": 2400,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 0,
+            "permit_wait_timeout": 0,
+            "status_1xx": 0,
+            "status_2xx": 2400,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 0
+          },
+          "max_sampled_gauges": {
+            "active_backend": 20,
+            "permit_waiters": 0,
+            "flights": 20,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.953125,
+              "max_sampled_rss_mib": 19.46875,
+              "first_quarter_median_rss_mib": 15.83203125,
+              "last_quarter_median_rss_mib": 19.46875,
+              "samples": 6
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.359375,
+              "max_sampled_rss_mib": 15.1328125,
+              "first_quarter_median_rss_mib": 13.57421875,
+              "last_quarter_median_rss_mib": 15.1328125,
+              "samples": 5
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.546875,
+              "max_sampled_rss_mib": 16.0078125,
+              "first_quarter_median_rss_mib": 13.26171875,
+              "last_quarter_median_rss_mib": 16.0078125,
+              "samples": 6
+            }
+          }
+        },
+        {
+          "trial": "2",
+          "successful_rps": 396.8055237445201,
+          "send_p95_ms": 50.8874,
+          "rejection_reasons": {},
+          "windows": {
+            "0": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 50.8458,
+              "SendP99MS": 51.2082
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 50.9222,
+              "SendP99MS": 51.2966
+            }
+          },
+          "backend_peak": 21,
+          "send_p99_ms": 51.2676,
+          "scheduled_p99_ms": 51.8396,
+          "offered": 2400,
+          "sent": 2400,
+          "rejected": 0,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 0,
+          "backend_calls": 2400,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2400,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 2400,
+            "completed": 2400,
+            "dependency_errors": 0,
+            "incoming": 2400,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 0,
+            "permit_wait_timeout": 0,
+            "status_1xx": 0,
+            "status_2xx": 2400,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 0
+          },
+          "max_sampled_gauges": {
+            "active_backend": 21,
+            "permit_waiters": 0,
+            "flights": 21,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.875,
+              "max_sampled_rss_mib": 18.25390625,
+              "first_quarter_median_rss_mib": 16.703125,
+              "last_quarter_median_rss_mib": 18.25390625,
+              "samples": 5
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.40625,
+              "max_sampled_rss_mib": 14.84375,
+              "first_quarter_median_rss_mib": 13.50390625,
+              "last_quarter_median_rss_mib": 14.84375,
+              "samples": 5
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.5625,
+              "max_sampled_rss_mib": 15.63671875,
+              "first_quarter_median_rss_mib": 13.85546875,
+              "last_quarter_median_rss_mib": 15.63671875,
+              "samples": 5
+            }
+          }
+        },
+        {
+          "trial": "3",
+          "successful_rps": 396.7805490768272,
+          "send_p95_ms": 50.8856,
+          "rejection_reasons": {},
+          "windows": {
+            "0": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 50.8285,
+              "SendP99MS": 51.1168
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 50.9186,
+              "SendP99MS": 51.2647
+            }
+          },
+          "backend_peak": 21,
+          "send_p99_ms": 51.1942,
+          "scheduled_p99_ms": 51.7999,
+          "offered": 2400,
+          "sent": 2400,
+          "rejected": 0,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 0,
+          "backend_calls": 2400,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2400,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 2400,
+            "completed": 2400,
+            "dependency_errors": 0,
+            "incoming": 2400,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 0,
+            "permit_wait_timeout": 0,
+            "status_1xx": 0,
+            "status_2xx": 2400,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 0
+          },
+          "max_sampled_gauges": {
+            "active_backend": 21,
+            "permit_waiters": 0,
+            "flights": 21,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.625,
+              "max_sampled_rss_mib": 18.84765625,
+              "first_quarter_median_rss_mib": 16.54296875,
+              "last_quarter_median_rss_mib": 18.84765625,
+              "samples": 5
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.296875,
+              "max_sampled_rss_mib": 15.14453125,
+              "first_quarter_median_rss_mib": 13.3828125,
+              "last_quarter_median_rss_mib": 15.14453125,
+              "samples": 5
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.546875,
+              "max_sampled_rss_mib": 15.43359375,
+              "first_quarter_median_rss_mib": 13.66015625,
+              "last_quarter_median_rss_mib": 15.43359375,
+              "samples": 5
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 396.8055237445201,
+      "successful_rps_range": [
+        396.7805490768272,
+        396.81100848972187
+      ],
+      "send_p99_ms_median": 51.2382,
+      "scheduled_p99_ms_median": 51.8396
+    }
+  },
+  {
+    "case": {
+      "rate": 1200,
+      "seconds": 6,
+      "slowFor": 0,
+      "trials": 3,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "overload-q32",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195430-533-v22-overload-q32"
+    },
+    "summary": {
+      "run": "20261102-195430-533-v22-overload-q32",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 6,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 631.3225269576282,
+          "send_p95_ms": 99.6794,
+          "rejection_reasons": {
+            "queue_full": 3294,
+            "wait_timeout": 67
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1944,
+              "Rejected": 1656,
+              "TransportErrors": 0,
+              "SendP95MS": 99.84,
+              "SendP99MS": 100.2855
+            },
+            "1": {
+              "Sent": 3600,
+              "Success": 1895,
+              "Rejected": 1705,
+              "TransportErrors": 0,
+              "SendP95MS": 99.3514,
+              "SendP99MS": 100.37
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 100.3132,
+          "scheduled_p99_ms": 100.736,
+          "offered": 7200,
+          "sent": 7200,
+          "rejected": 3361,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 128,
+          "backend_calls": 3839,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 3839,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 7200,
+            "completed": 7200,
+            "dependency_errors": 0,
+            "incoming": 7200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 3294,
+            "permit_rejections": 3361,
+            "permit_wait_timeout": 67,
+            "status_1xx": 0,
+            "status_2xx": 3839,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3361
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 32,
+            "flights": 64,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.796875,
+              "max_sampled_rss_mib": 26.2890625,
+              "first_quarter_median_rss_mib": 22.4453125,
+              "last_quarter_median_rss_mib": 26.2890625,
+              "samples": 5
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.734375,
+              "max_sampled_rss_mib": 16.953125,
+              "first_quarter_median_rss_mib": 15.12890625,
+              "last_quarter_median_rss_mib": 16.953125,
+              "samples": 5
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 1.40625,
+              "max_sampled_rss_mib": 20.66015625,
+              "first_quarter_median_rss_mib": 17.1171875,
+              "last_quarter_median_rss_mib": 20.66015625,
+              "samples": 5
+            }
+          }
+        },
+        {
+          "trial": "2",
+          "successful_rps": 631.3762276538413,
+          "send_p95_ms": 99.726,
+          "rejection_reasons": {
+            "queue_full": 3290,
+            "wait_timeout": 71
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1945,
+              "Rejected": 1655,
+              "TransportErrors": 0,
+              "SendP95MS": 99.7372,
+              "SendP99MS": 100.328
+            },
+            "1": {
+              "Sent": 3600,
+              "Success": 1894,
+              "Rejected": 1706,
+              "TransportErrors": 0,
+              "SendP95MS": 99.6977,
+              "SendP99MS": 100.2926
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 100.3181,
+          "scheduled_p99_ms": 100.7206,
+          "offered": 7200,
+          "sent": 7200,
+          "rejected": 3361,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 99,
+          "backend_calls": 3839,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 3839,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 7200,
+            "completed": 7200,
+            "dependency_errors": 0,
+            "incoming": 7200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 3290,
+            "permit_rejections": 3361,
+            "permit_wait_timeout": 71,
+            "status_1xx": 0,
+            "status_2xx": 3839,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3361
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 32,
+            "flights": 64,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.71875,
+              "max_sampled_rss_mib": 25.30859375,
+              "first_quarter_median_rss_mib": 22.66015625,
+              "last_quarter_median_rss_mib": 25.30859375,
+              "samples": 5
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.390625,
+              "max_sampled_rss_mib": 16.51171875,
+              "first_quarter_median_rss_mib": 14.3203125,
+              "last_quarter_median_rss_mib": 16.51171875,
+              "samples": 5
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.9375,
+              "max_sampled_rss_mib": 19.65625,
+              "first_quarter_median_rss_mib": 17.33203125,
+              "last_quarter_median_rss_mib": 19.19921875,
+              "samples": 5
+            }
+          }
+        },
+        {
+          "trial": "3",
+          "successful_rps": 631.2898104054217,
+          "send_p95_ms": 99.7339,
+          "rejection_reasons": {
+            "queue_full": 3278,
+            "wait_timeout": 82
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1941,
+              "Rejected": 1659,
+              "TransportErrors": 0,
+              "SendP95MS": 99.6914,
+              "SendP99MS": 100.2345
+            },
+            "1": {
+              "Sent": 3600,
+              "Success": 1899,
+              "Rejected": 1701,
+              "TransportErrors": 0,
+              "SendP95MS": 99.7517,
+              "SendP99MS": 100.4538
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 100.3879,
+          "scheduled_p99_ms": 100.754067,
+          "offered": 7200,
+          "sent": 7200,
+          "rejected": 3360,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 111,
+          "backend_calls": 3840,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 3840,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 7200,
+            "completed": 7200,
+            "dependency_errors": 0,
+            "incoming": 7200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 3278,
+            "permit_rejections": 3360,
+            "permit_wait_timeout": 82,
+            "status_1xx": 0,
+            "status_2xx": 3840,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3360
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 32,
+            "flights": 64,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.578125,
+              "max_sampled_rss_mib": 26.5390625,
+              "first_quarter_median_rss_mib": 22.5,
+              "last_quarter_median_rss_mib": 26.5390625,
+              "samples": 5
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.625,
+              "max_sampled_rss_mib": 16.71875,
+              "first_quarter_median_rss_mib": 14.29296875,
+              "last_quarter_median_rss_mib": 16.71875,
+              "samples": 5
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 1.234375,
+              "max_sampled_rss_mib": 19.42578125,
+              "first_quarter_median_rss_mib": 17.515625,
+              "last_quarter_median_rss_mib": 19.42578125,
+              "samples": 5
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 631.3225269576282,
+      "successful_rps_range": [
+        631.2898104054217,
+        631.3762276538413
+      ],
+      "send_p99_ms_median": 100.3181,
+      "scheduled_p99_ms_median": 100.736
+    }
+  },
+  {
+    "case": {
+      "rate": 800,
+      "seconds": 6,
+      "slowFor": 0,
+      "trials": 3,
+      "delayMS": 200,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": 32,
+      "name": "slow-q32",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195457-753-v22-slow-q32"
+    },
+    "summary": {
+      "run": "20261102-195457-753-v22-slow-q32",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 6,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 156.91637367061858,
+          "send_p95_ms": 245.1491,
+          "rejection_reasons": {
+            "queue_full": 967,
+            "wait_timeout": 2854
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 508,
+              "Rejected": 1892,
+              "TransportErrors": 0,
+              "SendP95MS": 245.5874,
+              "SendP99MS": 249.3523
+            },
+            "1": {
+              "Sent": 2400,
+              "Success": 471,
+              "Rejected": 1929,
+              "TransportErrors": 0,
+              "SendP95MS": 243.7591,
+              "SendP99MS": 247.9313
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 248.9932,
+          "scheduled_p99_ms": 249.5507,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 3821,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 3,
+          "backend_calls": 979,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 979,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 967,
+            "permit_rejections": 3821,
+            "permit_wait_timeout": 2854,
+            "status_1xx": 0,
+            "status_2xx": 979,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3821
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 32,
+            "flights": 64,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 47471
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.4375,
+              "max_sampled_rss_mib": 24.2265625,
+              "first_quarter_median_rss_mib": 20.2734375,
+              "last_quarter_median_rss_mib": 24.2265625,
+              "samples": 6
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.171875,
+              "max_sampled_rss_mib": 14.58984375,
+              "first_quarter_median_rss_mib": 11.08984375,
+              "last_quarter_median_rss_mib": 14.58984375,
+              "samples": 6
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.890625,
+              "max_sampled_rss_mib": 19.11328125,
+              "first_quarter_median_rss_mib": 16.75390625,
+              "last_quarter_median_rss_mib": 19.11328125,
+              "samples": 6
+            }
+          }
+        },
+        {
+          "trial": "2",
+          "successful_rps": 157.26791991475503,
+          "send_p95_ms": 246.0915,
+          "rejection_reasons": {
+            "queue_full": 963,
+            "wait_timeout": 2855
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 509,
+              "Rejected": 1891,
+              "TransportErrors": 0,
+              "SendP95MS": 246.1849,
+              "SendP99MS": 248.2089
+            },
+            "1": {
+              "Sent": 2400,
+              "Success": 473,
+              "Rejected": 1927,
+              "TransportErrors": 0,
+              "SendP95MS": 245.9771,
+              "SendP99MS": 248.0722
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 248.1615,
+          "scheduled_p99_ms": 248.5329,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 3818,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 2,
+          "backend_calls": 982,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 982,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 963,
+            "permit_rejections": 3818,
+            "permit_wait_timeout": 2855,
+            "status_1xx": 0,
+            "status_2xx": 982,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3818
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 32,
+            "flights": 64,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 47303
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.203125,
+              "max_sampled_rss_mib": 23.97265625,
+              "first_quarter_median_rss_mib": 20.46875,
+              "last_quarter_median_rss_mib": 23.97265625,
+              "samples": 6
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.15625,
+              "max_sampled_rss_mib": 14.09765625,
+              "first_quarter_median_rss_mib": 10.9765625,
+              "last_quarter_median_rss_mib": 14.09765625,
+              "samples": 6
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.75,
+              "max_sampled_rss_mib": 18.21875,
+              "first_quarter_median_rss_mib": 16.3359375,
+              "last_quarter_median_rss_mib": 18.21875,
+              "samples": 6
+            }
+          }
+        },
+        {
+          "trial": "3",
+          "successful_rps": 157.14251159867118,
+          "send_p95_ms": 245.9433,
+          "rejection_reasons": {
+            "queue_full": 964,
+            "wait_timeout": 2855
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 508,
+              "Rejected": 1892,
+              "TransportErrors": 0,
+              "SendP95MS": 246.186,
+              "SendP99MS": 248.9653
+            },
+            "1": {
+              "Sent": 2400,
+              "Success": 473,
+              "Rejected": 1927,
+              "TransportErrors": 0,
+              "SendP95MS": 245.6246,
+              "SendP99MS": 247.5231
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 247.8729,
+          "scheduled_p99_ms": 248.4104,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 3819,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 1,
+          "backend_calls": 981,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 981,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 964,
+            "permit_rejections": 3819,
+            "permit_wait_timeout": 2855,
+            "status_1xx": 0,
+            "status_2xx": 981,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3819
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 31,
+            "flights": 63,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 47303
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.265625,
+              "max_sampled_rss_mib": 23.12890625,
+              "first_quarter_median_rss_mib": 20.33203125,
+              "last_quarter_median_rss_mib": 23.12890625,
+              "samples": 6
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.1875,
+              "max_sampled_rss_mib": 14.28515625,
+              "first_quarter_median_rss_mib": 11.06640625,
+              "last_quarter_median_rss_mib": 14.28515625,
+              "samples": 6
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 1.234375,
+              "max_sampled_rss_mib": 18.59375,
+              "first_quarter_median_rss_mib": 16.59375,
+              "last_quarter_median_rss_mib": 18.59375,
+              "samples": 6
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 157.14251159867118,
+      "successful_rps_range": [
+        156.91637367061858,
+        157.26791991475503
+      ],
+      "send_p99_ms_median": 248.1615,
+      "scheduled_p99_ms_median": 248.5329
+    }
+  },
+  {
+    "case": {
+      "rate": 800,
+      "seconds": 9,
+      "slowFor": 3,
+      "trials": 3,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 4,
+      "q": 32,
+      "name": "recovery-q32",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195527-932-v22-recovery-q32"
+    },
+    "summary": {
+      "run": "20261102-195527-932-v22-recovery-q32",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 9,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 474.10678754014816,
+          "send_p95_ms": 242.6626,
+          "rejection_reasons": {
+            "queue_full": 1411,
+            "wait_timeout": 1477
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 1360,
+              "Rejected": 1040,
+              "TransportErrors": 0,
+              "SendP95MS": 244.6917,
+              "SendP99MS": 248.9827
+            },
+            "1": {
+              "Sent": 2400,
+              "Success": 1046,
+              "Rejected": 1354,
+              "TransportErrors": 0,
+              "SendP95MS": 244.2408,
+              "SendP99MS": 248.8739
+            },
+            "2": {
+              "Sent": 2400,
+              "Success": 1906,
+              "Rejected": 494,
+              "TransportErrors": 0,
+              "SendP95MS": 99.6032,
+              "SendP99MS": 100.4119
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 248.1182,
+          "scheduled_p99_ms": 248.6167,
+          "offered": 7200,
+          "sent": 7200,
+          "rejected": 2888,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 0,
+          "backend_calls": 4312,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 4312,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 7200,
+            "completed": 7200,
+            "dependency_errors": 0,
+            "incoming": 7200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 1411,
+            "permit_rejections": 2888,
+            "permit_wait_timeout": 1477,
+            "status_1xx": 0,
+            "status_2xx": 4312,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2888
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 32,
+            "flights": 64,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 2.671875,
+              "max_sampled_rss_mib": 25.99609375,
+              "first_quarter_median_rss_mib": 22.248046875,
+              "last_quarter_median_rss_mib": 25.740234375,
+              "samples": 8
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.828125,
+              "max_sampled_rss_mib": 16.875,
+              "first_quarter_median_rss_mib": 14.919921875,
+              "last_quarter_median_rss_mib": 16.744140625,
+              "samples": 8
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 1.40625,
+              "max_sampled_rss_mib": 18.98046875,
+              "first_quarter_median_rss_mib": 16.791015625,
+              "last_quarter_median_rss_mib": 18.7421875,
+              "samples": 8
+            }
+          }
+        },
+        {
+          "trial": "2",
+          "successful_rps": 473.4887064641512,
+          "send_p95_ms": 239.3688,
+          "rejection_reasons": {
+            "queue_full": 1391,
+            "wait_timeout": 1503
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 1348,
+              "Rejected": 1052,
+              "TransportErrors": 0,
+              "SendP95MS": 242.0284,
+              "SendP99MS": 247.4499
+            },
+            "1": {
+              "Sent": 2400,
+              "Success": 1056,
+              "Rejected": 1344,
+              "TransportErrors": 0,
+              "SendP95MS": 240.0097,
+              "SendP99MS": 247.6828
+            },
+            "2": {
+              "Sent": 2400,
+              "Success": 1902,
+              "Rejected": 498,
+              "TransportErrors": 0,
+              "SendP95MS": 99.5088,
+              "SendP99MS": 100.4734
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 246.7064,
+          "scheduled_p99_ms": 247.0225,
+          "offered": 7200,
+          "sent": 7200,
+          "rejected": 2894,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 4,
+          "backend_calls": 4306,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 4306,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 7200,
+            "completed": 7200,
+            "dependency_errors": 0,
+            "incoming": 7200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 1391,
+            "permit_rejections": 2894,
+            "permit_wait_timeout": 1503,
+            "status_1xx": 0,
+            "status_2xx": 4306,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2894
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 32,
+            "flights": 64,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 2.71875,
+              "max_sampled_rss_mib": 26.90625,
+              "first_quarter_median_rss_mib": 22.048828125,
+              "last_quarter_median_rss_mib": 26.267578125,
+              "samples": 8
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.625,
+              "max_sampled_rss_mib": 16.80078125,
+              "first_quarter_median_rss_mib": 14.958984375,
+              "last_quarter_median_rss_mib": 16.41015625,
+              "samples": 8
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 1.609375,
+              "max_sampled_rss_mib": 20.71484375,
+              "first_quarter_median_rss_mib": 16.50390625,
+              "last_quarter_median_rss_mib": 19.943359375,
+              "samples": 8
+            }
+          }
+        },
+        {
+          "trial": "3",
+          "successful_rps": 473.72848554114165,
+          "send_p95_ms": 242.8415,
+          "rejection_reasons": {
+            "queue_full": 1388,
+            "wait_timeout": 1502
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 1363,
+              "Rejected": 1037,
+              "TransportErrors": 0,
+              "SendP95MS": 244.8158,
+              "SendP99MS": 247.5067
+            },
+            "1": {
+              "Sent": 2400,
+              "Success": 1047,
+              "Rejected": 1353,
+              "TransportErrors": 0,
+              "SendP95MS": 244.6812,
+              "SendP99MS": 247.433
+            },
+            "2": {
+              "Sent": 2400,
+              "Success": 1900,
+              "Rejected": 500,
+              "TransportErrors": 0,
+              "SendP95MS": 99.9562,
+              "SendP99MS": 100.6225
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 246.9779,
+          "scheduled_p99_ms": 247.5037,
+          "offered": 7200,
+          "sent": 7200,
+          "rejected": 2890,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 12,
+          "backend_calls": 4310,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 4310,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 7200,
+            "completed": 7200,
+            "dependency_errors": 0,
+            "incoming": 7200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 1388,
+            "permit_rejections": 2890,
+            "permit_wait_timeout": 1502,
+            "status_1xx": 0,
+            "status_2xx": 4310,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2890
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 32,
+            "flights": 65,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 2.09375,
+              "max_sampled_rss_mib": 25.59375,
+              "first_quarter_median_rss_mib": 22.712890625,
+              "last_quarter_median_rss_mib": 25.341796875,
+              "samples": 8
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.734375,
+              "max_sampled_rss_mib": 17.09765625,
+              "first_quarter_median_rss_mib": 14.634765625,
+              "last_quarter_median_rss_mib": 16.83203125,
+              "samples": 8
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 1.53125,
+              "max_sampled_rss_mib": 19.94921875,
+              "first_quarter_median_rss_mib": 16.693359375,
+              "last_quarter_median_rss_mib": 19.607421875,
+              "samples": 8
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 473.72848554114165,
+      "successful_rps_range": [
+        473.4887064641512,
+        474.10678754014816
+      ],
+      "send_p99_ms_median": 246.9779,
+      "scheduled_p99_ms_median": 247.5037
+    }
+  },
+  {
+    "case": {
+      "rate": 400,
+      "seconds": 6,
+      "slowFor": 0,
+      "trials": 3,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": -1,
+      "name": "healthy-q-1",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195604-645-v22-healthy-q-1"
+    },
+    "summary": {
+      "run": "20261102-195604-645-v22-healthy-q-1",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 6,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 396.7465001627404,
+          "send_p95_ms": 51.0285,
+          "rejection_reasons": {},
+          "windows": {
+            "0": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 50.951,
+              "SendP99MS": 51.2873
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 51.0842,
+              "SendP99MS": 51.4284
+            }
+          },
+          "backend_peak": 21,
+          "send_p99_ms": 51.3389,
+          "scheduled_p99_ms": 52.0398,
+          "offered": 2400,
+          "sent": 2400,
+          "rejected": 0,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 0,
+          "backend_calls": 2400,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2400,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 2400,
+            "completed": 2400,
+            "dependency_errors": 0,
+            "incoming": 2400,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 0,
+            "permit_wait_timeout": 0,
+            "status_1xx": 0,
+            "status_2xx": 2400,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 0
+          },
+          "max_sampled_gauges": {
+            "active_backend": 21,
+            "permit_waiters": 0,
+            "flights": 21,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.140625,
+              "max_sampled_rss_mib": 18.79296875,
+              "first_quarter_median_rss_mib": 15.6015625,
+              "last_quarter_median_rss_mib": 18.73828125,
+              "samples": 6
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.5625,
+              "max_sampled_rss_mib": 15.19140625,
+              "first_quarter_median_rss_mib": 10.7734375,
+              "last_quarter_median_rss_mib": 15.19140625,
+              "samples": 6
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.6875,
+              "max_sampled_rss_mib": 15.76953125,
+              "first_quarter_median_rss_mib": 13.203125,
+              "last_quarter_median_rss_mib": 15.71875,
+              "samples": 6
+            }
+          }
+        },
+        {
+          "trial": "2",
+          "successful_rps": 396.7301369866184,
+          "send_p95_ms": 51.0026,
+          "rejection_reasons": {},
+          "windows": {
+            "0": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 50.9273,
+              "SendP99MS": 51.4319
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 51.072,
+              "SendP99MS": 51.9818
+            }
+          },
+          "backend_peak": 27,
+          "send_p99_ms": 51.5033,
+          "scheduled_p99_ms": 52.1046,
+          "offered": 2400,
+          "sent": 2400,
+          "rejected": 0,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 0,
+          "backend_calls": 2400,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2400,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 2400,
+            "completed": 2400,
+            "dependency_errors": 0,
+            "incoming": 2400,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 0,
+            "permit_wait_timeout": 0,
+            "status_1xx": 0,
+            "status_2xx": 2400,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 0
+          },
+          "max_sampled_gauges": {
+            "active_backend": 21,
+            "permit_waiters": 0,
+            "flights": 21,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.75,
+              "max_sampled_rss_mib": 19.51953125,
+              "first_quarter_median_rss_mib": 16.71875,
+              "last_quarter_median_rss_mib": 19.51953125,
+              "samples": 5
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.34375,
+              "max_sampled_rss_mib": 15.3515625,
+              "first_quarter_median_rss_mib": 13.40625,
+              "last_quarter_median_rss_mib": 15.3515625,
+              "samples": 5
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.59375,
+              "max_sampled_rss_mib": 15.59765625,
+              "first_quarter_median_rss_mib": 13.640625,
+              "last_quarter_median_rss_mib": 15.59765625,
+              "samples": 5
+            }
+          }
+        },
+        {
+          "trial": "3",
+          "successful_rps": 396.7624711371834,
+          "send_p95_ms": 51.1576,
+          "rejection_reasons": {},
+          "windows": {
+            "0": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 51.1376,
+              "SendP99MS": 51.4417
+            },
+            "1": {
+              "Sent": 1200,
+              "Success": 1200,
+              "Rejected": 0,
+              "TransportErrors": 0,
+              "SendP95MS": 51.1676,
+              "SendP99MS": 51.5907
+            }
+          },
+          "backend_peak": 21,
+          "send_p99_ms": 51.5087,
+          "scheduled_p99_ms": 52.1641,
+          "offered": 2400,
+          "sent": 2400,
+          "rejected": 0,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 0,
+          "backend_calls": 2400,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 2400,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 2400,
+            "completed": 2400,
+            "dependency_errors": 0,
+            "incoming": 2400,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 0,
+            "permit_wait_timeout": 0,
+            "status_1xx": 0,
+            "status_2xx": 2400,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 0
+          },
+          "max_sampled_gauges": {
+            "active_backend": 21,
+            "permit_waiters": 0,
+            "flights": 21,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 0.71875,
+              "max_sampled_rss_mib": 18.65234375,
+              "first_quarter_median_rss_mib": 16.640625,
+              "last_quarter_median_rss_mib": 18.65234375,
+              "samples": 5
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.6875,
+              "max_sampled_rss_mib": 15.55859375,
+              "first_quarter_median_rss_mib": 13.25,
+              "last_quarter_median_rss_mib": 15.55859375,
+              "samples": 5
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.640625,
+              "max_sampled_rss_mib": 15.41015625,
+              "first_quarter_median_rss_mib": 13.80078125,
+              "last_quarter_median_rss_mib": 15.41015625,
+              "samples": 5
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 396.7465001627404,
+      "successful_rps_range": [
+        396.7301369866184,
+        396.7624711371834
+      ],
+      "send_p99_ms_median": 51.5033,
+      "scheduled_p99_ms_median": 52.1046
+    }
+  },
+  {
+    "case": {
+      "rate": 1200,
+      "seconds": 6,
+      "slowFor": 0,
+      "trials": 3,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": -1,
+      "name": "overload-q-1",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195632-099-v22-overload-q-1"
+    },
+    "summary": {
+      "run": "20261102-195632-099-v22-overload-q-1",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 6,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 627.3076812206759,
+          "send_p95_ms": 99.8688,
+          "rejection_reasons": {
+            "wait_timeout": 3383
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1943,
+              "Rejected": 1657,
+              "TransportErrors": 0,
+              "SendP95MS": 99.857,
+              "SendP99MS": 100.419
+            },
+            "1": {
+              "Sent": 3600,
+              "Success": 1874,
+              "Rejected": 1726,
+              "TransportErrors": 0,
+              "SendP95MS": 99.8965,
+              "SendP99MS": 103.1556
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 100.7502,
+          "scheduled_p99_ms": 101.034,
+          "offered": 7200,
+          "sent": 7200,
+          "rejected": 3383,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 74,
+          "backend_calls": 3817,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 3817,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 7200,
+            "completed": 7200,
+            "dependency_errors": 0,
+            "incoming": 7200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 3383,
+            "permit_wait_timeout": 3383,
+            "status_1xx": 0,
+            "status_2xx": 3817,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3383
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 61,
+            "flights": 93,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.5625,
+              "max_sampled_rss_mib": 28.94921875,
+              "first_quarter_median_rss_mib": 25.17578125,
+              "last_quarter_median_rss_mib": 28.94921875,
+              "samples": 5
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.734375,
+              "max_sampled_rss_mib": 17.1015625,
+              "first_quarter_median_rss_mib": 14.33984375,
+              "last_quarter_median_rss_mib": 17.0625,
+              "samples": 5
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.96875,
+              "max_sampled_rss_mib": 21.484375,
+              "first_quarter_median_rss_mib": 18.46875,
+              "last_quarter_median_rss_mib": 21.3046875,
+              "samples": 5
+            }
+          }
+        },
+        {
+          "trial": "2",
+          "successful_rps": 631.2725413820933,
+          "send_p95_ms": 100.1017,
+          "rejection_reasons": {
+            "wait_timeout": 3360
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1941,
+              "Rejected": 1659,
+              "TransportErrors": 0,
+              "SendP95MS": 100.1151,
+              "SendP99MS": 100.5914
+            },
+            "1": {
+              "Sent": 3600,
+              "Success": 1899,
+              "Rejected": 1701,
+              "TransportErrors": 0,
+              "SendP95MS": 100.0904,
+              "SendP99MS": 100.7629
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 100.7394,
+          "scheduled_p99_ms": 101.076734,
+          "offered": 7200,
+          "sent": 7200,
+          "rejected": 3360,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 63,
+          "backend_calls": 3840,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 3840,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 7200,
+            "completed": 7200,
+            "dependency_errors": 0,
+            "incoming": 7200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 3360,
+            "permit_wait_timeout": 3360,
+            "status_1xx": 0,
+            "status_2xx": 3840,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3360
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 59,
+            "flights": 92,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.546875,
+              "max_sampled_rss_mib": 27.48828125,
+              "first_quarter_median_rss_mib": 24.54296875,
+              "last_quarter_median_rss_mib": 27.4765625,
+              "samples": 5
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.78125,
+              "max_sampled_rss_mib": 16.84375,
+              "first_quarter_median_rss_mib": 15.359375,
+              "last_quarter_median_rss_mib": 16.84375,
+              "samples": 5
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 1.296875,
+              "max_sampled_rss_mib": 21.5,
+              "first_quarter_median_rss_mib": 18.953125,
+              "last_quarter_median_rss_mib": 21.5,
+              "samples": 5
+            }
+          }
+        },
+        {
+          "trial": "3",
+          "successful_rps": 631.2903085643457,
+          "send_p95_ms": 99.9899,
+          "rejection_reasons": {
+            "wait_timeout": 3360
+          },
+          "windows": {
+            "0": {
+              "Sent": 3600,
+              "Success": 1943,
+              "Rejected": 1657,
+              "TransportErrors": 0,
+              "SendP95MS": 100.0942,
+              "SendP99MS": 100.56
+            },
+            "1": {
+              "Sent": 3600,
+              "Success": 1897,
+              "Rejected": 1703,
+              "TransportErrors": 0,
+              "SendP95MS": 99.7571,
+              "SendP99MS": 100.387
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 100.45,
+          "scheduled_p99_ms": 100.836434,
+          "offered": 7200,
+          "sent": 7200,
+          "rejected": 3360,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 78,
+          "backend_calls": 3840,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 3840,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 7200,
+            "completed": 7200,
+            "dependency_errors": 0,
+            "incoming": 7200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 3360,
+            "permit_wait_timeout": 3360,
+            "status_1xx": 0,
+            "status_2xx": 3840,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3360
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 61,
+            "flights": 93,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.6875,
+              "max_sampled_rss_mib": 27.328125,
+              "first_quarter_median_rss_mib": 24.25390625,
+              "last_quarter_median_rss_mib": 27.328125,
+              "samples": 5
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.5,
+              "max_sampled_rss_mib": 16.328125,
+              "first_quarter_median_rss_mib": 14.578125,
+              "last_quarter_median_rss_mib": 16.03515625,
+              "samples": 5
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 0.921875,
+              "max_sampled_rss_mib": 21.2578125,
+              "first_quarter_median_rss_mib": 18.6171875,
+              "last_quarter_median_rss_mib": 20.4609375,
+              "samples": 5
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 631.2725413820933,
+      "successful_rps_range": [
+        627.3076812206759,
+        631.2903085643457
+      ],
+      "send_p99_ms_median": 100.7394,
+      "scheduled_p99_ms_median": 101.034
+    }
+  },
+  {
+    "case": {
+      "rate": 800,
+      "seconds": 6,
+      "slowFor": 0,
+      "trials": 3,
+      "delayMS": 200,
+      "waitMS": 50,
+      "slowAfter": 0,
+      "q": -1,
+      "name": "slow-q-1",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195659-335-v22-slow-q-1"
+    },
+    "summary": {
+      "run": "20261102-195659-335-v22-slow-q-1",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 6,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 157.8309456413896,
+          "send_p95_ms": 249.1838,
+          "rejection_reasons": {
+            "wait_timeout": 3814
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 512,
+              "Rejected": 1888,
+              "TransportErrors": 0,
+              "SendP95MS": 249.414,
+              "SendP99MS": 250.0653
+            },
+            "1": {
+              "Sent": 2400,
+              "Success": 474,
+              "Rejected": 1926,
+              "TransportErrors": 0,
+              "SendP95MS": 248.8076,
+              "SendP99MS": 250.239
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 250.1386,
+          "scheduled_p99_ms": 250.5521,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 3814,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 3,
+          "backend_calls": 986,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 986,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 3814,
+            "permit_wait_timeout": 3814,
+            "status_1xx": 0,
+            "status_2xx": 986,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3814
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 41,
+            "flights": 73,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 47495
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.109375,
+              "max_sampled_rss_mib": 24.19921875,
+              "first_quarter_median_rss_mib": 20.97265625,
+              "last_quarter_median_rss_mib": 24.19921875,
+              "samples": 6
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.15625,
+              "max_sampled_rss_mib": 14.37890625,
+              "first_quarter_median_rss_mib": 11.0546875,
+              "last_quarter_median_rss_mib": 14.37890625,
+              "samples": 6
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 1.265625,
+              "max_sampled_rss_mib": 18.76171875,
+              "first_quarter_median_rss_mib": 16.88671875,
+              "last_quarter_median_rss_mib": 18.76171875,
+              "samples": 6
+            }
+          }
+        },
+        {
+          "trial": "2",
+          "successful_rps": 157.87223326509496,
+          "send_p95_ms": 249.253,
+          "rejection_reasons": {
+            "wait_timeout": 3814
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 512,
+              "Rejected": 1888,
+              "TransportErrors": 0,
+              "SendP95MS": 249.6284,
+              "SendP99MS": 250.2318
+            },
+            "1": {
+              "Sent": 2400,
+              "Success": 474,
+              "Rejected": 1926,
+              "TransportErrors": 0,
+              "SendP95MS": 248.566,
+              "SendP99MS": 249.7291
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 250.1247,
+          "scheduled_p99_ms": 250.5204,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 3814,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 5,
+          "backend_calls": 986,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 986,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 3814,
+            "permit_wait_timeout": 3814,
+            "status_1xx": 0,
+            "status_2xx": 986,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3814
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 41,
+            "flights": 73,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 47495
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.421875,
+              "max_sampled_rss_mib": 24.1484375,
+              "first_quarter_median_rss_mib": 21.34765625,
+              "last_quarter_median_rss_mib": 23.67578125,
+              "samples": 6
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.21875,
+              "max_sampled_rss_mib": 14.10546875,
+              "first_quarter_median_rss_mib": 10.92578125,
+              "last_quarter_median_rss_mib": 14.10546875,
+              "samples": 6
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 1.03125,
+              "max_sampled_rss_mib": 19.1796875,
+              "first_quarter_median_rss_mib": 16.6171875,
+              "last_quarter_median_rss_mib": 19.1796875,
+              "samples": 6
+            }
+          }
+        },
+        {
+          "trial": "3",
+          "successful_rps": 157.73010083453156,
+          "send_p95_ms": 249.3781,
+          "rejection_reasons": {
+            "wait_timeout": 3815
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 512,
+              "Rejected": 1888,
+              "TransportErrors": 0,
+              "SendP95MS": 249.4908,
+              "SendP99MS": 250.3897
+            },
+            "1": {
+              "Sent": 2400,
+              "Success": 473,
+              "Rejected": 1927,
+              "TransportErrors": 0,
+              "SendP95MS": 249.1086,
+              "SendP99MS": 250.345
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 250.37,
+          "scheduled_p99_ms": 250.768,
+          "offered": 4800,
+          "sent": 4800,
+          "rejected": 3815,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 2,
+          "backend_calls": 985,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 985,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 4800,
+            "completed": 4800,
+            "dependency_errors": 0,
+            "incoming": 4800,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 3815,
+            "permit_wait_timeout": 3815,
+            "status_1xx": 0,
+            "status_2xx": 985,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 3815
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 41,
+            "flights": 73,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 47495
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.671875,
+              "max_sampled_rss_mib": 24.265625,
+              "first_quarter_median_rss_mib": 21.22265625,
+              "last_quarter_median_rss_mib": 24.265625,
+              "samples": 6
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.203125,
+              "max_sampled_rss_mib": 13.97265625,
+              "first_quarter_median_rss_mib": 10.9921875,
+              "last_quarter_median_rss_mib": 13.97265625,
+              "samples": 6
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 1.171875,
+              "max_sampled_rss_mib": 19.6796875,
+              "first_quarter_median_rss_mib": 17.1640625,
+              "last_quarter_median_rss_mib": 19.6796875,
+              "samples": 6
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 157.8309456413896,
+      "successful_rps_range": [
+        157.73010083453156,
+        157.87223326509496
+      ],
+      "send_p99_ms_median": 250.1386,
+      "scheduled_p99_ms_median": 250.5521
+    }
+  },
+  {
+    "case": {
+      "rate": 800,
+      "seconds": 9,
+      "slowFor": 3,
+      "trials": 3,
+      "delayMS": 50,
+      "waitMS": 50,
+      "slowAfter": 4,
+      "q": -1,
+      "name": "recovery-q-1",
+      "c": 32,
+      "folder": "C:\\Users\\trung\\projects\\high-performance-api-gateway\\bench\\results\\v2\\20261102-195729-782-v22-recovery-q-1"
+    },
+    "summary": {
+      "run": "20261102-195729-782-v22-recovery-q-1",
+      "mode": "full",
+      "arrival": "scheduled",
+      "seconds": 9,
+      "trials": [
+        {
+          "trial": "1",
+          "successful_rps": 474.35572488766286,
+          "send_p95_ms": 247.5933,
+          "rejection_reasons": {
+            "wait_timeout": 2885
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 1363,
+              "Rejected": 1037,
+              "TransportErrors": 0,
+              "SendP95MS": 248.5606,
+              "SendP99MS": 249.9675
+            },
+            "1": {
+              "Sent": 2400,
+              "Success": 1048,
+              "Rejected": 1352,
+              "TransportErrors": 0,
+              "SendP95MS": 248.7275,
+              "SendP99MS": 250.161
+            },
+            "2": {
+              "Sent": 2400,
+              "Success": 1904,
+              "Rejected": 496,
+              "TransportErrors": 0,
+              "SendP95MS": 99.4413,
+              "SendP99MS": 100.3896
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 249.8432,
+          "scheduled_p99_ms": 250.279,
+          "offered": 7200,
+          "sent": 7200,
+          "rejected": 2885,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 5,
+          "backend_calls": 4315,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 4315,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 7200,
+            "completed": 7200,
+            "dependency_errors": 0,
+            "incoming": 7200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 2885,
+            "permit_wait_timeout": 2885,
+            "status_1xx": 0,
+            "status_2xx": 4315,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2885
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 41,
+            "flights": 73,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.75,
+              "max_sampled_rss_mib": 25.57421875,
+              "first_quarter_median_rss_mib": 22.748046875,
+              "last_quarter_median_rss_mib": 25.345703125,
+              "samples": 8
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.5625,
+              "max_sampled_rss_mib": 16.7265625,
+              "first_quarter_median_rss_mib": 14.71484375,
+              "last_quarter_median_rss_mib": 16.62890625,
+              "samples": 8
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 1.328125,
+              "max_sampled_rss_mib": 20.12109375,
+              "first_quarter_median_rss_mib": 17.017578125,
+              "last_quarter_median_rss_mib": 19.697265625,
+              "samples": 8
+            }
+          }
+        },
+        {
+          "trial": "2",
+          "successful_rps": 474.07246688871953,
+          "send_p95_ms": 247.1234,
+          "rejection_reasons": {
+            "wait_timeout": 2886
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 1367,
+              "Rejected": 1033,
+              "TransportErrors": 0,
+              "SendP95MS": 248.4612,
+              "SendP99MS": 249.8369
+            },
+            "1": {
+              "Sent": 2400,
+              "Success": 1046,
+              "Rejected": 1354,
+              "TransportErrors": 0,
+              "SendP95MS": 248.7081,
+              "SendP99MS": 250.0353
+            },
+            "2": {
+              "Sent": 2400,
+              "Success": 1901,
+              "Rejected": 499,
+              "TransportErrors": 0,
+              "SendP95MS": 100.0495,
+              "SendP99MS": 100.7394
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 249.7965,
+          "scheduled_p99_ms": 250.2334,
+          "offered": 7200,
+          "sent": 7200,
+          "rejected": 2886,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 1,
+          "backend_calls": 4314,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 4314,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 7200,
+            "completed": 7200,
+            "dependency_errors": 0,
+            "incoming": 7200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 2886,
+            "permit_wait_timeout": 2886,
+            "status_1xx": 0,
+            "status_2xx": 4314,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2886
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 40,
+            "flights": 72,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 2.15625,
+              "max_sampled_rss_mib": 24.765625,
+              "first_quarter_median_rss_mib": 23.171875,
+              "last_quarter_median_rss_mib": 24.728515625,
+              "samples": 8
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 0.984375,
+              "max_sampled_rss_mib": 17.02734375,
+              "first_quarter_median_rss_mib": 14.9765625,
+              "last_quarter_median_rss_mib": 16.671875,
+              "samples": 8
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 1.4375,
+              "max_sampled_rss_mib": 19.94921875,
+              "first_quarter_median_rss_mib": 17.201171875,
+              "last_quarter_median_rss_mib": 19.56640625,
+              "samples": 8
+            }
+          }
+        },
+        {
+          "trial": "3",
+          "successful_rps": 474.30572661125643,
+          "send_p95_ms": 245.0705,
+          "rejection_reasons": {
+            "wait_timeout": 2885
+          },
+          "windows": {
+            "0": {
+              "Sent": 2400,
+              "Success": 1366,
+              "Rejected": 1034,
+              "TransportErrors": 0,
+              "SendP95MS": 246.4542,
+              "SendP99MS": 249.5965
+            },
+            "1": {
+              "Sent": 2400,
+              "Success": 1043,
+              "Rejected": 1357,
+              "TransportErrors": 0,
+              "SendP95MS": 246.7081,
+              "SendP99MS": 249.5226
+            },
+            "2": {
+              "Sent": 2400,
+              "Success": 1906,
+              "Rejected": 494,
+              "TransportErrors": 0,
+              "SendP95MS": 99.9234,
+              "SendP99MS": 100.5327
+            }
+          },
+          "backend_peak": 32,
+          "send_p99_ms": 249.027,
+          "scheduled_p99_ms": 249.3602,
+          "offered": 7200,
+          "sent": 7200,
+          "rejected": 2885,
+          "transport_errors": 0,
+          "generator_drops": 0,
+          "late_arrivals": 7,
+          "backend_calls": 4315,
+          "metric_deltas": {
+            "aborted": 0,
+            "backend_attempts": 4315,
+            "backend_errors": 0,
+            "cache_bypass": 0,
+            "cache_hits": 0,
+            "cache_misses": 7200,
+            "completed": 7200,
+            "dependency_errors": 0,
+            "incoming": 7200,
+            "local_followers": 0,
+            "logs_dropped": 0,
+            "permit_queue_full": 0,
+            "permit_rejections": 2885,
+            "permit_wait_timeout": 2885,
+            "status_1xx": 0,
+            "status_2xx": 4315,
+            "status_3xx": 0,
+            "status_4xx": 0,
+            "status_5xx": 2885
+          },
+          "max_sampled_gauges": {
+            "active_backend": 32,
+            "permit_waiters": 40,
+            "flights": 72,
+            "cache_entries": 1000,
+            "cache_payload_bytes": 48000
+          },
+          "resources": {
+            "gateway": {
+              "cpu_seconds_sample_window": 1.6875,
+              "max_sampled_rss_mib": 25.67578125,
+              "first_quarter_median_rss_mib": 22.576171875,
+              "last_quarter_median_rss_mib": 25.5234375,
+              "samples": 8
+            },
+            "mockbackend": {
+              "cpu_seconds_sample_window": 1.09375,
+              "max_sampled_rss_mib": 16.91796875,
+              "first_quarter_median_rss_mib": 14.599609375,
+              "last_quarter_median_rss_mib": 16.83203125,
+              "samples": 8
+            },
+            "loadgen": {
+              "cpu_seconds_sample_window": 1.375,
+              "max_sampled_rss_mib": 20.33203125,
+              "first_quarter_median_rss_mib": 17.23046875,
+              "last_quarter_median_rss_mib": 20.044921875,
+              "samples": 8
+            }
+          }
+        }
+      ],
+      "successful_rps_median": 474.30572661125643,
+      "successful_rps_range": [
+        474.07246688871953,
+        474.35572488766286
+      ],
+      "send_p99_ms_median": 249.7965,
+      "scheduled_p99_ms_median": 250.2334
+    }
+  }
+]

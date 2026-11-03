@@ -32,7 +32,7 @@ type Metrics struct {
 
 func New(instance string, out io.Writer, every uint64) *Metrics {
 	m := &Metrics{Instance: instance, Counters: map[string]int64{}, Gauges: map[string]int64{}, Histograms: map[string]*Histogram{}, every: every}
-	for _, n := range []string{"incoming", "completed", "status_1xx", "status_2xx", "status_3xx", "status_4xx", "status_5xx", "aborted", "cache_hits", "cache_misses", "cache_bypass", "local_followers", "backend_attempts", "backend_errors", "permit_rejections", "dependency_errors", "logs_dropped"} {
+	for _, n := range []string{"incoming", "completed", "status_1xx", "status_2xx", "status_3xx", "status_4xx", "status_5xx", "aborted", "cache_hits", "cache_misses", "cache_bypass", "local_followers", "backend_attempts", "backend_errors", "permit_rejections", "permit_queue_full", "permit_wait_timeout", "dependency_errors", "logs_dropped"} {
 		m.Counters[n] = 0
 	}
 	for _, n := range []string{"active_backend", "permit_waiters", "flights"} {
@@ -171,7 +171,11 @@ func (m *Metrics) Wrap(next http.Handler) http.Handler {
 				if r.URL.Path == "/api/public/item" {
 					route = "public_item"
 				}
-				row := map[string]any{"time": time.Now().UTC(), "instance": m.Instance, "request_id": strconv.FormatUint(id, 10), "route": route, "outcome": outcome, "status": ww.status, "duration_ms": float64(duration) / 1e6}
+				reason := ww.Header().Get("X-Gateway-Rejection")
+				if reason != "queue_full" && reason != "wait_timeout" {
+					reason = ""
+				}
+				row := map[string]any{"time": time.Now().UTC(), "instance": m.Instance, "request_id": strconv.FormatUint(id, 10), "route": route, "outcome": outcome, "status": ww.status, "duration_ms": float64(duration) / 1e6, "rejection_reason": reason}
 				select {
 				case m.logs <- row:
 				default:

@@ -167,3 +167,64 @@ func TestMetricsDistinguishRejectedFlightFromRejectedClients(t *testing.T) {
 		}
 	}
 }
+
+func TestCacheHitSkipsFullBoundedQueue(t *testing.T) {
+	release := make(chan struct{})
+	var once sync.Once
+	free := func() { once.Do(func() { close(release) }) }
+	held := make(chan struct{})
+	backend := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/hold" {
+			close(held)
+			<-release
+		}
+		w.Header().Set("Cache-Control", "public, max-age=10")
+		io.WriteString(w, "ok")
+	}))
+	defer backend.Close()
+	cap := 0
+	m := observe.New("test", nil, 0)
+	p, tr, err := NewWithOptions(backend.URL, 5*time.Second, cache.New(1000, 1<<20, nil), Options{Metrics: m, Coalesce: true, MaxConcurrent: 1, MaxWaiters: &cap, PermitWait: time.Second})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer tr.CloseIdleConnections()
+	s := httptest.NewServer(p)
+	defer s.Close()
+	defer free()
+	client := s.Client()
+	client.Transport = &http.Transport{DisableCompression: true}
+	defer client.CloseIdleConnections()
+	get := func(path string) *http.Response {
+		t.Helper()
+		resp, err := client.Get(s.URL + path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		io.Copy(io.Discard, resp.Body)
+		resp.Body.Close()
+		return resp
+	}
+	if get("/api/public/item?id=42").StatusCode != 200 {
+		t.Fatal("prime failed")
+	}
+	done := make(chan struct{})
+	go func() {
+		defer close(done)
+		resp, err := client.Get(s.URL + "/hold")
+		if err == nil {
+			io.Copy(io.Discard, resp.Body)
+			resp.Body.Close()
+		}
+	}()
+	<-held
+	if get("/api/public/item?id=42").StatusCode != 200 {
+		t.Fatal("cached response queued")
+	}
+	resp := get("/api/public/item?id=43")
+	if resp.StatusCode != 503 || resp.Header.Get("X-Gateway-Rejection") != "queue_full" {
+		t.Fatalf("status=%d header=%v", resp.StatusCode, resp.Header)
+	}
+	free()
+	<-done
+}

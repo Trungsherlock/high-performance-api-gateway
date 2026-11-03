@@ -1,0 +1,119 @@
+﻿{
+    "cache_entries":  1000,
+    "cache_payload_bytes":  47651,
+    "counters":  {
+                     "aborted":  0,
+                     "backend_attempts":  1178,
+                     "backend_errors":  0,
+                     "cache_bypass":  0,
+                     "cache_hits":  0,
+                     "cache_misses":  5600,
+                     "completed":  5600,
+                     "dependency_errors":  0,
+                     "incoming":  5600,
+                     "local_followers":  0,
+                     "logs_dropped":  0,
+                     "permit_queue_full":  0,
+                     "permit_rejections":  4422,
+                     "permit_wait_timeout":  4422,
+                     "status_1xx":  0,
+                     "status_2xx":  1178,
+                     "status_3xx":  0,
+                     "status_4xx":  0,
+                     "status_5xx":  4422
+                 },
+    "gauges":  {
+                   "active_backend":  0,
+                   "flights":  0,
+                   "permit_waiters":  0
+               },
+    "histogram_bounds_seconds":  [
+                                     0.001,
+                                     0.005,
+                                     0.01,
+                                     0.025,
+                                     0.05,
+                                     0.1,
+                                     0.25,
+                                     0.5,
+                                     1,
+                                     3,
+                                     10
+                                 ],
+    "histograms":  {
+                       "cache_dependency":  {
+                                                "Count":  0,
+                                                "SumSeconds":  0,
+                                                "Buckets":  [
+                                                                0,
+                                                                0,
+                                                                0,
+                                                                0,
+                                                                0,
+                                                                0,
+                                                                0,
+                                                                0,
+                                                                0,
+                                                                0,
+                                                                0,
+                                                                0
+                                                            ]
+                                            },
+                       "permit_wait":  {
+                                           "Count":  5600,
+                                           "SumSeconds":  275.8531109999999,
+                                           "Buckets":  [
+                                                           64,
+                                                           0,
+                                                           0,
+                                                           0,
+                                                           1113,
+                                                           4423,
+                                                           0,
+                                                           0,
+                                                           0,
+                                                           0,
+                                                           0,
+                                                           0
+                                                       ]
+                                       },
+                       "request":  {
+                                       "Count":  5600,
+                                       "SumSeconds":  512.0185324000012,
+                                       "Buckets":  [
+                                                       0,
+                                                       0,
+                                                       0,
+                                                       0,
+                                                       1,
+                                                       4421,
+                                                       1105,
+                                                       73,
+                                                       0,
+                                                       0,
+                                                       0,
+                                                       0
+                                                   ]
+                                   },
+                       "upstream":  {
+                                        "Count":  1178,
+                                        "SumSeconds":  236.1528179999999,
+                                        "Buckets":  [
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        1178,
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        0
+                                                    ]
+                                    }
+                   },
+    "instance":  "trial-2",
+    "time":  "2026-11-03T01:57:19.9454141Z"
+}

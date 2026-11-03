@@ -20,8 +20,15 @@ type sample struct {
 	elapsed         time.Duration
 	status          int
 	failed          bool
+	reason          string
+}
+type windowResult struct {
+	Sent, Success, Rejected, TransportErrors int
+	SendP95MS, SendP99MS                     float64
 }
 type result struct {
+	RejectionReasons                                                                           map[string]int
+	Windows                                                                                    map[int]*windowResult
 	StartUTC                                                                                   time.Time
 	StatusCounts                                                                               map[int]int
 	Before, After                                                                              map[string]any
@@ -44,7 +51,7 @@ func percentiles(v []float64) map[string]float64 {
 func run(ctx context.Context, c *http.Client, target, mode, workload, phase string, d time.Duration, rate, limit int, seed int64) result {
 	start := time.Now()
 	end := start.Add(d)
-	r := result{Phase: phase, StartUTC: start, StatusCounts: map[int]int{}}
+	r := result{Phase: phase, StartUTC: start, StatusCounts: map[int]int{}, RejectionReasons: map[string]int{}, Windows: map[int]*windowResult{}}
 	samples := make(chan sample, limit)
 	slots := make(chan struct{}, limit)
 	var wg sync.WaitGroup
@@ -61,7 +68,7 @@ func run(ctx context.Context, c *http.Client, target, mode, workload, phase stri
 	issue := func(due time.Time) {
 		id := "42"
 		seq++
-		if workload == "mixed" && rng.Intn(5) == 0 {
+		if workload == "unique" || (workload == "mixed" && rng.Intn(5) == 0) {
 			id = fmt.Sprintf("%s-%d-%d", phase, seed, seq)
 		}
 		wg.Add(1)
@@ -74,6 +81,10 @@ func run(ctx context.Context, c *http.Client, target, mode, workload, phase stri
 			resp, err := c.Do(req)
 			if err == nil {
 				s.status = resp.StatusCode
+				reason := resp.Header.Get("X-Gateway-Rejection")
+				if reason == "queue_full" || reason == "wait_timeout" {
+					s.reason = reason
+				}
 				_, err = io.Copy(io.Discard, resp.Body)
 				e := resp.Body.Close()
 				if err == nil {
@@ -132,10 +143,30 @@ func run(ctx context.Context, c *http.Client, target, mode, workload, phase stri
 	close(samples)
 	all := <-collected
 	var send, scheduled, lag []float64
+	windowSamples := map[int][]float64{}
 	for _, s := range all {
 		r.Sent++
 		r.Completed++
 		r.StatusCounts[s.status]++
+		if s.reason != "" {
+			r.RejectionReasons[s.reason]++
+		}
+		index := int(s.scheduled.Sub(start) / (3 * time.Second))
+		win := r.Windows[index]
+		if win == nil {
+			win = &windowResult{}
+			r.Windows[index] = win
+		}
+		win.Sent++
+		if s.failed {
+			win.TransportErrors++
+		} else if s.status >= 200 && s.status < 300 {
+			win.Success++
+		}
+		if s.status == 503 {
+			win.Rejected++
+		}
+		windowSamples[index] = append(windowSamples[index], float64(s.elapsed)/1e6)
 		if s.failed {
 			r.TransportErrors++
 		} else if s.status >= 200 && s.status < 300 {
@@ -148,6 +179,11 @@ func run(ctx context.Context, c *http.Client, target, mode, workload, phase stri
 		scheduled = append(scheduled, float64(s.sent.Sub(s.scheduled)+s.elapsed)/1e6)
 		lag = append(lag, float64(s.sent.Sub(s.scheduled))/1e6)
 	}
+	for index, values := range windowSamples {
+		p := percentiles(values)
+		r.Windows[index].SendP95MS = p["p95"]
+		r.Windows[index].SendP99MS = p["p99"]
+	}
 	r.ElapsedSeconds = time.Since(start).Seconds()
 	r.SendLatencyMS = percentiles(send)
 	r.ScheduledLatencyMS = percentiles(scheduled)
@@ -157,7 +193,7 @@ func run(ctx context.Context, c *http.Client, target, mode, workload, phase stri
 func main() {
 	target := flag.String("target", "http://127.0.0.1:8080", "external gateway")
 	mode := flag.String("mode", "scheduled", "scheduled or closed")
-	work := flag.String("workload", "mixed", "hot or mixed")
+	work := flag.String("workload", "mixed", "hot, mixed, or unique")
 	d := flag.Duration("duration", 30*time.Second, "measurement duration")
 	warm := flag.Duration("warmup", 5*time.Second, "warmup duration")
 	deadline := flag.Duration("timeout", 3*time.Second, "request deadline")
@@ -172,7 +208,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, "invalid target")
 		os.Exit(2)
 	}
-	if (*mode != "scheduled" && *mode != "closed") || (*work != "hot" && *work != "mixed") || *d <= 0 || *warm < 0 || *deadline <= 0 || *rate <= 0 || *limit <= 0 {
+	if (*mode != "scheduled" && *mode != "closed") || (*work != "hot" && *work != "mixed" && *work != "unique") || *d <= 0 || *warm < 0 || *deadline <= 0 || *rate <= 0 || *limit <= 0 {
 		fmt.Fprintln(os.Stderr, "invalid settings")
 		os.Exit(2)
 	}

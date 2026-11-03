@@ -153,3 +153,22 @@ coordination justify their dependency, latency, and failure-handling costs.
 
 These are implemented measurement choices. Redis and lease tradeoffs remain
 proposals until their later milestones are implemented and tested.
+
+## V2.2: bounded upstream permit waiting
+
+The CLI caps queued permit waiters at 32, alongside 32 active upstream operations
+and a 50 ms wait budget. Rejecting excess work immediately avoids retaining an
+arbitrary number of queued upstream requests, at the cost of rejecting bursts
+that a larger queue might absorb. Timeout bounds duration; queue capacity bounds
+count. Neither bounds followers that wait for a shared fetch or inbound clients.
+
+Queue admission is not FIFO: a newly arriving request may acquire a released
+permit before an older waiter. This keeps the implementation small and avoids
+promising fairness; wait deadlines bound starvation duration. A FIFO scheduler
+would require additional ownership and cancellation rules.
+
+The old policy remains available with `-max-waiters -1`. `0` removes permit
+queueing and gives immediate rejection under saturation. Queue-full and wait
+expiry have distinct fixed reasons in headers, metrics, and sampled logs.
+See [the admission experiments](v2/admission.md) for measured outcomes and why
+these defaults are a local policy choice rather than a production capacity claim.

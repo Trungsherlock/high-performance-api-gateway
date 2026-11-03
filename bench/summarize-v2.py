@@ -37,6 +37,10 @@ def summarize(folder):
                 assert delta[f'status_{status_class}xx'] == observed, (path, 'status class', status_class)
             if delta['backend_errors'] == 0:
                 assert delta['backend_attempts'] == row['After']['backend']['calls'] - row['Before']['backend']['calls'], (path, 'backend')
+            if 'permit_queue_full' in delta:
+                assert delta['permit_rejections'] == delta['permit_queue_full'] + delta['permit_wait_timeout'], (path, 'rejection reasons')
+                reasons = row.get('RejectionReasons', {})
+                assert sum(reasons.values()) <= row['Rejected'], (path, 'client rejection reasons')
             if manifest['mode'] == 'full':
                 assert delta['cache_hits'] + delta['cache_misses'] + delta['cache_bypass'] == row['Sent'], (path, 'cache')
             for name in ['request', 'upstream', 'permit_wait', 'cache_dependency']:
@@ -67,11 +71,24 @@ def summarize(folder):
                 peaks[name] = max((row['gauges'][name] for row in metric_samples), default=0)
             peaks['cache_entries'] = max((row['cache_entries'] for row in metric_samples), default=0)
             peaks['cache_payload_bytes'] = max((row['cache_payload_bytes'] for row in metric_samples), default=0)
+            settings = manifest['gateway']
+            limit = settings['maxConcurrent']
+            queue = settings.get('maxWaiters', -1)
+            if limit > 0:
+                assert peaks['active_backend'] <= limit, (path, 'active bound')
+                if queue >= 0:
+                    assert peaks['permit_waiters'] <= queue, (path, 'queue bound')
+                if 'peak' in measurement['After']['backend']:
+                    assert measurement['After']['backend']['peak'] <= limit, (path, 'backend peak bound')
         measured_delta = {}
         if 'gateway' in measurement['Before']:
             a, b = measurement['After']['gateway'], measurement['Before']['gateway']
             measured_delta = {key: value - b['counters'][key] for key, value in a['counters'].items()}
         trials.append({'trial': trial, 'successful_rps': measurement['Success'] / measurement['ElapsedSeconds'],
+                       'send_p95_ms': measurement['SendLatencyMS'].get('p95'),
+                       'rejection_reasons': measurement.get('RejectionReasons', {}),
+                       'windows': measurement.get('Windows', {}),
+                       'backend_peak': measurement['After']['backend'].get('peak'),
                        'send_p99_ms': measurement['SendLatencyMS'].get('p99'),
                        'scheduled_p99_ms': measurement['ScheduledLatencyMS'].get('p99'),
                        'offered': measurement['Offered'], 'sent': measurement['Sent'],

@@ -1,0 +1,15 @@
+{"cpuSeconds":0.015625,"time":"2026-11-03T01:52:59.0936799Z","pid":41468,"rssBytes":8019968,"role":"mockbackend"}
+{"cpuSeconds":0.015625,"time":"2026-11-03T01:52:59.1267790Z","pid":30244,"rssBytes":9969664,"role":"gateway"}
+{"cpuSeconds":0.015625,"time":"2026-11-03T01:52:59.1337251Z","pid":12080,"rssBytes":9445376,"role":"loadgen"}
+{"cpuSeconds":0.03125,"time":"2026-11-03T01:53:00.1530670Z","pid":41468,"rssBytes":14352384,"role":"mockbackend"}
+{"cpuSeconds":0.15625,"time":"2026-11-03T01:53:00.1640204Z","pid":30244,"rssBytes":24092672,"role":"gateway"}
+{"cpuSeconds":0.15625,"time":"2026-11-03T01:53:00.1739795Z","pid":12080,"rssBytes":18235392,"role":"loadgen"}
+{"cpuSeconds":0.109375,"time":"2026-11-03T01:53:01.2245870Z","pid":41468,"rssBytes":14802944,"role":"mockbackend"}
+{"cpuSeconds":0.453125,"time":"2026-11-03T01:53:01.2320040Z","pid":30244,"rssBytes":25894912,"role":"gateway"}
+{"cpuSeconds":0.421875,"time":"2026-11-03T01:53:01.2404939Z","pid":12080,"rssBytes":19869696,"role":"loadgen"}
+{"cpuSeconds":0.21875,"time":"2026-11-03T01:53:02.2529944Z","pid":41468,"rssBytes":16183296,"role":"mockbackend"}
+{"cpuSeconds":0.828125,"time":"2026-11-03T01:53:02.2705082Z","pid":30244,"rssBytes":27222016,"role":"gateway"}
+{"cpuSeconds":0.71875,"time":"2026-11-03T01:53:02.2811069Z","pid":12080,"rssBytes":20508672,"role":"loadgen"}
+{"cpuSeconds":0.359375,"time":"2026-11-03T01:53:03.2972998Z","pid":41468,"rssBytes":17055744,"role":"mockbackend"}
+{"cpuSeconds":1.25,"time":"2026-11-03T01:53:03.3037381Z","pid":30244,"rssBytes":27738112,"role":"gateway"}
+{"cpuSeconds":1,"time":"2026-11-03T01:53:03.3140991Z","pid":12080,"rssBytes":21708800,"role":"loadgen"}

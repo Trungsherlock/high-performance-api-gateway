@@ -25,6 +25,7 @@ func main() {
 	timeout := flag.Duration("upstream-timeout", 10*time.Second, "total upstream request deadline")
 	coalescing := flag.Bool("coalesce", true, "share eligible concurrent cache misses")
 	maxConcurrent := flag.Int("max-concurrent", 32, "maximum active upstream requests; 0 disables limiter")
+	maxWaiters := flag.Int("max-waiters", 32, "maximum queued upstream permit waiters; 0 rejects immediately, -1 selects legacy unbounded waiters")
 	permitWait := flag.Duration("permit-wait", 50*time.Millisecond, "maximum wait for an upstream permit")
 	adminAddr := flag.String("admin-addr", "127.0.0.1:8081", "dedicated numeric loopback admin listener; empty disables")
 	instance := flag.String("instance", "gateway", "bounded instance identifier")
@@ -62,7 +63,7 @@ func main() {
 	if enabled {
 		storage = cache.New(1000, 16<<20, nil)
 	}
-	proxy, transport, err := gateway.NewWithOptions(*upstream, *timeout, storage, gateway.Options{Metrics: metrics, Coalesce: *coalescing, MaxConcurrent: *maxConcurrent, PermitWait: *permitWait, Lifecycle: lifecycle})
+	proxy, transport, err := gateway.NewWithOptions(*upstream, *timeout, storage, gateway.Options{Metrics: metrics, Coalesce: *coalescing, MaxConcurrent: *maxConcurrent, PermitWait: *permitWait, MaxWaiters: maxWaiters, Lifecycle: lifecycle})
 	if err != nil {
 		log.Fatal(err)
 	}

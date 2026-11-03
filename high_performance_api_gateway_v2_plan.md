@@ -1,6 +1,7 @@
 # API Gateway v2 — Multi-instance caching and overload experiments
 
-**Status:** V2.0 and V2.1 implemented and verified. V2.2-V2.7 remain planned.
+**Status:** V2.0-V2.2 implemented and verified. V2.3-V2.7 remain planned.
+V2.2 evidence: [bounded admission study](docs/v2/admission.md).
 See [V2 reproduction](docs/v2/README.md), [results](docs/v2/results.md), and
 [verification](docs/v2/verification.md).
 

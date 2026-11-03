@@ -1,0 +1,7 @@
+2026/11/02 19:52:00 gateway listening on 127.0.0.1:61795 (upstream=http://127.0.0.1:61794, cache=true)
+{"duration_ms":50.4257,"instance":"trial-1","outcome":"response","rejection_reason":"wait_timeout","request_id":"1000","route":"public_item","status":503,"time":"2026-11-03T01:52:01.9810836Z"}
+{"duration_ms":0,"instance":"trial-1","outcome":"response","rejection_reason":"queue_full","request_id":"2000","route":"public_item","status":503,"time":"2026-11-03T01:52:02.8323488Z"}
+{"duration_ms":50.6754,"instance":"trial-1","outcome":"response","rejection_reason":"wait_timeout","request_id":"3000","route":"public_item","status":503,"time":"2026-11-03T01:52:03.7162042Z"}
+{"duration_ms":0,"instance":"trial-1","outcome":"response","rejection_reason":"queue_full","request_id":"4000","route":"public_item","status":503,"time":"2026-11-03T01:52:04.4992257Z"}
+{"duration_ms":0,"instance":"trial-1","outcome":"response","rejection_reason":"queue_full","request_id":"5000","route":"public_item","status":503,"time":"2026-11-03T01:52:05.3321882Z"}
+{"duration_ms":0,"instance":"trial-1","outcome":"response","rejection_reason":"queue_full","request_id":"6000","route":"public_item","status":503,"time":"2026-11-03T01:52:06.1656804Z"}

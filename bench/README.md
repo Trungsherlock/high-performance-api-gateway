@@ -125,3 +125,10 @@ Use `./bench/run-v2.ps1 -Observe` for three-process experiments with fixed-rate 
 closed-loop arrivals, phase metric snapshots, and separate CPU/RSS samples. V1
 commands and historical results above remain available. See the
 [V2 guide](../docs/v2/README.md) for the full matrix and accounting definitions.
+
+
+For V2.2 admission-policy screening and repeated overload/recovery comparisons,
+run `./bench/run-v22.ps1`; analyze its emitted index with
+`python bench/summarize-v22.py <index-path>`. See
+[admission results and settings](../docs/v2/admission.md). These focused short
+experiments have different workloads and durations from the V2.1 steady matrix.

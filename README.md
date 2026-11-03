@@ -37,7 +37,7 @@ curl.exe --fail 'http://127.0.0.1:9000/stats'
 ```
 
 Both item responses should be `{"id":"42","name":"demo item"}` and a fresh
-backend should report `{"calls":1}`. Stop both programs with Ctrl+C.
+backend should report a `calls` value of `1` (along with activity statistics). Stop both programs with Ctrl+C.
 
 Linux/WSL2 equivalent (Go must be installed in that environment):
 
@@ -193,7 +193,12 @@ Set `CACHE_ENABLED=true` to enable caching again. Invalid boolean values fail st
 - `-max-concurrent 32` caps active upstream work across cache misses, private/POST
   bypass traffic, and fallback requests. Permits remain held until body EOF/error
   or close. Cache hits and coalesced followers consume no permits.
-- `-permit-wait 50ms` bounds waiting for a permit; exceeding it returns 503.
+- `-max-waiters 32` caps queued permit waiters. `0` rejects immediately when all
+  permits are busy; `-1` selects the historical unbounded-waiter comparison mode.
+- `-permit-wait 50ms` bounds waiting for a permit. Queue-full and wait-timeout
+  failures return 503 with `X-Gateway-Rejection: queue_full` or `wait_timeout`.
+  Cache hits bypass the permit queue. This does not bound per-key followers,
+  incoming connections, or total process memory.
   This limits active work and waiting duration, not the number of inbound clients
   or total process memory. It is not requests-per-second rate limiting.
 - `-coalesce=false` selects cache-only behavior. `-max-concurrent=0` disables the
@@ -273,3 +278,8 @@ See [V2 reproduction and telemetry](docs/v2/README.md),
 [V2 results](docs/v2/results.md), and the [V2 plan](high_performance_api_gateway_v2_plan.md).
 The gateway's dedicated admin listener defaults to `127.0.0.1:8081`; override it
 with `-admin-addr` for each instance, or pass an empty value to disable it.
+
+
+V2.2 adds bounded admission queues and slowdown/recovery experiments. See
+[admission policy and results](docs/v2/admission.md). Historical V2.0/V2.1 runs
+used the legacy waiter policy; current gateway CLI defaults to 32 queued waiters.

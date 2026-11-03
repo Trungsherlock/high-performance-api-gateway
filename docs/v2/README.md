@@ -142,3 +142,13 @@ CPU deltas omit unsampled phase edges; maximum sampled RSS is not true peak RSS.
 Profile runs are separate from these experiments. A five-minute soak is evidence
 about this workload, not a proof of long-term stability or production readiness.
 See [results](results.md) for collected observations.
+
+
+## V2.2 update
+
+Current CLI admission defaults are 32 active upstream operations, 32 queued
+permit waiters, and a 50 ms wait budget. Use `-max-waiters -1` to reproduce the
+legacy waiter policy in the V2.0/V2.1 results. The harness accepts `-MaxWaiters`,
+`-MaxConcurrent`, and `-PermitWaitMS`, plus `-Workload unique` and timed slowdown
+flags. See [V2.2 policy, experiments, and defaults](admission.md) for commands,
+rejection reasons, cancellation semantics, and the remaining unbounded resources.

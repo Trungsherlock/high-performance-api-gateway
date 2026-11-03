@@ -289,6 +289,45 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
   No Redis, multi-instance coordination, or bounded gateway waiter queue yet.
   See [V2 verification](docs/v2/verification.md) and [tradeoffs](docs/tradeoffs.md).
 
+## 2026-11-02 - V2.2 bounded admission and overload study
+
+**Status:** Implemented and verified. V2.3 and later remain planned.
+
+- **Implementation:** Added independent queued-permit capacity, with CLI default
+  32; zero rejects under saturation and -1 selects legacy unlimited waiting.
+  Acquiring, canceling, or timing out releases the queue slot; acquired permits
+  still cover upstream body lifetime. Existing library constructors preserve
+  legacy semantics, and cache hits still bypass admission.
+- **Visibility:** Added distinct queue-full/wait-timeout errors, 503 reason header,
+  fixed reason counters, sampled log reason, backend active/peak/delay/uptime stats,
+  and generator rejection counts plus three-second scheduled-start cohorts.
+- **Experiments:** Extended the separate-process harness with admission controls,
+  unique misses, timed slowdown/recovery, backend samples, and build reuse. Added
+  `bench/run-v22.ps1` and its summarizer. Collected 15 four-second screening cases
+  and 24 repeated six/nine-second trials, all after one-second warmup. No V1 or
+  V2.0/V2.1 result files were overwritten.
+- **Findings/default:** Retained 32 permits and 50 ms wait, adding 32 queued slots.
+  Under healthy overload, bounded and legacy modes each delivered about 631
+  successful requests/sec; observed queue peaks were 32 versus 61. Smaller queues
+  traded slightly more rejection for lower tails; larger queues did not add
+  meaningful throughput. Recovery returned toward healthy capacity. RSS varied,
+  so no fixed memory saving or total-memory cap is claimed.
+- **Verification:** Ordinary/race tests, vet, build, formatting, and whitespace
+  checks passed. Deterministic tests covered a 200-request burst (8 queued,
+  192 rejected), cancellation and reuse, reason distinctions, cache-hit bypass,
+  and slowdown selection. All 39 trials reconciled with zero generator drops or
+  transport errors; backend peaks respected permit limits, capped sampled queues
+  respected configured bounds, and final work gauges drained to zero. No harness
+  child processes remained.
+- **Correction:** Initial smoke test exposed a backend argument initialization
+  mistake in the harness edit; fixed it and retained the successful rerun. Smoke
+  attempts are excluded from the study index.
+- **Limits:** Short synthetic trials on one host; no fairness guarantee, bounded
+  follower admission, inbound connection cap, or per-waiter memory estimate.
+  Default selection is a conservative local policy, not universal tuning.
+  See [full policy and evidence](docs/v2/admission.md) and
+  [tradeoffs](docs/tradeoffs.md).
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title

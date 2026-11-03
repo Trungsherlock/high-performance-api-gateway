@@ -29,11 +29,12 @@ type Options struct {
 	Coalesce      bool
 	MaxConcurrent int // Zero disables the limiter for baseline experiments.
 	PermitWait    time.Duration
+	MaxWaiters    *int // nil preserves legacy waiter behavior; -1 is explicitly unbounded.
 	Lifecycle     context.Context
 }
 
 func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache, options Options) (http.Handler, *http.Transport, error) {
-	if options.MaxConcurrent < 0 || options.PermitWait < 0 {
+	if options.MaxConcurrent < 0 || options.PermitWait < 0 || (options.MaxWaiters != nil && *options.MaxWaiters < -1) {
 		return nil, nil, fmt.Errorf("limiter settings must be nonnegative")
 	}
 	if options.Lifecycle == nil {
@@ -58,7 +59,11 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 		outbound = &observe.Transport{Next: outbound, Metrics: options.Metrics}
 	}
 	if options.MaxConcurrent > 0 {
-		limited := limiter.New(outbound, options.MaxConcurrent, options.PermitWait)
+		maxWaiters := -1
+		if options.MaxWaiters != nil {
+			maxWaiters = *options.MaxWaiters
+		}
+		limited := limiter.NewWithQueue(outbound, options.MaxConcurrent, options.PermitWait, maxWaiters)
 		limited.Metrics = options.Metrics
 		outbound = limited
 	}
@@ -93,6 +98,11 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 			}
 			if errors.Is(err, limiter.ErrOverloaded) {
 				status = http.StatusServiceUnavailable
+				reason := "wait_timeout"
+				if errors.Is(err, limiter.ErrQueueFull) {
+					reason = "queue_full"
+				}
+				w.Header().Set("X-Gateway-Rejection", reason)
 			}
 			http.Error(w, http.StatusText(status), status)
 		},

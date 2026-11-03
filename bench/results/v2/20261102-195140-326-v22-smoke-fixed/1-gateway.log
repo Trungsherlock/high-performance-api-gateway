@@ -1,0 +1,2 @@
+2026/11/02 19:51:42 gateway listening on 127.0.0.1:59113 (upstream=http://127.0.0.1:59112, cache=true)
+{"duration_ms":0,"instance":"trial-1","outcome":"response","rejection_reason":"queue_full","request_id":"1000","route":"public_item","status":503,"time":"2026-11-03T01:51:45.3443337Z"}
