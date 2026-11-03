@@ -8,6 +8,7 @@ import (
 	"high-performance-api-gateway/internal/coalesce"
 	"high-performance-api-gateway/internal/limiter"
 	"high-performance-api-gateway/internal/observe"
+	"high-performance-api-gateway/internal/sharedcache"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -25,6 +26,7 @@ func NewWithCache(upstream string, timeout time.Duration, storage *cache.Cache) 
 }
 
 type Options struct {
+	Shared        sharedcache.Store
 	Metrics       *observe.Metrics
 	Coalesce      bool
 	MaxConcurrent int // Zero disables the limiter for baseline experiments.
@@ -67,8 +69,8 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 		limited.Metrics = options.Metrics
 		outbound = limited
 	}
-	if storage != nil {
-		ct := &cacheTransport{metrics: options.Metrics, next: outbound, cache: storage, timeout: timeout, lifecycle: options.Lifecycle}
+	if storage != nil || options.Shared != nil {
+		ct := &cacheTransport{metrics: options.Metrics, next: outbound, cache: storage, shared: options.Shared, timeout: timeout, lifecycle: options.Lifecycle}
 		if options.Coalesce {
 			ct.group = &coalesce.Group[sharedResult]{}
 		}

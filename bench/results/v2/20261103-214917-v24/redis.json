@@ -1,0 +1,11 @@
+{
+  "version": "7.4.2",
+  "client": "github.com/redis/go-redis/v9 v9.7.3",
+  "placement": "WSL2 Ubuntu; native Windows Go gateway/backend/client; one host",
+  "addr": "127.0.0.1:16379",
+  "maxmemory": 67108864,
+  "maxmemory_policy": "allkeys-lru",
+  "persistence": false,
+  "redis_source_sha256": "4ddebbf09061cbb589011786febdb34f29767dd7f89dbe712d2b68e808af6a1f",
+  "build": "make -j4 MALLOC=libc OPT=-O1 REDIS_CFLAGS= REDIS_LDFLAGS=; GCC 15.2.0"
+}

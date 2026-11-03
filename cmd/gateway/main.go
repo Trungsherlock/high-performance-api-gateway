@@ -17,6 +17,7 @@ import (
 
 	"high-performance-api-gateway/internal/cache"
 	"high-performance-api-gateway/internal/gateway"
+	"high-performance-api-gateway/internal/sharedcache"
 )
 
 func main() {
@@ -30,7 +31,14 @@ func main() {
 	adminAddr := flag.String("admin-addr", "127.0.0.1:8081", "dedicated numeric loopback admin listener; empty disables")
 	instance := flag.String("instance", "gateway", "bounded instance identifier")
 	logEvery := flag.Uint64("request-log-every", 1000, "sample one request log per N requests; 0 disables")
+	cacheMode := flag.String("cache-mode", "local", "local, shared, or layered; CACHE_ENABLED=false disables all caching")
+	redisAddr := flag.String("redis-addr", "127.0.0.1:6379", "optional shared-cache Redis address")
+	redisTimeout := flag.Duration("redis-timeout", 50*time.Millisecond, "total deadline per shared-cache operation")
+	redisPool := flag.Int("redis-pool", 16, "maximum shared-cache connections")
 	flag.Parse()
+	if *cacheMode != "local" && *cacheMode != "shared" && *cacheMode != "layered" {
+		log.Fatal("invalid cache-mode")
+	}
 	if len(*instance) > 64 {
 		log.Fatal("instance must be at most 64 bytes")
 	}
@@ -60,10 +68,19 @@ func main() {
 		}
 	}
 	var storage *cache.Cache
-	if enabled {
+	if enabled && *cacheMode != "shared" {
 		storage = cache.New(1000, 16<<20, nil)
 	}
-	proxy, transport, err := gateway.NewWithOptions(*upstream, *timeout, storage, gateway.Options{Metrics: metrics, Coalesce: *coalescing, MaxConcurrent: *maxConcurrent, PermitWait: *permitWait, MaxWaiters: maxWaiters, Lifecycle: lifecycle})
+	var shared sharedcache.Store
+	if enabled && *cacheMode != "local" {
+		adapter, err := sharedcache.New(*redisAddr, *redisTimeout, *redisPool)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer adapter.Close()
+		shared = adapter
+	}
+	proxy, transport, err := gateway.NewWithOptions(*upstream, *timeout, storage, gateway.Options{Shared: shared, Metrics: metrics, Coalesce: *coalescing, MaxConcurrent: *maxConcurrent, PermitWait: *permitWait, MaxWaiters: maxWaiters, Lifecycle: lifecycle})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -77,7 +94,7 @@ func main() {
 		mux.Handle("/metrics", metrics)
 		mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) { fmt.Fprintln(w, "ok") })
 		mux.HandleFunc("/readyz", func(w http.ResponseWriter, r *http.Request) {
-			fmt.Fprintln(w, "ready: local state initialized; backend health not checked")
+			fmt.Fprintln(w, "ready: local state initialized; backend and optional Redis health not checked")
 		})
 		admin = &http.Server{Handler: mux, ReadHeaderTimeout: 5 * time.Second, WriteTimeout: 5 * time.Second, IdleTimeout: 30 * time.Second}
 		defer admin.Close()

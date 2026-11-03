@@ -161,3 +161,9 @@ Use `./bench/run-v23-study.ps1` for controlled cold bursts, stop/restart, and
 `1x32` versus `2x16` permit comparisons. See [the topology guide](multi-instance.md)
 for per-instance readiness, separate front CPU/RSS, generator drops, probe failures,
 and explicit retry/coordination limits. No Redis dependency is introduced yet.
+
+## V2.4 shared response cache
+
+Use `python bench/run-v24.py --redis-addr 127.0.0.1:6379` with an isolated Redis
+and freshly built gateway/backend binaries for the three-mode comparison.
+See [V2.4 setup, acceptance checks, and collected results](shared-cache.md).

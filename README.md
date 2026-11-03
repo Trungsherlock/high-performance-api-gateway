@@ -3,7 +3,7 @@
 A learning project exploring a single-upstream reverse proxy, bounded caching,
 request coalescing, and overload protection. See the project plan for the full scope.
 
-## Current status: V1 complete; V2.0-V2.3 implemented
+## Current status: V1 complete; V2.0-V2.4 implemented
 
 The gateway forwards ordinary HTTP requests to one fixed upstream using a shared
 connection pool, bounded LRU/TTL cache, request coalescing, and downstream concurrency
@@ -290,3 +290,9 @@ and controlled failover/rejoin experiments. Run `./bench/run-v23-study.ps1` for
 one-command reproduction. See [the multi-instance guide and results](docs/v2/multi-instance.md).
 Gateway caching/coalescing remains local to each process; the front does not
 coordinate fills or retry failed requests through another target.
+
+## V2.4 shared response cache
+
+Optional local, shared-only, and layered modes now support Redis response reuse
+across gateways. See [configuration, safety rules, tests and nine-trial comparison](docs/v2/shared-cache.md).
+Local mode remains the default and requires no Redis. Distributed leases come next.

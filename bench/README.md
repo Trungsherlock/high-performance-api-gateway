@@ -138,3 +138,9 @@ V2.3 topology experiments use `./bench/run-v23-study.ps1`. Analyze the emitted
 portable index with `python bench/summarize-v23.py --index <index> --output <summary>`.
 Individual burst, steady, and failure/rejoin scenarios are available through
 `./bench/run-v23.ps1`. See [multi-instance results](../docs/v2/multi-instance.md).
+
+## V2.4 shared response cache
+
+Use `python bench/run-v24.py --redis-addr 127.0.0.1:6379` with an isolated Redis
+and freshly built gateway/backend binaries for the three-mode comparison.
+See [V2.4 setup, acceptance checks, and collected results](../docs/v2/shared-cache.md).

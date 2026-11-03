@@ -32,7 +32,7 @@ type Metrics struct {
 
 func New(instance string, out io.Writer, every uint64) *Metrics {
 	m := &Metrics{Instance: instance, Counters: map[string]int64{}, Gauges: map[string]int64{}, Histograms: map[string]*Histogram{}, every: every}
-	for _, n := range []string{"incoming", "completed", "status_1xx", "status_2xx", "status_3xx", "status_4xx", "status_5xx", "aborted", "cache_hits", "cache_misses", "cache_bypass", "local_followers", "backend_attempts", "backend_errors", "permit_rejections", "permit_queue_full", "permit_wait_timeout", "dependency_errors", "logs_dropped"} {
+	for _, n := range []string{"incoming", "completed", "status_1xx", "status_2xx", "status_3xx", "status_4xx", "status_5xx", "aborted", "cache_hits", "cache_misses", "cache_bypass", "local_followers", "backend_attempts", "backend_errors", "permit_rejections", "permit_queue_full", "permit_wait_timeout", "dependency_errors", "shared_hits", "shared_misses", "shared_read_errors", "shared_write_errors", "shared_write_completed", "logs_dropped"} {
 		m.Counters[n] = 0
 	}
 	for _, n := range []string{"active_backend", "permit_waiters", "flights"} {

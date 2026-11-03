@@ -370,6 +370,32 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
   not establish production capacity or zero-downtime failover. See
   [V2.3 guide/results](docs/v2/multi-instance.md) and [tradeoffs](docs/tradeoffs.md).
 
+### 2026-11-03 - V2.4 optional shared cache
+
+- **Scope:** Shared response storage without distributed leases.
+- **Changes:** Added pinned go-redis v9.7.3 adapter, small Store interface,
+  local/shared/layered CLI modes, tier/error metrics, bounded pool and operation
+  deadlines, versioned SHA-256 key namespace and safe bounded JSON responses.
+  Atomic STRLEN/GET/PTTL reads subtract lookup time; PXAT and original expiry
+  preserve freshness through publication and repeated L1 promotion.
+- **Decisions:** Redis is optional; failures fall back to local flight/limiter.
+  Readiness stays local. Safe shared replay omits arbitrary extension headers.
+  Publication remains unconditional; cold misses may duplicate across instances.
+- **Verification:** Real Redis 7.4.2 built under WSL2, 64 MiB allkeys-lru,
+  persistence disabled. Nine final fresh-process trials reconciled 102 successes
+  each: local mode two backend fills; shared/layered one. Real integration tests
+  cover promotion expiry, safety, corrupt/oversized/persistent data and duplicate
+  cold fills. Ordinary/race suites, vet and build passed; dependency tests cover
+  slow/unavailable servers, cancellation, capped connections and error metrics.
+- **Corrections:** Windows-mounted Redis compilation was slow, so rebuilt on the
+  native WSL temporary filesystem. Corrected shell line endings and the benchmark
+  client's Connection: close header, which properly triggered cache bypass. Kept
+  the failed client trial and superseded successful trials as diagnostic artifacts.
+- **Evidence/limits:** [V2.4 report](docs/v2/shared-cache.md) and final artifacts
+  `bench/results/v2/20261103-214917-v24`. Short sequential latency is not capacity
+  evidence. Absolute timestamps assume aligned clocks; leases and expanded
+  dependency fault/degradation studies remain V2.5/V2.6 work.
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title

@@ -202,3 +202,24 @@ these defaults are a local policy choice rather than a production capacity claim
 
 See [V2.3 topology and results](v2/multi-instance.md). Shared caching and leases
 remain later milestones, not properties of this implementation.
+
+## V2.4: sharing responses before coordinating fills
+
+- **Shared storage first:** completed responses cross gateway boundaries; cold
+  fills still overlap. This isolates storage correctness from lease correctness.
+- **Three modes:** local avoids a dependency; shared exposes its round-trip cost;
+  layered adds independent copies to keep warm traffic off Redis. The nine-trial
+  [path comparison](v2/shared-cache.md) reports counters and short sequential latency.
+- **Bounded best effort:** Redis operations have deadlines, capped connections and
+  no retries. Errors fall back to local coalescing/limits, retaining availability
+  while potentially increasing backend duplication. Readiness stays local.
+- **Conservative freshness:** atomic value/PTTL reads, elapsed-time subtraction,
+  original expiry and PXAT prevent promotion or pool delay restarting TTL. Absolute
+  expiry assumes aligned clocks in this single-host experiment.
+- **Restricted serialization:** versioned, size-bounded allowlisted response values
+  favor safe reuse over arbitrary extension-header preservation. Invalid values
+  miss; command failures have separate error counters. Keys are hashed, payloads
+  remain readable to Redis operators.
+- **Disposable single authority:** 64 MiB maxmemory with allkeys-lru and no
+  persistence limits cache retention, not total server RSS. No lease/fencing or
+  concurrent-writer ordering guarantee exists yet.
