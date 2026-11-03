@@ -3,7 +3,7 @@
 A learning project exploring a single-upstream reverse proxy, bounded caching,
 request coalescing, and overload protection. See the project plan for the full scope.
 
-## Current status: V1 complete; V2.0-V2.5 implemented
+## Current status: V1 complete; V2.0-V2.6 implemented
 
 The gateway forwards ordinary HTTP requests to one fixed upstream using a shared
 connection pool, bounded LRU/TTL cache, request coalescing, and downstream concurrency
@@ -301,3 +301,9 @@ Local mode remains the default and requires no Redis. Distributed leases come ne
 
 Opt-in Redis leases coordinate cold fills across gateways, with token-checked
 publication/release and bounded polling. See [configuration, guarantees and killed-owner evidence](docs/v2/leases.md).
+
+## V2.6 faults and degraded modes
+
+Choose protection-first or available-local behavior for lease-dependent misses.
+Separate cache-flight/client caps bound shared work and waiting. See
+[policy tradeoffs, isolated fault reproduction, and evidence](docs/v2/faults.md).

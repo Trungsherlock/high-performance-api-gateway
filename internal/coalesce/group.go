@@ -3,8 +3,11 @@ package coalesce
 
 import (
 	"context"
+	"errors"
 	"sync"
 )
+
+var ErrFull = errors.New("cache flight admission full")
 
 type Call[T any] struct {
 	done  chan struct{}
@@ -36,10 +39,20 @@ func (g *Group[T]) Start(key string, fn func() (T, error)) *Call[T] {
 
 // StartWithRole reports whether the caller joined existing work.
 func (g *Group[T]) StartWithRole(key string, fn func() (T, error)) (*Call[T], bool) {
+	c, follower, _ := g.TryStartWithRole(key, 0, fn)
+	return c, follower
+}
+
+// TryStartWithRole bounds registered distinct keys synchronously. Existing keys
+// can still join; maxKeys=0 preserves the legacy unlimited registration policy.
+func (g *Group[T]) TryStartWithRole(key string, maxKeys int, fn func() (T, error)) (*Call[T], bool, error) {
 	g.mu.Lock()
 	defer g.mu.Unlock()
 	if c := g.calls[key]; c != nil {
-		return c, true
+		return c, true, nil
+	}
+	if maxKeys > 0 && len(g.calls) >= maxKeys {
+		return nil, false, ErrFull
 	}
 	if g.calls == nil {
 		g.calls = make(map[string]*Call[T])
@@ -54,5 +67,5 @@ func (g *Group[T]) StartWithRole(key string, fn func() (T, error)) (*Call[T], bo
 		delete(g.calls, key)
 		close(c.done)
 	}()
-	return c, false
+	return c, false, nil
 }

@@ -5,6 +5,7 @@ import (
 	"flag"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"sync"
@@ -14,6 +15,7 @@ import (
 func main() {
 	targets := flag.String("targets", "http://127.0.0.1:8082", "comma-separated destinations, striped per request")
 	n := flag.Int("requests", 100, "barrier-start request count")
+	id := flag.String("id", "42", "public item query value")
 	flag.Parse()
 	if *n < 1 || *n > 10000 {
 		os.Exit(2)
@@ -26,6 +28,8 @@ func main() {
 	start := make(chan struct{})
 	var mu sync.Mutex
 	statuses := map[int]int{}
+	degradedReasons := map[string]int{}
+	rejectionReasons := map[string]int{}
 	failures := 0
 	var first string
 	consistent := true
@@ -36,11 +40,14 @@ func main() {
 			defer done.Done()
 			ready.Done()
 			<-start
-			resp, err := client.Get(urls[i%len(urls)] + "/api/public/item?id=42")
+			resp, err := client.Get(urls[i%len(urls)] + "/api/public/item?id=" + url.QueryEscape(*id))
+			degraded, rejection := "", ""
 			status := 0
 			body := ""
 			if err == nil {
 				status = resp.StatusCode
+				degraded = resp.Header.Get("X-Gateway-Degraded")
+				rejection = resp.Header.Get("X-Gateway-Rejection")
 				bytes, e := io.ReadAll(io.LimitReader(resp.Body, 65537))
 				resp.Body.Close()
 				err = e
@@ -49,6 +56,12 @@ func main() {
 			mu.Lock()
 			defer mu.Unlock()
 			statuses[status]++
+			if degraded != "" {
+				degradedReasons[degraded]++
+			}
+			if rejection != "" {
+				rejectionReasons[rejection]++
+			}
 			if err != nil {
 				failures++
 			}
@@ -65,5 +78,5 @@ func main() {
 	began := time.Now()
 	close(start)
 	done.Wait()
-	json.NewEncoder(os.Stdout).Encode(map[string]any{"Requests": *n, "StatusCounts": statuses, "TransportErrors": failures, "BodiesConsistent": consistent && first != "", "ElapsedSeconds": time.Since(began).Seconds()})
+	json.NewEncoder(os.Stdout).Encode(map[string]any{"DegradedReasons": degradedReasons, "RejectionReasons": rejectionReasons, "Requests": *n, "StatusCounts": statuses, "TransportErrors": failures, "BodiesConsistent": consistent && first != "", "ElapsedSeconds": time.Since(began).Seconds()})
 }

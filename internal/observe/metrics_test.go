@@ -98,3 +98,27 @@ func TestBlockedLogSinkDropsWithoutBlockingHandlers(t *testing.T) {
 		t.Fatal(c)
 	}
 }
+
+func TestFallbackLogsAndBoundedReasons(t *testing.T) {
+	out := &lockedBuffer{}
+	m := New("test", out, 1)
+	m.Fallback("dependency_error")
+	m.Fallback("secret-key-or-url")
+	h := m.Wrap(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("X-Gateway-Degraded", "dependency_error")
+		w.WriteHeader(200)
+	}))
+	h.ServeHTTP(httptest.NewRecorder(), httptest.NewRequest("GET", "/secret?token=private", nil))
+	deadline := time.Now().Add(time.Second)
+	for strings.Count(out.String(), "\n") < 2 && time.Now().Before(deadline) {
+		time.Sleep(time.Millisecond)
+	}
+	log := out.String()
+	if !strings.Contains(log, `"event":"cache_fallback"`) || !strings.Contains(log, `"degraded_reason":"dependency_error"`) || strings.Contains(log, "secret") || strings.Contains(log, "private") {
+		t.Fatal(log)
+	}
+	c := m.Snapshot()["counters"].(map[string]int64)
+	if c["degraded_flights"] != 1 || c["fallback_dependency_error"] != 1 {
+		t.Fatal(c)
+	}
+}

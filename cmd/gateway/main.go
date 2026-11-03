@@ -40,7 +40,16 @@ func main() {
 	leaseFill := flag.Duration("lease-fill-timeout", 2*time.Second, "owner deadline including recheck, backend and publication")
 	leaseWait := flag.Duration("lease-wait", 4*time.Second, "maximum nonowner polling wait")
 	leasePoll := flag.Duration("lease-poll", 25*time.Millisecond, "poll jitter base, up to twice this interval")
+	degradation := flag.String("degradation", "protection-first", "lease-dependent misses: protection-first or available-local")
+	cacheFlights := flag.Int("max-cache-flights", 64, "maximum registered distinct cache keys with local coalescing")
+	cacheWaiters := flag.Int("max-cache-waiters", 1024, "maximum cache-miss clients including leaders; hits bypass admission")
 	flag.Parse()
+	if *degradation != "protection-first" && *degradation != "available-local" {
+		log.Fatal("invalid degradation policy")
+	}
+	if *cacheFlights < 1 || *cacheWaiters < 1 {
+		log.Fatal("cache admission limits must be positive")
+	}
 	if *cacheMode != "local" && *cacheMode != "shared" && *cacheMode != "layered" {
 		log.Fatal("invalid cache-mode")
 	}
@@ -87,9 +96,13 @@ func main() {
 	}
 	var lease *gateway.LeaseOptions
 	if *leases {
-		lease = &gateway.LeaseOptions{Duration: *leaseDuration, FillTimeout: *leaseFill, WaitTimeout: *leaseWait, PollInterval: *leasePoll, Margin: 250 * time.Millisecond}
+		lease = &gateway.LeaseOptions{Degradation: *degradation, Duration: *leaseDuration, FillTimeout: *leaseFill, WaitTimeout: *leaseWait, PollInterval: *leasePoll, Margin: 250 * time.Millisecond}
 	}
-	proxy, transport, err := gateway.NewWithOptions(*upstream, *timeout, storage, gateway.Options{Shared: shared, Lease: lease, Metrics: metrics, Coalesce: *coalescing, MaxConcurrent: *maxConcurrent, PermitWait: *permitWait, MaxWaiters: maxWaiters, Lifecycle: lifecycle})
+	var cacheAdmission *gateway.CacheAdmission
+	if enabled && *coalescing {
+		cacheAdmission = &gateway.CacheAdmission{MaxFlights: *cacheFlights, MaxWaiters: *cacheWaiters}
+	}
+	proxy, transport, err := gateway.NewWithOptions(*upstream, *timeout, storage, gateway.Options{CacheAdmission: cacheAdmission, Shared: shared, Lease: lease, Metrics: metrics, Coalesce: *coalescing, MaxConcurrent: *maxConcurrent, PermitWait: *permitWait, MaxWaiters: maxWaiters, Lifecycle: lifecycle})
 	if err != nil {
 		log.Fatal(err)
 	}

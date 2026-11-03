@@ -427,6 +427,39 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
   participating response writers must use the same lease policy. Broader Redis
   faults and configurable degraded-mode policy remain V2.6.
 
+### 2026-11-03 - V2.6 fault injection and degraded modes
+
+- **Scope:** Explicit lease degradation policy, bounded cache admission and
+  controlled dependency failure/recovery verification.
+- **Changes:** Added protection-first (default) / available-local policies,
+  local-only fallback publication, ambiguous-result delivery without L1 admission,
+  fallback headers/counters/bounded logs, and separate synchronous flight/client
+  caps (CLI defaults 64/1024). Cache hits bypass admission; canceled clients release
+  slots while shared work retains its flight reservation until completion.
+- **Verification:** Ten final isolated real Redis cases passed with race-instrumented
+  gateway binaries: outage, 350ms delay, OOM, Redis+gateway restart and corrupt data
+  for both policies. Cold fault bursts returned 100 x 503 with zero backend work
+  under protection-first; available-local returned 100 x 200 with two local fills.
+  Fresh L1 hits stayed available. Recovery probes retain errors and prove renewed
+  shared reuse; all final work gauges drained and lease keys were absent.
+  Complete ordinary/race suites, vet and build passed. Real Redis tests cover
+  ambiguous committed replies, stale owners, expiry and rejected local admission;
+  focused tests cover caps, cancellation, timeout/permit cleanup and safe logs.
+  Current-code V2.5 process regression rechecked one leased fill and killed-owner
+  recovery with the expected interrupted-client error retained.
+- **Corrections:** Initial diagnostic runs exposed a transient WSL forwarding EOF
+  and an intentionally unretried stale Redis connection. Hardened harness control
+  readiness/shutdown, retained first-operation failures and recorded bounded
+  external recovery probes; application command/backend retries remain disabled.
+- **Evidence:** [V2.6 report](docs/v2/faults.md), final matrix
+  `bench/results/v2/20261103-223343-v26`, process regression
+  `bench/results/v2/20261103-223608-v25`, and v26 ordinary/race logs.
+- **Tradeoffs/limits:** Available-local can duplicate work, admit summed local
+  capacity and retain divergent L1 copies. Protection-first trades miss availability
+  for backend protection. Admission bounds cover cache flights/waiting clients,
+  not all connections/RSS. OOM fixture is deterministic rejection, not a memory
+  benchmark. Final comparisons/soak remain V2.7; original V1 plan/results unchanged.
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title

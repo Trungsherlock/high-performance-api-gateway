@@ -1,0 +1,20 @@
+{
+  "shared-burst": [
+    {
+      "backend_calls": 2,
+      "seconds": 0.5256455
+    }
+  ],
+  "leased-burst": [
+    {
+      "backend_calls": 1,
+      "seconds": 0.5317827
+    }
+  ],
+  "owner-crash": [
+    {
+      "backend_calls": 2,
+      "seconds": 1.514999999999418
+    }
+  ]
+}

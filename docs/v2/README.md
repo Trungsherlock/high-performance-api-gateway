@@ -173,3 +173,9 @@ See [V2.4 setup, acceptance checks, and collected results](shared-cache.md).
 Use `python bench/run-v25.py --redis-addr 127.0.0.1:6379` with an isolated Redis
 and fresh gateway/backend/burst binaries. It compares shared and leased bursts
 and kills an owner during a fill. See [lease setup, semantics and results](leases.md).
+
+## V2.6 fault injection and degraded modes
+
+`python bench/run-v26.py` owns an isolated Redis and tests outage, delay, OOM,
+restart and corrupt data with both policies. `--race` selects a prebuilt
+race-instrumented gateway. See [setup, policy semantics and results](faults.md).

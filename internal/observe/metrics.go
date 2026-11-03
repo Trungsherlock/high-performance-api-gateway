@@ -32,10 +32,10 @@ type Metrics struct {
 
 func New(instance string, out io.Writer, every uint64) *Metrics {
 	m := &Metrics{Instance: instance, Counters: map[string]int64{}, Gauges: map[string]int64{}, Histograms: map[string]*Histogram{}, every: every}
-	for _, n := range []string{"incoming", "completed", "status_1xx", "status_2xx", "status_3xx", "status_4xx", "status_5xx", "aborted", "cache_hits", "cache_misses", "cache_bypass", "local_followers", "backend_attempts", "backend_errors", "permit_rejections", "permit_queue_full", "permit_wait_timeout", "lease_acquired", "lease_publications", "lease_publish_rejected", "lease_releases", "lease_polls", "lease_errors", "lease_wait_timeouts", "distributed_followers", "dependency_errors", "shared_hits", "shared_misses", "shared_read_errors", "shared_write_errors", "shared_write_completed", "logs_dropped"} {
+	for _, n := range []string{"degraded_flights", "fallback_dependency_error", "fallback_coordination_timeout", "fallback_publication_error", "cache_waiter_rejections", "cache_flight_rejections", "incoming", "completed", "status_1xx", "status_2xx", "status_3xx", "status_4xx", "status_5xx", "aborted", "cache_hits", "cache_misses", "cache_bypass", "local_followers", "backend_attempts", "backend_errors", "permit_rejections", "permit_queue_full", "permit_wait_timeout", "lease_acquired", "lease_publications", "lease_publish_rejected", "lease_releases", "lease_polls", "lease_errors", "lease_wait_timeouts", "distributed_followers", "dependency_errors", "shared_hits", "shared_misses", "shared_read_errors", "shared_write_errors", "shared_write_completed", "logs_dropped"} {
 		m.Counters[n] = 0
 	}
-	for _, n := range []string{"active_backend", "permit_waiters", "flights", "distributed_waiters"} {
+	for _, n := range []string{"active_backend", "permit_waiters", "flights", "distributed_waiters", "cache_waiters"} {
 		m.Gauges[n] = 0
 	}
 	for _, n := range []string{"request", "upstream", "cache_dependency", "permit_wait", "coordination_wait"} {
@@ -172,10 +172,10 @@ func (m *Metrics) Wrap(next http.Handler) http.Handler {
 					route = "public_item"
 				}
 				reason := ww.Header().Get("X-Gateway-Rejection")
-				if reason != "queue_full" && reason != "wait_timeout" && reason != "coordination_error" && reason != "coordination_timeout" && reason != "lease_lost" {
+				if reason != "queue_full" && reason != "wait_timeout" && reason != "coordination_error" && reason != "coordination_timeout" && reason != "lease_lost" && reason != "cache_waiters_full" && reason != "cache_flights_full" {
 					reason = ""
 				}
-				row := map[string]any{"time": time.Now().UTC(), "instance": m.Instance, "request_id": strconv.FormatUint(id, 10), "route": route, "outcome": outcome, "status": ww.status, "duration_ms": float64(duration) / 1e6, "rejection_reason": reason}
+				row := map[string]any{"time": time.Now().UTC(), "instance": m.Instance, "request_id": strconv.FormatUint(id, 10), "route": route, "outcome": outcome, "status": ww.status, "duration_ms": float64(duration) / 1e6, "rejection_reason": reason, "degraded_reason": fallbackReason(ww.Header().Get("X-Gateway-Degraded"))}
 				select {
 				case m.logs <- row:
 				default:
@@ -235,3 +235,28 @@ func (b *body) Read(p []byte) (int, error) {
 	return n, err
 }
 func (b *body) Close() error { err := b.ReadCloser.Close(); b.finish(); return err }
+
+func fallbackReason(reason string) string {
+	switch reason {
+	case "dependency_error", "coordination_timeout", "publication_error":
+		return reason
+	}
+	return ""
+}
+
+// Fallback records a bounded event once per degraded local flight. The existing
+// log queue is nonblocking; overflow increments logs_dropped.
+func (m *Metrics) Fallback(reason string) {
+	if m == nil || fallbackReason(reason) == "" {
+		return
+	}
+	m.Add("degraded_flights", 1)
+	m.Add("fallback_"+reason, 1)
+	if m.logs != nil {
+		select {
+		case m.logs <- map[string]any{"time": time.Now().UTC(), "instance": m.Instance, "event": "cache_fallback", "reason": reason}:
+		default:
+			m.Add("logs_dropped", 1)
+		}
+	}
+}

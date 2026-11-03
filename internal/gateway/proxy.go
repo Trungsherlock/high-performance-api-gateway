@@ -26,19 +26,23 @@ func NewWithCache(upstream string, timeout time.Duration, storage *cache.Cache) 
 }
 
 type Options struct {
-	Shared        sharedcache.Store
-	Lease         *LeaseOptions
-	Metrics       *observe.Metrics
-	Coalesce      bool
-	MaxConcurrent int // Zero disables the limiter for baseline experiments.
-	PermitWait    time.Duration
-	MaxWaiters    *int // nil preserves legacy waiter behavior; -1 is explicitly unbounded.
-	Lifecycle     context.Context
+	Shared         sharedcache.Store
+	Lease          *LeaseOptions
+	CacheAdmission *CacheAdmission
+	Metrics        *observe.Metrics
+	Coalesce       bool
+	MaxConcurrent  int // Zero disables the limiter for baseline experiments.
+	PermitWait     time.Duration
+	MaxWaiters     *int // nil preserves legacy waiter behavior; -1 is explicitly unbounded.
+	Lifecycle      context.Context
 }
 
 func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache, options Options) (http.Handler, *http.Transport, error) {
 	if options.MaxConcurrent < 0 || options.PermitWait < 0 || (options.MaxWaiters != nil && *options.MaxWaiters < -1) {
 		return nil, nil, fmt.Errorf("limiter settings must be nonnegative")
+	}
+	if options.CacheAdmission != nil && (!options.Coalesce || options.CacheAdmission.MaxFlights < 1 || options.CacheAdmission.MaxWaiters < 1) {
+		return nil, nil, fmt.Errorf("cache admission requires coalescing and positive caps")
 	}
 	var coordinator sharedcache.Coordinator
 	if options.Lease != nil {
@@ -80,6 +84,10 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 	}
 	if storage != nil || options.Shared != nil {
 		ct := &cacheTransport{metrics: options.Metrics, next: outbound, cache: storage, shared: options.Shared, timeout: timeout, lifecycle: options.Lifecycle}
+		if options.CacheAdmission != nil {
+			ct.waiters = make(chan struct{}, options.CacheAdmission.MaxWaiters)
+			ct.maxFlights = options.CacheAdmission.MaxFlights
+		}
 		if options.Lease != nil {
 			ct.leases = coordinator
 			ct.lease = *options.Lease
@@ -116,6 +124,14 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 				reason := "wait_timeout"
 				if errors.Is(err, limiter.ErrQueueFull) {
 					reason = "queue_full"
+				}
+				w.Header().Set("X-Gateway-Rejection", reason)
+			}
+			if errors.Is(err, ErrCacheWaiters) || errors.Is(err, coalesce.ErrFull) {
+				status = http.StatusServiceUnavailable
+				reason := "cache_waiters_full"
+				if errors.Is(err, coalesce.ErrFull) {
+					reason = "cache_flights_full"
 				}
 				w.Header().Set("X-Gateway-Rejection", reason)
 			}

@@ -3,6 +3,7 @@ package gateway
 import (
 	"bytes"
 	"context"
+	"errors"
 	"high-performance-api-gateway/internal/cache"
 	"high-performance-api-gateway/internal/coalesce"
 	"high-performance-api-gateway/internal/observe"
@@ -14,20 +15,27 @@ import (
 	"time"
 )
 
+var ErrCacheWaiters = errors.New("cache miss client admission full")
+
+type CacheAdmission struct{ MaxFlights, MaxWaiters int }
+
 type cacheTransport struct {
-	metrics   *observe.Metrics
-	next      http.RoundTripper
-	cache     *cache.Cache
-	shared    sharedcache.Store
-	leases    sharedcache.Coordinator
-	lease     LeaseOptions
-	group     *coalesce.Group[sharedResult]
-	timeout   time.Duration
-	lifecycle context.Context
+	waiters    chan struct{}
+	maxFlights int
+	metrics    *observe.Metrics
+	next       http.RoundTripper
+	cache      *cache.Cache
+	shared     sharedcache.Store
+	leases     sharedcache.Coordinator
+	lease      LeaseOptions
+	group      *coalesce.Group[sharedResult]
+	timeout    time.Duration
+	lifecycle  context.Context
 }
 type sharedResult struct {
 	value     cache.Response
 	shareable bool
+	degraded  string
 }
 type replayBody struct {
 	io.Reader
@@ -47,20 +55,30 @@ func (t *cacheTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 	}
 	t.metrics.Add("cache_misses", 1)
 	if t.group != nil {
-		call, follower := t.group.StartWithRole(key, func() (sharedResult, error) {
+		if t.waiters != nil {
+			select {
+			case t.waiters <- struct{}{}:
+			default:
+				t.metrics.Add("cache_waiter_rejections", 1)
+				return nil, ErrCacheWaiters
+			}
+			t.metrics.Gauge("cache_waiters", 1)
+			defer func() { t.metrics.Gauge("cache_waiters", -1); <-t.waiters }()
+		}
+		call, follower, admissionErr := t.group.TryStartWithRole(key, t.maxFlights, func() (sharedResult, error) {
 			t.metrics.Gauge("flights", 1)
 			defer t.metrics.Gauge("flights", -1)
 			// Close the miss-to-registration race before issuing any upstream work.
 			if value, ok := t.local(key); ok {
-				return sharedResult{value, true}, nil
+				return sharedResult{value: value, shareable: true}, nil
 			}
 			ctx, cancel := context.WithTimeout(t.lifecycle, t.timeout)
 			defer cancel()
 			if t.leases != nil {
-				return t.coordinated(ctx, r, key)
+				return t.withDegradation(ctx, r, key)
 			}
 			if value, ok := t.lookup(ctx, key); ok {
-				return sharedResult{value, true}, nil
+				return sharedResult{value: value, shareable: true}, nil
 			}
 			response, value, err := t.fetch(r.Clone(ctx), key, true)
 			if err != nil {
@@ -68,10 +86,14 @@ func (t *cacheTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 			}
 			defer response.Body.Close()
 			if value != nil {
-				return sharedResult{*value, true}, nil
+				return sharedResult{value: *value, shareable: true}, nil
 			}
 			return sharedResult{}, nil
 		})
+		if admissionErr != nil {
+			t.metrics.Add("cache_flight_rejections", 1)
+			return nil, admissionErr
+		}
 		if follower {
 			t.metrics.Add("local_followers", 1)
 		}
@@ -82,10 +104,18 @@ func (t *cacheTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 		if result.shareable {
 			value := result.value
 			value.Header = value.Header.Clone()
-			return cachedResponse(r, value), nil
+			response := cachedResponse(r, value)
+			if result.degraded != "" {
+				response.Header.Set("X-Gateway-Degraded", result.degraded)
+			}
+			return response, nil
 		}
 		// Unshareable responses are fetched per caller under the same limiter.
-		return t.next.RoundTrip(r)
+		response, err := t.next.RoundTrip(r)
+		if response != nil && result.degraded != "" {
+			response.Header.Set("X-Gateway-Degraded", result.degraded)
+		}
+		return response, err
 	}
 	if value, ok := t.lookup(r.Context(), key); ok {
 		return cachedResponse(r, value), nil

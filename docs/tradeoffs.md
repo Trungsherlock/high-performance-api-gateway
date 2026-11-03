@@ -252,3 +252,30 @@ remain later milestones, not properties of this implementation.
 - **Scope:** no consensus, globally strict limiter, renewal, cross-machine clock
   guarantee or backend fencing. Expanded degraded policies remain V2.6. See
   [lease design, reproduction and evidence](v2/leases.md).
+
+## V2.6: availability versus backend protection during coordination failure
+
+- **Explicit policy:** protection-first rejects lease-dependent misses; available-local
+  falls back to local coalescing/limits. Fresh L1 hits bypass Redis in both modes.
+  In the race-instrumented matrix, three 100-client failure bursts per policy
+  produced zero backend calls/100 rejections under protection-first, versus two
+  backend calls/100 successes under available-local for each fault.
+- **Local fallback is deliberately uncoordinated:** it writes only L1. Two local
+  limiters can admit their summed capacity, and copies may diverge until TTL.
+  There is no hidden unconditional shared write or globally strict backend limit.
+- **Ambiguous publication:** available-local may deliver the completed safe response
+  to current local callers, but never warms L1 or refetches after a failed reply.
+  Explicit lost ownership still returns 503 in both modes. A subsequent shared
+  lookup can discover a publication that actually committed.
+- **Bound waiting and work separately:** CLI defaults cap cache-miss clients at
+  1024 and registered distinct flights at 64 per instance. Canceling clients frees
+  their slots while shared work keeps a flight slot until completion/deadline.
+  These caps shed load and are not total memory/inbound-connection bounds.
+- **No silent retries:** a Redis restart can fail the first read on a stale pooled
+  connection. Retaining that 503 and explicitly probing bounded recovery tells a
+  more accurate story than claiming error-free restart. Available-local's recovery
+  response can instead trigger duplicate work. Fresh-key reuse verifies reconnection.
+- **Evidence scope:** isolated real Redis faults also ran with a race-instrumented
+  gateway; OOM was made deterministic, and failed harness assumptions were kept.
+  Short correctness checks are not production capacity/soak evidence. See
+  [V2.6 policies, limits and fault results](v2/faults.md).
