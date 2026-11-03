@@ -237,6 +237,14 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
 
 ## Optional follow-up work
 
+- Recorded the implemented decisions, costs, evidence, and revisit conditions in
+  [gateway tradeoffs](docs/tradeoffs.md), including a project-story outline.
+  Cross-checked the numerical claims against `docs/results.md`; documentation only.
+
+- Created [the v2 plan](high_performance_api_gateway_v2_plan.md) for stronger
+  measurements, overload experiments, multiple gateways, shared caching, bounded
+  leases, and failure injection. This is planning only; v2 implementation has not begun.
+
 - Consider longer, isolated-process or separate-machine measurements before making stronger performance claims.
 - Install wrk/Go in a Linux environment if executing the optional wrk scenarios.
 - Rehearse the request paths and tradeoffs; automated verification does not certify personal understanding.
