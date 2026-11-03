@@ -1,6 +1,7 @@
 # API Gateway v2 — Multi-instance caching and overload experiments
 
-**Status:** V2.0-V2.4 implemented and verified. V2.5-V2.7 remain planned.
+**Status:** V2.0-V2.5 implemented and verified. V2.6-V2.7 remain planned.
+V2.5 evidence: [bounded fill leases and owner recovery](docs/v2/leases.md).
 V2.4 evidence: [shared response caching](docs/v2/shared-cache.md).
 V2.3 evidence: [independent gateways and front routing](docs/v2/multi-instance.md).
 V2.2 evidence: [bounded admission study](docs/v2/admission.md).

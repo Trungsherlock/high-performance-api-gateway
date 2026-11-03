@@ -35,3 +35,9 @@ the original generator drops and queueing. Do not merge those with final trials.
 Use `python bench/run-v24.py --redis-addr 127.0.0.1:6379` with an isolated Redis
 and freshly built gateway/backend binaries for the three-mode comparison.
 See [V2.4 setup, acceptance checks, and collected results](../../../docs/v2/shared-cache.md).
+
+## V2.5 bounded fill leases
+
+Use `python bench/run-v25.py --redis-addr 127.0.0.1:6379` with an isolated Redis
+and fresh gateway/backend/burst binaries. It compares shared and leased bursts
+and kills an owner during a fill. See [lease setup, semantics and results](../../../docs/v2/leases.md).

@@ -223,3 +223,32 @@ remain later milestones, not properties of this implementation.
 - **Disposable single authority:** 64 MiB maxmemory with allkeys-lru and no
   persistence limits cache retention, not total server RSS. No lease/fencing or
   concurrent-writer ordering guarantee exists yet.
+
+## V2.5: bounded leases instead of permanent cross-instance ownership
+
+- **Two levels of sharing:** local flights keep each key's local clients off
+  Redis; a short lease suppresses speculative fills across gateways. Three
+  100-client trials reduced backend attempts from two to one with leases enabled.
+- **Expiring authority:** no renewal; owner deadline is shorter than the lease.
+  Killed owners recover by expiry. In three process trials the survivor completed
+  in 1.48-1.50s, including a 500ms backend fetch. The interrupted client's transport
+  error and the abandoned backend attempt remain in the report.
+- **Atomic ownership checks:** publication and release compare random tokens in
+  Lua. A delayed owner cannot overwrite the newer cached version or delete the
+  newer lease. This protects Redis publication, not exactly-once backend work.
+- **Reject before local admission:** rejected/ambiguous publication returns 503,
+  including to the owner's original callers. Keeping L1 empty for that result
+  gives up availability for an explicit ownership boundary. Fresh L1 hits still
+  work without Redis; lease-dependent misses fail closed on coordination errors.
+  V2.4 nonlease modes keep their available-local fallback.
+- **Polling over Pub/Sub:** bounded jittered polling is simple and cancellation
+  aware but adds Redis operations and handoff latency. It bounds wait duration,
+  not total waiter count or process memory. A post-acquisition recheck avoids a
+  redundant fill if publication races with acquisition.
+- **noeviction for lease trials:** keeping live leases out of ordinary eviction
+  trades eviction-based cache availability for capacity errors. Data TTLs free
+  space; Redis restart or manual deletion can still erase authority. This differs
+  deliberately from the historical V2.4 allkeys-lru cache-only experiment.
+- **Scope:** no consensus, globally strict limiter, renewal, cross-machine clock
+  guarantee or backend fencing. Expanded degraded policies remain V2.6. See
+  [lease design, reproduction and evidence](v2/leases.md).

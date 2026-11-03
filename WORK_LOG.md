@@ -396,6 +396,37 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
   evidence. Absolute timestamps assume aligned clocks; leases and expanded
   dependency fault/degradation studies remain V2.5/V2.6 work.
 
+### 2026-11-03 - V2.5 bounded cross-instance leases
+
+- **Scope:** Optional token-owned Redis fill coordination after local coalescing.
+- **Changes:** Atomic lease acquisition, ownership-checked publication/release,
+  recheck after acquisition, shorter owner deadline and bounded jittered polling.
+  Rejected/ambiguous publication never warms L1 and returns an observable 503.
+  Added CLI timing validation, lease counters/gauges/wait timing and rejection logs.
+  Unshareable responses retain individual streaming fallback under the limiter.
+- **Decisions:** Leases are opt-in and require shared storage/local coalescing.
+  Coordination errors fail closed on misses while fresh L1 hits remain available.
+  No renewal, distributed strict limiter or exactly-once guarantee. Lease trials
+  use 64 MiB noeviction, avoiding ordinary data eviction of live leases.
+- **Verification:** Real Redis 7.4.2 tests cover concurrent ownership, expiry,
+  stale publication/release with response versions, 100-client two-gateway sharing,
+  rejected-result L1 safety, cancellation isolation, timeout cleanup, fallback,
+  post-acquisition recheck and fresh L1 dependency isolation. Complete ordinary
+  and race suites, vet and build passed; final three added cases passed focused
+  ordinary/race checks. Nine separate-process trials reconciled: shared-only
+  bursts made two backend attempts; leased bursts made one. Killing an owner
+  yielded an expected client transport error and survivor success in 1.48-1.50s,
+  including the 500ms backend delay. Survivor work gauges drained.
+- **Correction:** Final review classified wait expiry during lease acquisition
+  as coordination_timeout, matching the polling-timeout path. Focused ordinary
+  and race tests cover this boundary; the successful process paths were unchanged.
+- **Evidence:** [V2.5 report](docs/v2/leases.md), raw trials and hashes under
+  `bench/results/v2/20261103-220609-v25`, and v25 test/race logs.
+- **Limits:** Single Redis authority, finite leases and bounded waiting do not
+  bound all followers or prevent duplicate execution after expiry/failure. All
+  participating response writers must use the same lease policy. Broader Redis
+  faults and configurable degraded-mode policy remain V2.6.
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title

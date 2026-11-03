@@ -27,6 +27,7 @@ func NewWithCache(upstream string, timeout time.Duration, storage *cache.Cache) 
 
 type Options struct {
 	Shared        sharedcache.Store
+	Lease         *LeaseOptions
 	Metrics       *observe.Metrics
 	Coalesce      bool
 	MaxConcurrent int // Zero disables the limiter for baseline experiments.
@@ -38,6 +39,14 @@ type Options struct {
 func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache, options Options) (http.Handler, *http.Transport, error) {
 	if options.MaxConcurrent < 0 || options.PermitWait < 0 || (options.MaxWaiters != nil && *options.MaxWaiters < -1) {
 		return nil, nil, fmt.Errorf("limiter settings must be nonnegative")
+	}
+	var coordinator sharedcache.Coordinator
+	if options.Lease != nil {
+		var ok bool
+		coordinator, ok = options.Shared.(sharedcache.Coordinator)
+		if !ok || !options.Coalesce || !options.Lease.valid() {
+			return nil, nil, fmt.Errorf("leases require shared coordinator, local coalescing and valid finite timing")
+		}
 	}
 	if options.Lifecycle == nil {
 		options.Lifecycle = context.Background()
@@ -71,6 +80,10 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 	}
 	if storage != nil || options.Shared != nil {
 		ct := &cacheTransport{metrics: options.Metrics, next: outbound, cache: storage, shared: options.Shared, timeout: timeout, lifecycle: options.Lifecycle}
+		if options.Lease != nil {
+			ct.leases = coordinator
+			ct.lease = *options.Lease
+		}
 		if options.Coalesce {
 			ct.group = &coalesce.Group[sharedResult]{}
 		}
@@ -103,6 +116,17 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 				reason := "wait_timeout"
 				if errors.Is(err, limiter.ErrQueueFull) {
 					reason = "queue_full"
+				}
+				w.Header().Set("X-Gateway-Rejection", reason)
+			}
+			if errors.Is(err, ErrCoordination) {
+				status = http.StatusServiceUnavailable
+				reason := "coordination_error"
+				if errors.Is(err, ErrLeaseLost) {
+					reason = "lease_lost"
+				}
+				if errors.Is(err, ErrLeaseWait) {
+					reason = "coordination_timeout"
 				}
 				w.Header().Set("X-Gateway-Rejection", reason)
 			}

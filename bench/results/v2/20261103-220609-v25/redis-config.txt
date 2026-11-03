@@ -1,0 +1,4 @@
+﻿maxmemory
+67108864
+maxmemory-policy
+noeviction

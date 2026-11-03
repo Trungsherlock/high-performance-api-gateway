@@ -19,6 +19,8 @@ type cacheTransport struct {
 	next      http.RoundTripper
 	cache     *cache.Cache
 	shared    sharedcache.Store
+	leases    sharedcache.Coordinator
+	lease     LeaseOptions
 	group     *coalesce.Group[sharedResult]
 	timeout   time.Duration
 	lifecycle context.Context
@@ -54,10 +56,13 @@ func (t *cacheTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 			}
 			ctx, cancel := context.WithTimeout(t.lifecycle, t.timeout)
 			defer cancel()
+			if t.leases != nil {
+				return t.coordinated(ctx, r, key)
+			}
 			if value, ok := t.lookup(ctx, key); ok {
 				return sharedResult{value, true}, nil
 			}
-			response, value, err := t.fetch(r.Clone(ctx), key)
+			response, value, err := t.fetch(r.Clone(ctx), key, true)
 			if err != nil {
 				return sharedResult{}, err
 			}
@@ -85,7 +90,7 @@ func (t *cacheTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 	if value, ok := t.lookup(r.Context(), key); ok {
 		return cachedResponse(r, value), nil
 	}
-	response, _, err := t.fetch(r, key)
+	response, _, err := t.fetch(r, key, true)
 	return response, err
 }
 
@@ -99,7 +104,7 @@ func cachedResponse(r *http.Request, value cache.Response) *http.Response {
 	return &http.Response{StatusCode: 200, Header: value.Header, Body: io.NopCloser(bytes.NewReader(value.Body)), ContentLength: int64(len(value.Body)), Request: r}
 }
 
-func (t *cacheTransport) fetch(r *http.Request, key string) (*http.Response, *cache.Response, error) {
+func (t *cacheTransport) fetch(r *http.Request, key string, admit bool) (*http.Response, *cache.Response, error) {
 	started := time.Now()
 	response, err := t.next.RoundTrip(r)
 	if err != nil {
@@ -137,10 +142,12 @@ func (t *cacheTransport) fetch(r *http.Request, key string) (*http.Response, *ca
 	if len(response.Trailer) == 0 {
 		value := cache.Response{Header: response.Header.Clone(), Body: body, ExpiresAt: started.Add(ttl)}
 		if time.Now().Before(value.ExpiresAt) {
-			if t.cache != nil {
-				t.cache.Put(key, value)
+			if admit {
+				if t.cache != nil {
+					t.cache.Put(key, value)
+				}
+				t.publish(r.Context(), key, value)
 			}
-			t.publish(r.Context(), key, value)
 			return response, &value, nil
 		}
 	}

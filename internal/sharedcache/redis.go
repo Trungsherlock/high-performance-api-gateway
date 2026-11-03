@@ -132,13 +132,13 @@ func allowed(name string) bool {
 	}
 	return false
 }
-func (r *Redis) Put(ctx context.Context, key string, v cache.Response) error {
+func encode(v cache.Response) ([]byte, time.Time, error) {
 	if len(v.Body) > MaxBody {
-		return nil
+		return nil, time.Time{}, nil
 	}
 	policy := cache.Lifetime(&http.Response{StatusCode: 200, Header: v.Header}, MaxLifetime)
 	if policy <= 0 {
-		return nil
+		return nil, time.Time{}, nil
 	}
 	h := make(http.Header)
 	size, count := 0, 0
@@ -148,24 +148,22 @@ func (r *Redis) Put(ctx context.Context, key string, v cache.Response) error {
 				size += len(k) + len(v)
 				count++
 				if size > 8192 || count > 128 {
-					return nil
+					return nil, time.Time{}, nil
 				}
 			}
 			h[k] = append([]string(nil), values...)
 		}
 	}
 	if !safeHeaders(h) {
-		return nil
+		return nil, time.Time{}, nil
 	}
 	raw, err := json.Marshal(envelope{Version: 1, ExpiresUnixMilli: v.ExpiresAt.UnixMilli(), Header: h, Body: v.Body})
 	if err != nil {
-		return err
+		return nil, time.Time{}, err
 	}
 	if len(raw) > MaxValue {
-		return nil
+		return nil, time.Time{}, nil
 	}
-	ctx, cancel := context.WithTimeout(ctx, r.timeout)
-	defer cancel()
 	// Absolute expiry prevents pool/network delay from restarting the fill lifetime.
 	expiry := v.ExpiresAt
 	capExpiry := time.Now().Add(policy)
@@ -173,7 +171,17 @@ func (r *Redis) Put(ctx context.Context, key string, v cache.Response) error {
 		expiry = capExpiry
 	}
 	if time.Until(expiry) < time.Millisecond {
-		return nil
+		return nil, time.Time{}, nil
 	}
+	return raw, expiry, nil
+}
+
+func (r *Redis) Put(ctx context.Context, key string, v cache.Response) error {
+	raw, expiry, err := encode(v)
+	if err != nil || raw == nil {
+		return err
+	}
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
+	defer cancel()
 	return r.client.Do(ctx, "SET", Key(key), raw, "PXAT", expiry.UnixMilli()).Err()
 }

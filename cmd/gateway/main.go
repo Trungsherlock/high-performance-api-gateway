@@ -35,6 +35,11 @@ func main() {
 	redisAddr := flag.String("redis-addr", "127.0.0.1:6379", "optional shared-cache Redis address")
 	redisTimeout := flag.Duration("redis-timeout", 50*time.Millisecond, "total deadline per shared-cache operation")
 	redisPool := flag.Int("redis-pool", 16, "maximum shared-cache connections")
+	leases := flag.Bool("leases", false, "coordinate eligible shared-cache fills with expiring Redis leases")
+	leaseDuration := flag.Duration("lease-duration", 3*time.Second, "lease expiration; no renewal")
+	leaseFill := flag.Duration("lease-fill-timeout", 2*time.Second, "owner deadline including recheck, backend and publication")
+	leaseWait := flag.Duration("lease-wait", 4*time.Second, "maximum nonowner polling wait")
+	leasePoll := flag.Duration("lease-poll", 25*time.Millisecond, "poll jitter base, up to twice this interval")
 	flag.Parse()
 	if *cacheMode != "local" && *cacheMode != "shared" && *cacheMode != "layered" {
 		log.Fatal("invalid cache-mode")
@@ -80,7 +85,11 @@ func main() {
 		defer adapter.Close()
 		shared = adapter
 	}
-	proxy, transport, err := gateway.NewWithOptions(*upstream, *timeout, storage, gateway.Options{Shared: shared, Metrics: metrics, Coalesce: *coalescing, MaxConcurrent: *maxConcurrent, PermitWait: *permitWait, MaxWaiters: maxWaiters, Lifecycle: lifecycle})
+	var lease *gateway.LeaseOptions
+	if *leases {
+		lease = &gateway.LeaseOptions{Duration: *leaseDuration, FillTimeout: *leaseFill, WaitTimeout: *leaseWait, PollInterval: *leasePoll, Margin: 250 * time.Millisecond}
+	}
+	proxy, transport, err := gateway.NewWithOptions(*upstream, *timeout, storage, gateway.Options{Shared: shared, Lease: lease, Metrics: metrics, Coalesce: *coalescing, MaxConcurrent: *maxConcurrent, PermitWait: *permitWait, MaxWaiters: maxWaiters, Lifecycle: lifecycle})
 	if err != nil {
 		log.Fatal(err)
 	}
