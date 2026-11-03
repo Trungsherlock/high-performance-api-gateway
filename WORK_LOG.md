@@ -243,11 +243,51 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
 
 - Created [the v2 plan](high_performance_api_gateway_v2_plan.md) for stronger
   measurements, overload experiments, multiple gateways, shared caching, bounded
-  leases, and failure injection. This is planning only; v2 implementation has not begun.
+  leases, and failure injection. The plan was created before implementation; V2.0/V2.1 progress is recorded below.
 
 - Consider longer, isolated-process or separate-machine measurements before making stronger performance claims.
 - Install wrk/Go in a Linux environment if executing the optional wrk scenarios.
 - Rehearse the request paths and tradeoffs; automated verification does not certify personal understanding.
+
+## 2026-11-02 - V2.0 and V2.1
+
+**Status:** Implemented and verified. Later V2 milestones remain planned.
+
+- **Preservation:** Tagged the existing V1 snapshot `a567362` as `v1-baseline`;
+  its implementation is unchanged from `465d9f4`. Used the existing V2 development
+  branch. Original V1 plan and historical results were not modified.
+- **Harness:** Added `cmd/loadgen` and `bench/run-v2.ps1`: three native processes,
+  readiness checks, fresh state, metadata/source/binary fingerprints, captured
+  logs, per-process CPU/RSS, watchdog, completion markers, and failure cleanup.
+- **Visibility:** Added fixed-name JSON metrics on loopback administration,
+  body-lifetime upstream gauges/histograms, cache/coalescing/admission counters,
+  bounded sampled request-log queue, safe route classes, and readiness semantics.
+- **Arrival accounting:** Added fixed-seed scheduled and closed-loop modes,
+  bounded generator concurrency/connections, request deadlines, generator drops,
+  scheduling lag, and scheduled/send latency percentiles. Warmup and measurement
+  have separate before/after metric and backend snapshots.
+- **Evidence:** Completed twelve 30-second steady trials after 5-second warmups,
+  plus a 300-second soak. Preserved unchanged-server baselines and diagnostics.
+  Raw records and reconciliation output are under `bench/results/v2/`;
+  interpretation is in [V2 results](docs/v2/results.md).
+- **Findings:** Same-rate full mode avoided about 80% of backend calls without
+  increasing throughput when both modes kept up. Closed-loop full mode shed
+  about 10.39% of clients. The soak served 150,000/150,000 requests with 30,031
+  backend calls and zero drops/errors/rejections; active-work gauges drained to
+  zero. Gateway RSS increased modestly, so flat-memory behavior is not claimed.
+- **Corrections:** Fixed Windows process exit-code handling and transient artifact
+  append sharing errors. Retained unsuccessful/interrupted runs outside canonical
+  comparisons. Corrected analyzer semantics: one rejected flight can return 503
+  to several followers; admission counters and client statuses are separate.
+- **Verification:** Ordinary/race tests, vet, build, formatting, and diff whitespace
+  checks passed. Tests cover burst counter reconciliation, shared error fanout,
+  waiter cancellation/rejection cleanup, body ownership, blocked logging, and
+  generator saturation. An intentional backend startup failure exited nonzero
+  and left no child processes. Non-loopback admin binding was rejected.
+- **Limits:** One Windows host, periodic resource samples, exact-percentile
+  generator memory growth, fixed run order, and synthetic backend/workload.
+  No Redis, multi-instance coordination, or bounded gateway waiter queue yet.
+  See [V2 verification](docs/v2/verification.md) and [tradeoffs](docs/tradeoffs.md).
 
 ## Future entry template
 

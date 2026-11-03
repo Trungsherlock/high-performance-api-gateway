@@ -5,3 +5,7 @@
 *.out
 coverage.html
 /bench/profiles/
+
+# Python benchmark-summary artifacts
+__pycache__/
+*.pyc

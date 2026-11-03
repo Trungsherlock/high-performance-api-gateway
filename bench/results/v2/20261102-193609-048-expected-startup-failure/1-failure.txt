@@ -1,0 +1,8 @@
+﻿Process exited before readiness: http://127.0.0.1:56181/healthz
+At C:\Users\trung\projects\high-performance-api-gateway\bench\run-v2.ps1:21 char:80
++ ... cess.HasExited){throw "Process exited before readiness: $url"};try{$r ...
++                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Process exited ...1:56181/healthz:String) [], RuntimeException
+    + FullyQualifiedErrorId : Process exited before readiness: http://127.0.0.1:56181/healthz
+ 
+

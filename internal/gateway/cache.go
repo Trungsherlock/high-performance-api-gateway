@@ -5,6 +5,7 @@ import (
 	"context"
 	"high-performance-api-gateway/internal/cache"
 	"high-performance-api-gateway/internal/coalesce"
+	"high-performance-api-gateway/internal/observe"
 	"io"
 	"net/http"
 	"strconv"
@@ -13,6 +14,7 @@ import (
 )
 
 type cacheTransport struct {
+	metrics   *observe.Metrics
 	next      http.RoundTripper
 	cache     *cache.Cache
 	group     *coalesce.Group[sharedResult]
@@ -31,14 +33,19 @@ type bypassKey struct{}
 
 func (t *cacheTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 	if r.Context().Value(bypassKey{}) != nil || !cache.Eligible(r) {
+		t.metrics.Add("cache_bypass", 1)
 		return t.next.RoundTrip(r)
 	}
 	key := r.URL.String() + "|" + strconv.Quote(r.Header.Get("Accept")) + "|" + strconv.Quote(r.Header.Get("Accept-Encoding")) + "|" + strconv.Quote(r.Header.Get("User-Agent"))
 	if value, ok := t.cache.Get(key); ok {
+		t.metrics.Add("cache_hits", 1)
 		return cachedResponse(r, value), nil
 	}
+	t.metrics.Add("cache_misses", 1)
 	if t.group != nil {
-		call := t.group.Start(key, func() (sharedResult, error) {
+		call, follower := t.group.StartWithRole(key, func() (sharedResult, error) {
+			t.metrics.Gauge("flights", 1)
+			defer t.metrics.Gauge("flights", -1)
 			// Close the miss-to-registration race before issuing any upstream work.
 			if value, ok := t.cache.Get(key); ok {
 				return sharedResult{value, true}, nil
@@ -55,6 +62,9 @@ func (t *cacheTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 			}
 			return sharedResult{}, nil
 		})
+		if follower {
+			t.metrics.Add("local_followers", 1)
+		}
 		result, err := call.Wait(r.Context())
 		if err != nil {
 			return nil, err

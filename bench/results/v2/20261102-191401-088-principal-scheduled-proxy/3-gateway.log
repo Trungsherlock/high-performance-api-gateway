@@ -1,0 +1,18 @@
+2026/11/02 19:15:21 gateway listening on 127.0.0.1:50321 (upstream=http://127.0.0.1:50320, cache=false)
+{"duration_ms":50.053,"instance":"trial-3","outcome":"response","request_id":"1000","route":"public_item","status":200,"time":"2026-11-03T01:15:24.1787963Z"}
+{"duration_ms":50.4246,"instance":"trial-3","outcome":"response","request_id":"2000","route":"public_item","status":200,"time":"2026-11-03T01:15:26.1796774Z"}
+{"duration_ms":50.3326,"instance":"trial-3","outcome":"response","request_id":"3000","route":"public_item","status":200,"time":"2026-11-03T01:15:28.2324884Z"}
+{"duration_ms":50.1721,"instance":"trial-3","outcome":"response","request_id":"4000","route":"public_item","status":200,"time":"2026-11-03T01:15:30.2321695Z"}
+{"duration_ms":50.1499,"instance":"trial-3","outcome":"response","request_id":"5000","route":"public_item","status":200,"time":"2026-11-03T01:15:32.2320937Z"}
+{"duration_ms":50.083,"instance":"trial-3","outcome":"response","request_id":"6000","route":"public_item","status":200,"time":"2026-11-03T01:15:34.2318546Z"}
+{"duration_ms":50.1486,"instance":"trial-3","outcome":"response","request_id":"7000","route":"public_item","status":200,"time":"2026-11-03T01:15:36.2317968Z"}
+{"duration_ms":50.0844,"instance":"trial-3","outcome":"response","request_id":"8000","route":"public_item","status":200,"time":"2026-11-03T01:15:38.2320333Z"}
+{"duration_ms":50.2265,"instance":"trial-3","outcome":"response","request_id":"9000","route":"public_item","status":200,"time":"2026-11-03T01:15:40.2323449Z"}
+{"duration_ms":50.0196,"instance":"trial-3","outcome":"response","request_id":"10000","route":"public_item","status":200,"time":"2026-11-03T01:15:42.2319052Z"}
+{"duration_ms":50.08,"instance":"trial-3","outcome":"response","request_id":"11000","route":"public_item","status":200,"time":"2026-11-03T01:15:44.2317819Z"}
+{"duration_ms":50.1932,"instance":"trial-3","outcome":"response","request_id":"12000","route":"public_item","status":200,"time":"2026-11-03T01:15:46.2322519Z"}
+{"duration_ms":50.2547,"instance":"trial-3","outcome":"response","request_id":"13000","route":"public_item","status":200,"time":"2026-11-03T01:15:48.2321308Z"}
+{"duration_ms":51.1283,"instance":"trial-3","outcome":"response","request_id":"14000","route":"public_item","status":200,"time":"2026-11-03T01:15:50.233223Z"}
+{"duration_ms":50.3656,"instance":"trial-3","outcome":"response","request_id":"15000","route":"public_item","status":200,"time":"2026-11-03T01:15:52.2319973Z"}
+{"duration_ms":50.2695,"instance":"trial-3","outcome":"response","request_id":"16000","route":"public_item","status":200,"time":"2026-11-03T01:15:54.2323571Z"}
+{"duration_ms":50.0122,"instance":"trial-3","outcome":"response","request_id":"17000","route":"public_item","status":200,"time":"2026-11-03T01:15:56.2320839Z"}

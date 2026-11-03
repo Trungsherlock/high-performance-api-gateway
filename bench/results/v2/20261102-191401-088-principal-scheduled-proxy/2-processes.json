@@ -1,0 +1,49 @@
+﻿{
+    "backendArgs":  [
+                        "-addr",
+                        "127.0.0.1:59410",
+                        "-delay",
+                        "50ms"
+                    ],
+    "trial":  2,
+    "generatorPID":  46540,
+    "cacheEnabled":  "false",
+    "gatewayArgs":  [
+                        "-addr",
+                        "127.0.0.1:59411",
+                        "-upstream",
+                        "http://127.0.0.1:59410",
+                        "-coalesce=false",
+                        "-max-concurrent=0",
+                        "-admin-addr",
+                        "127.0.0.1:59413",
+                        "-instance",
+                        "trial-2",
+                        "-request-log-every",
+                        "1000"
+                    ],
+    "generatorArgs":  [
+                          "-target",
+                          "http://127.0.0.1:59411",
+                          "-mode",
+                          "scheduled",
+                          "-workload",
+                          "mixed",
+                          "-duration",
+                          "30s",
+                          "-warmup",
+                          "5s",
+                          "-rate",
+                          500,
+                          "-concurrency",
+                          100,
+                          "-seed",
+                          44,
+                          "-backend",
+                          "http://127.0.0.1:59410",
+                          "-admin",
+                          "http://127.0.0.1:59413"
+                      ],
+    "gatewayPID":  9192,
+    "backendPID":  25720
+}

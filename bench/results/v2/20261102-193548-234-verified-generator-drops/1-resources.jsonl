@@ -1,0 +1,3 @@
+{"cpuSeconds":0.03125,"time":"2026-11-03T01:36:07.1583811Z","pid":41316,"rssBytes":8232960,"role":"mockbackend"}
+{"cpuSeconds":0.03125,"time":"2026-11-03T01:36:07.2224340Z","pid":17212,"rssBytes":9125888,"role":"gateway"}
+{"cpuSeconds":0.015625,"time":"2026-11-03T01:36:07.2317941Z","pid":48864,"rssBytes":8630272,"role":"loadgen"}

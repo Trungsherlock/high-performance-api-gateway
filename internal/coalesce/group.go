@@ -30,10 +30,16 @@ type Group[T any] struct {
 // Start registers synchronously; only the first caller's function is executed.
 // The function must bound its own lifetime and must not mutate published results.
 func (g *Group[T]) Start(key string, fn func() (T, error)) *Call[T] {
+	c, _ := g.StartWithRole(key, fn)
+	return c
+}
+
+// StartWithRole reports whether the caller joined existing work.
+func (g *Group[T]) StartWithRole(key string, fn func() (T, error)) (*Call[T], bool) {
 	g.mu.Lock()
 	defer g.mu.Unlock()
 	if c := g.calls[key]; c != nil {
-		return c
+		return c, true
 	}
 	if g.calls == nil {
 		g.calls = make(map[string]*Call[T])
@@ -48,5 +54,5 @@ func (g *Group[T]) Start(key string, fn func() (T, error)) *Call[T] {
 		delete(g.calls, key)
 		close(c.done)
 	}()
-	return c
+	return c, false
 }

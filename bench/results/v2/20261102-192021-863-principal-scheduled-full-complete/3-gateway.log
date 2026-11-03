@@ -1,0 +1,16 @@
+2026/11/02 19:21:41 gateway listening on 127.0.0.1:58631 (upstream=http://127.0.0.1:58630, cache=true)
+{"duration_ms":0,"instance":"trial-3","outcome":"response","request_id":"1000","route":"public_item","status":200,"time":"2026-11-03T01:21:44.2226995Z"}
+{"duration_ms":0,"instance":"trial-3","outcome":"response","request_id":"2000","route":"public_item","status":200,"time":"2026-11-03T01:21:46.22281Z"}
+{"duration_ms":0,"instance":"trial-3","outcome":"response","request_id":"3000","route":"public_item","status":200,"time":"2026-11-03T01:21:48.2768054Z"}
+{"duration_ms":0,"instance":"trial-3","outcome":"response","request_id":"4000","route":"public_item","status":200,"time":"2026-11-03T01:21:50.2765105Z"}
+{"duration_ms":0,"instance":"trial-3","outcome":"response","request_id":"5000","route":"public_item","status":200,"time":"2026-11-03T01:21:52.2979009Z"}
+{"duration_ms":0,"instance":"trial-3","outcome":"response","request_id":"6000","route":"public_item","status":200,"time":"2026-11-03T01:21:54.2765436Z"}
+{"duration_ms":0,"instance":"trial-3","outcome":"response","request_id":"7000","route":"public_item","status":200,"time":"2026-11-03T01:21:56.2768443Z"}
+{"duration_ms":0,"instance":"trial-3","outcome":"response","request_id":"8000","route":"public_item","status":200,"time":"2026-11-03T01:21:58.2809009Z"}
+{"duration_ms":50.6889,"instance":"trial-3","outcome":"response","request_id":"9000","route":"public_item","status":200,"time":"2026-11-03T01:22:00.3284231Z"}
+{"duration_ms":12.9021,"instance":"trial-3","outcome":"response","request_id":"10000","route":"public_item","status":200,"time":"2026-11-03T01:22:02.2893575Z"}
+{"duration_ms":50.6218,"instance":"trial-3","outcome":"response","request_id":"11000","route":"public_item","status":200,"time":"2026-11-03T01:22:04.328125Z"}
+{"duration_ms":0,"instance":"trial-3","outcome":"response","request_id":"12000","route":"public_item","status":200,"time":"2026-11-03T01:22:06.2767402Z"}
+{"duration_ms":0,"instance":"trial-3","outcome":"response","request_id":"13000","route":"public_item","status":200,"time":"2026-11-03T01:22:08.2772269Z"}
+{"duration_ms":51.1597,"instance":"trial-3","outcome":"response","request_id":"14000","route":"public_item","status":200,"time":"2026-11-03T01:22:10.3279642Z"}
+{"duration_ms":15.3153,"instance":"trial-3","outcome":"response","request_id":"15000","route":"public_item","status":200,"time":"2026-11-03T01:22:12.2920915Z"}

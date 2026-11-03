@@ -241,7 +241,7 @@ native load runner, Linux/WSL2 wrk scenarios, microbenchmarks, and profile comma
 ./bench/summarize.ps1
 ```
 
-The native harness runs the gateway, backend, and load generator together in one
+The original `cmd/bench` harness runs the gateway, backend, and load generator together in one
 process; its CPU and RSS measurements cover the entire experiment. Results are
 workload-specific and are not production capacity guarantees. A reusable proxy
 copy-buffer pool reduces allocation churn; its memory is outside the cache budget.
@@ -257,3 +257,19 @@ copy-buffer pool reduces allocation churn; its memory is outside the cache budge
   when the request is canceled.
 
 System design preparation is in [system_design_reading_guide.md](system_design_reading_guide.md).
+
+
+## V2: separate-process measurements
+
+V2.0-V2.1 add an external load generator, a Windows process harness, loopback JSON
+metrics, and sampled structured request logs. Cache and overload policies remain
+local to one gateway. Shared caching and distributed leases are later milestones.
+
+```powershell
+./bench/run-v2.ps1 -Observe -Mode full -Arrival scheduled -Seconds 30 -Warmup 5 -Trials 3
+```
+
+See [V2 reproduction and telemetry](docs/v2/README.md),
+[V2 results](docs/v2/results.md), and the [V2 plan](high_performance_api_gateway_v2_plan.md).
+The gateway's dedicated admin listener defaults to `127.0.0.1:8081`; override it
+with `-admin-addr` for each instance, or pass an empty value to disable it.

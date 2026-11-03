@@ -7,6 +7,7 @@ import (
 	"high-performance-api-gateway/internal/cache"
 	"high-performance-api-gateway/internal/coalesce"
 	"high-performance-api-gateway/internal/limiter"
+	"high-performance-api-gateway/internal/observe"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -24,6 +25,7 @@ func NewWithCache(upstream string, timeout time.Duration, storage *cache.Cache) 
 }
 
 type Options struct {
+	Metrics       *observe.Metrics
 	Coalesce      bool
 	MaxConcurrent int // Zero disables the limiter for baseline experiments.
 	PermitWait    time.Duration
@@ -52,11 +54,16 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 		DisableCompression: true,
 	}
 	var outbound http.RoundTripper = transport
+	if options.Metrics != nil {
+		outbound = &observe.Transport{Next: outbound, Metrics: options.Metrics}
+	}
 	if options.MaxConcurrent > 0 {
-		outbound = limiter.New(outbound, options.MaxConcurrent, options.PermitWait)
+		limited := limiter.New(outbound, options.MaxConcurrent, options.PermitWait)
+		limited.Metrics = options.Metrics
+		outbound = limited
 	}
 	if storage != nil {
-		ct := &cacheTransport{next: outbound, cache: storage, timeout: timeout, lifecycle: options.Lifecycle}
+		ct := &cacheTransport{metrics: options.Metrics, next: outbound, cache: storage, timeout: timeout, lifecycle: options.Lifecycle}
 		if options.Coalesce {
 			ct.group = &coalesce.Group[sharedResult]{}
 		}
@@ -90,7 +97,7 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 			http.Error(w, http.StatusText(status), status)
 		},
 	}
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return options.Metrics.Wrap(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodConnect || r.Header.Get("Upgrade") != "" {
 			http.Error(w, "tunneling and protocol upgrades are unsupported", http.StatusNotImplemented)
 			return
@@ -98,5 +105,5 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 		ctx, cancel := context.WithTimeout(r.Context(), timeout)
 		defer cancel()
 		proxy.ServeHTTP(w, r.WithContext(ctx))
-	}), transport, nil
+	})), transport, nil
 }

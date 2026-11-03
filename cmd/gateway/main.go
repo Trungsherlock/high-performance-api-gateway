@@ -4,7 +4,10 @@ import (
 	"context"
 	"errors"
 	"flag"
+	"fmt"
+	"high-performance-api-gateway/internal/observe"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -23,7 +26,27 @@ func main() {
 	coalescing := flag.Bool("coalesce", true, "share eligible concurrent cache misses")
 	maxConcurrent := flag.Int("max-concurrent", 32, "maximum active upstream requests; 0 disables limiter")
 	permitWait := flag.Duration("permit-wait", 50*time.Millisecond, "maximum wait for an upstream permit")
+	adminAddr := flag.String("admin-addr", "127.0.0.1:8081", "dedicated numeric loopback admin listener; empty disables")
+	instance := flag.String("instance", "gateway", "bounded instance identifier")
+	logEvery := flag.Uint64("request-log-every", 1000, "sample one request log per N requests; 0 disables")
 	flag.Parse()
+	if len(*instance) > 64 {
+		log.Fatal("instance must be at most 64 bytes")
+	}
+	var adminListener net.Listener
+	if *adminAddr != "" {
+		host, _, err := net.SplitHostPort(*adminAddr)
+		ip := net.ParseIP(host)
+		if err != nil || ip == nil || !ip.IsLoopback() {
+			log.Fatal("admin listener must use a numeric loopback address")
+		}
+		adminListener, err = net.Listen("tcp", *adminAddr)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer adminListener.Close()
+	}
+	metrics := observe.New(*instance, os.Stderr, *logEvery)
 	// Shared work survives individual clients but is canceled after server shutdown.
 	lifecycle, cancelWork := context.WithCancel(context.Background())
 	defer cancelWork()
@@ -39,11 +62,25 @@ func main() {
 	if enabled {
 		storage = cache.New(1000, 16<<20, nil)
 	}
-	proxy, transport, err := gateway.NewWithOptions(*upstream, *timeout, storage, gateway.Options{Coalesce: *coalescing, MaxConcurrent: *maxConcurrent, PermitWait: *permitWait, Lifecycle: lifecycle})
+	proxy, transport, err := gateway.NewWithOptions(*upstream, *timeout, storage, gateway.Options{Metrics: metrics, Coalesce: *coalescing, MaxConcurrent: *maxConcurrent, PermitWait: *permitWait, Lifecycle: lifecycle})
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer transport.CloseIdleConnections()
+	if storage != nil {
+		metrics.CacheStats = storage.Stats
+	}
+	var admin *http.Server
+	if adminListener != nil {
+		mux := http.NewServeMux()
+		mux.Handle("/metrics", metrics)
+		mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) { fmt.Fprintln(w, "ok") })
+		mux.HandleFunc("/readyz", func(w http.ResponseWriter, r *http.Request) {
+			fmt.Fprintln(w, "ready: local state initialized; backend health not checked")
+		})
+		admin = &http.Server{Handler: mux, ReadHeaderTimeout: 5 * time.Second, WriteTimeout: 5 * time.Second, IdleTimeout: 30 * time.Second}
+		defer admin.Close()
+	}
 	// Avoid ServeMux path cleaning and redirects for proxied requests.
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/healthz" {
@@ -59,6 +96,9 @@ func main() {
 	defer stop()
 	serverErrors := make(chan error, 1)
 	go func() { serverErrors <- srv.ListenAndServe() }()
+	if admin != nil {
+		go func() { serverErrors <- admin.Serve(adminListener) }()
+	}
 	log.Printf("gateway listening on %s (upstream=%s, cache=%t)", *addr, *upstream, enabled)
 	select {
 	case err := <-serverErrors:

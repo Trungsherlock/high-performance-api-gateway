@@ -2,6 +2,7 @@ package limiter
 
 import (
 	"errors"
+	"high-performance-api-gateway/internal/observe"
 	"io"
 	"net/http"
 	"sync"
@@ -11,6 +12,7 @@ import (
 var ErrOverloaded = errors.New("upstream concurrency limit reached")
 
 type Transport struct {
+	Metrics *observe.Metrics
 	Next    http.RoundTripper
 	permits chan struct{}
 	wait    time.Duration
@@ -28,19 +30,38 @@ func (t *Transport) RoundTrip(r *http.Request) (*http.Response, error) {
 		return nil, r.Context().Err()
 	default:
 	}
+	started := time.Now()
+	observed := false
+	defer func() {
+		if !observed {
+			t.Metrics.Observe("permit_wait", time.Since(started))
+		}
+	}()
 	select {
 	case t.permits <- struct{}{}:
 	default:
+		t.Metrics.Gauge("permit_waiters", 1)
+		waiting := true
+		defer func() {
+			if waiting {
+				t.Metrics.Gauge("permit_waiters", -1)
+			}
+		}()
 		timer := time.NewTimer(t.wait)
 		defer timer.Stop()
 		select {
 		case t.permits <- struct{}{}:
+			t.Metrics.Gauge("permit_waiters", -1)
+			waiting = false
 		case <-r.Context().Done():
 			return nil, r.Context().Err()
 		case <-timer.C:
+			t.Metrics.Add("permit_rejections", 1)
 			return nil, ErrOverloaded
 		}
 	}
+	t.Metrics.Observe("permit_wait", time.Since(started))
+	observed = true
 	release := func() { <-t.permits }
 	response, err := t.Next.RoundTrip(r)
 	if err != nil {

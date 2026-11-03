@@ -120,3 +120,36 @@ cause. Present observations separately from explanations that still need testing
 
 V2 extends the story by testing whether shared caching and cross-instance
 coordination justify their dependency, latency, and failure-handling costs.
+
+
+## V2.0-V2.1 decisions
+
+- **Separate processes on one host:** isolate runtime and CPU/RSS attribution,
+  at the cost of process lifecycle work. OS scheduling and hardware remain shared;
+  this does not reproduce separate-machine network behavior.
+- **Scheduled and closed-loop generators:** scheduled arrivals expose demand that
+  continues during slow responses; closed-loop tests describe fixed concurrent
+  clients. They answer different questions and need separate comparisons.
+- **Bound generator in-flight work and drop excess arrivals:** prevents the load
+  tool from silently building an unlimited request queue. Drops reduce delivered
+  load and must be reported separately from gateway rejection. Scheduling lag is
+  recorded rather than assuming the generator keeps perfect time.
+- **Exact client percentiles and bounded server histograms:** the generator keeps
+  phase samples for exact nearest-rank percentiles, using memory proportional to
+  sent requests. Server histograms use fixed buckets and constant metric state,
+  trading precision for bounded storage. Generator memory is measured separately.
+- **Loopback JSON metrics with one mutex:** keeps the project dependency-free and
+  telemetry easy to inspect. Instrumentation adds synchronization and allocation
+  overhead; it is not a complete production monitoring integration. Snapshots copy
+  metric state before writing so slow admin clients do not hold the metric lock.
+- **Sampled asynchronous request logs:** a bounded queue limits pending records
+  and drops logs when full. Sampling and process exit can lose records, and log
+  files still need external retention if used for long-running service operation.
+
+- **Count operations and client outcomes separately:** a permit rejection counts
+  one failed admission, while a coalesced error can return 503 to many clients.
+  This makes layer boundaries visible, at the cost of requiring explicit metric
+  definitions rather than assuming every counter should match client counts.
+
+These are implemented measurement choices. Redis and lease tradeoffs remain
+proposals until their later milestones are implemented and tested.

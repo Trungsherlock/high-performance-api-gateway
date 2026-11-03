@@ -117,3 +117,11 @@ go tool pprof -top -alloc_space bench/profiles/full.heap
 
 Profiles perturb timing. Profile runs are recorded separately and excluded from
 the main performance comparison. No profiling HTTP endpoint is exposed.
+
+
+## V2 separate-process harness
+
+Use `./bench/run-v2.ps1 -Observe` for three-process experiments with fixed-rate or
+closed-loop arrivals, phase metric snapshots, and separate CPU/RSS samples. V1
+commands and historical results above remain available. See the
+[V2 guide](../docs/v2/README.md) for the full matrix and accounting definitions.
