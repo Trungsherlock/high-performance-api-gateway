@@ -279,3 +279,35 @@ remain later milestones, not properties of this implementation.
   gateway; OOM was made deterministic, and failed harness assumptions were kept.
   Short correctness checks are not production capacity/soak evidence. See
   [V2.6 policies, limits and fault results](v2/faults.md).
+
+## V2.7: judge mechanisms by workload and measured cost
+
+- **Matched backend budgets:** compared 1 x 32 against 2 x 16 permits, with the
+  same aggregate queues/cache admission and a front hop in every mode. More nodes
+  still add independent L1 capacity and process overhead; this is not equal-RAM scaling.
+- **Storage versus coordination:** twelve controlled cold bursts made one fill
+  with one local node, two with independent nodes/shared storage, and one with
+  leases. In the mixed steady workload, unique keys dominated backend calls;
+  shared storage alone did not reduce fills, while leases added dependency work.
+- **Fixed-rate evidence:** three 30-second trials per mode at 500 arrivals/sec
+  yielded roughly 499 successful RPS, with trial latency/resource ranges reported.
+  This is not a maximum-throughput speedup claim. Redis/leases have measured cost
+  even when most traffic hits L1. Cleanup checks after acknowledged publication
+  are included in the lease operation counts.
+- **Keep imperfect outcomes:** one shared-mode generator drop and one leased-mode
+  coordination 503 remain in principal results. The five-minute soak sent 150,000
+  requests with 149,997 successes and three coordination 503s. Lower backend counts
+  caused by rejection are not all credited as successful duplicate suppression.
+- **Resource ownership:** gateway early/late RSS medians increased modestly; the
+  generator's retained samples grew more. Redis INFO excludes the surrounding WSL
+  VM/kernel, and sampled CPU/RSS is not exact full-phase CPU or true peak memory.
+  One five-minute workload cannot prove leak freedom or production readiness.
+- **Reproducibility over restarting a long study:** a readiness parsing interruption
+  was preserved; resume checked application/binary hashes and kept 22 completed
+  trials, then finished two cold cases and the soak. Source-only rebuild and ten
+  fault reproductions passed. All underlying causes are qualified rather than
+  assuming every dependency error was a timeout.
+
+See [final measured ranges and architecture](v2/final.md) and
+[per-process resource evidence](v2/final-resources.md). This is a tested
+infrastructure project, not production employment or an exactly-once service.

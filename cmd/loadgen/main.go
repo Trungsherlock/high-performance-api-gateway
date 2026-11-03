@@ -22,6 +22,7 @@ type sample struct {
 	status          int
 	failed          bool
 	reason          string
+	degraded        string
 }
 type windowResult struct {
 	Sent, Success, Rejected, TransportErrors int
@@ -29,6 +30,7 @@ type windowResult struct {
 }
 type result struct {
 	RejectionReasons                                                                           map[string]int
+	DegradedReasons                                                                            map[string]int
 	Windows                                                                                    map[int]*windowResult
 	StartUTC                                                                                   time.Time
 	StatusCounts                                                                               map[int]int
@@ -52,7 +54,7 @@ func percentiles(v []float64) map[string]float64 {
 func run(ctx context.Context, c *http.Client, target, mode, workload, phase string, d time.Duration, rate, limit int, seed int64) result {
 	start := time.Now()
 	end := start.Add(d)
-	r := result{Phase: phase, StartUTC: start, StatusCounts: map[int]int{}, RejectionReasons: map[string]int{}, Windows: map[int]*windowResult{}}
+	r := result{Phase: phase, StartUTC: start, StatusCounts: map[int]int{}, RejectionReasons: map[string]int{}, DegradedReasons: map[string]int{}, Windows: map[int]*windowResult{}}
 	samples := make(chan sample, limit)
 	slots := make(chan struct{}, limit)
 	var wg sync.WaitGroup
@@ -83,8 +85,12 @@ func run(ctx context.Context, c *http.Client, target, mode, workload, phase stri
 			if err == nil {
 				s.status = resp.StatusCode
 				reason := resp.Header.Get("X-Gateway-Rejection")
-				if reason == "queue_full" || reason == "wait_timeout" {
+				if reason == "queue_full" || reason == "wait_timeout" || reason == "coordination_error" || reason == "coordination_timeout" || reason == "lease_lost" || reason == "cache_waiters_full" || reason == "cache_flights_full" {
 					s.reason = reason
+				}
+				degraded := resp.Header.Get("X-Gateway-Degraded")
+				if degraded == "dependency_error" || degraded == "coordination_timeout" || degraded == "publication_error" {
+					s.degraded = degraded
 				}
 				_, err = io.Copy(io.Discard, resp.Body)
 				e := resp.Body.Close()
@@ -151,6 +157,9 @@ func run(ctx context.Context, c *http.Client, target, mode, workload, phase stri
 		r.StatusCounts[s.status]++
 		if s.reason != "" {
 			r.RejectionReasons[s.reason]++
+		}
+		if s.degraded != "" {
+			r.DegradedReasons[s.degraded]++
 		}
 		index := int(s.scheduled.Sub(start) / (3 * time.Second))
 		win := r.Windows[index]

@@ -179,3 +179,14 @@ and kills an owner during a fill. See [lease setup, semantics and results](lease
 `python bench/run-v26.py` owns an isolated Redis and tests outage, delay, OOM,
 restart and corrupt data with both policies. `--race` selects a prebuilt
 race-instrumented gateway. See [setup, policy semantics and results](faults.md).
+
+## V2.7 final comparison
+
+`python bench/run-v27.py --complete` builds, compares four configurations, runs
+cold bursts and a five-minute soak, verifies ordinary/race tests and shutdown,
+reproduces faults, and rebuilds a source-only smoke snapshot. `--quick --complete`
+is a functional check. `--resume <directory> --skip-build --complete` preserves
+completed trials when settings/application hashes match. See [final methods,
+results, retained failures and process resources](final.md).
+The final 25-trial study is `20261103-224701-v27`; its SUCCESS follows a recorded
+startup interruption, with original FAILED/logs and resume-1.json preserved.

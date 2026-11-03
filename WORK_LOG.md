@@ -460,6 +460,42 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
   not all connections/RSS. OOM fixture is deterministic rejection, not a memory
   benchmark. Final comparisons/soak remain V2.7; original V1 plan/results unchanged.
 
+### 2026-11-03 - V2.7 final comparison, soak and reproduction
+
+- **Scope:** Final four-mode evidence and explanation; complete the V2 plan.
+- **Changes:** Added a standard-library-only cross-platform process sampler,
+  rotating-order four-mode harness, reconciliation/summary tooling, resumable
+  experiments with application/binary checks and attempt-specific files, one-command
+  ordinary/race/vet/build/fault/source-only verification. Generator reports all
+  coordination/cache admission/degraded reasons. Added graceful-drain and reason
+  accounting tests. Published final topology, configuration, trial ranges,
+  per-process resources, failure boundaries and measured project-story claims.
+- **Evidence:** `bench/results/v2/20261103-224701-v27`: twelve 30-second/5-second-warmup
+  mixed trials (three per mode), twelve 100-client cold bursts, one 300-second soak.
+  Four modes share 500 offered RPS, front hop and aggregate 32 backend permits/queue
+  slots. Cold fills were 1/2/2/1 for local-one/local-two/shared/leased. All 25 trials
+  reconciled. Principal results retain one generator drop and one coordination 503.
+  Soak: 150,000 sent, 149,997 successful, three coordination 503s, no drops/transport
+  errors. Gateway first/last-60s RSS medians were 18.75/20.44 and 18.72/19.65 MiB;
+  generator max sampled RSS 81.54 MiB includes retained latency samples.
+- **Verification:** Complete real-Redis ordinary/race suites, vet and build passed,
+  including graceful draining/forced shutdown. Ten final fault cases passed under
+  `20261103-230623-v26`. A source-only snapshot rebuilt all Go programs and passed
+  eight smoke cases; source hashes match and no prebuilt Go binaries were copied.
+  Redis and all owned child processes were cleaned up by the harness.
+- **Correction:** Readiness returned an invalid echoed HTTP status line before
+  shared cold trial 3; exact cause unproven. Added bounded HTTP parsing retry and
+  distinct fixture ports, then resumed without repeating completed trials. Original
+  FAILED/logs and initial manifest remain; resume-1.json records unchanged app/
+  binaries and updated harness hashes. Final SUCCESS marks completed checks.
+- **Decisions/limits:** Fixed offered-rate throughput is not peak capacity; adding
+  Redis/leases can add cost without much steady-work savings. Redis test build is
+  libc/-O1 in WSL2; process RSS excludes VM/kernel overhead. No leak-free, production
+  reliability, clean Git commit, strict distributed limit or exactly-once claim.
+  Historical V1/earlier V2 evidence and the original V1 plan were preserved.
+- **Report:** [Final comparison and reproduction](docs/v2/final.md),
+  [process resources](docs/v2/final-resources.md), and [tradeoffs](docs/tradeoffs.md).
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title

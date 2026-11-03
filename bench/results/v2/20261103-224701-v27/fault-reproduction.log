@@ -1,0 +1,11 @@
+{'policy': 'protection-first', 'scenario': 'outage', 'trial': 1, 'backend_calls': 3, 'fault_status': {'503': 100}, 'fault_seconds': 0.0181669, 'fault_backend_calls': 0}
+{'policy': 'protection-first', 'scenario': 'slow', 'trial': 1, 'backend_calls': 3, 'fault_status': {'503': 100}, 'fault_seconds': 0.0637276, 'fault_backend_calls': 0}
+{'policy': 'protection-first', 'scenario': 'memory', 'trial': 1, 'backend_calls': 3, 'fault_status': {'503': 100}, 'fault_seconds': 0.0163427, 'fault_backend_calls': 0}
+{'policy': 'protection-first', 'scenario': 'restart', 'trial': 1, 'backend_calls': 4}
+{'policy': 'protection-first', 'scenario': 'corrupt', 'trial': 1, 'backend_calls': 3}
+{'policy': 'available-local', 'scenario': 'outage', 'trial': 1, 'backend_calls': 5, 'fault_status': {'200': 100}, 'fault_seconds': 0.0907053, 'fault_backend_calls': 2}
+{'policy': 'available-local', 'scenario': 'slow', 'trial': 1, 'backend_calls': 5, 'fault_status': {'200': 100}, 'fault_seconds': 0.1576202, 'fault_backend_calls': 2}
+{'policy': 'available-local', 'scenario': 'memory', 'trial': 1, 'backend_calls': 5, 'fault_status': {'200': 100}, 'fault_seconds': 0.0895025, 'fault_backend_calls': 2}
+{'policy': 'available-local', 'scenario': 'restart', 'trial': 1, 'backend_calls': 5}
+{'policy': 'available-local', 'scenario': 'corrupt', 'trial': 1, 'backend_calls': 3}
+C:\Users\trung\projects\high-performance-api-gateway\bench\results\v2\20261103-230623-v26

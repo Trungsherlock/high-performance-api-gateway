@@ -42,3 +42,16 @@ func TestClosedLoopAndTransportFailure(t *testing.T) {
 		t.Fatalf("transport errors conflated: %+v", r)
 	}
 }
+
+func TestCoordinationAndDegradedReasons(t *testing.T) {
+	s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("X-Gateway-Rejection", "coordination_error")
+		w.Header().Set("X-Gateway-Degraded", "dependency_error")
+		w.WriteHeader(503)
+	}))
+	defer s.Close()
+	r := run(context.Background(), s.Client(), s.URL, "scheduled", "hot", "measurement", 50*time.Millisecond, 100, 4, 42)
+	if r.Rejected != r.Sent || r.RejectionReasons["coordination_error"] != r.Sent || r.DegradedReasons["dependency_error"] != r.Sent {
+		t.Fatalf("reasons lost: %+v", r)
+	}
+}

@@ -3,7 +3,7 @@
 A learning project exploring a single-upstream reverse proxy, bounded caching,
 request coalescing, and overload protection. See the project plan for the full scope.
 
-## Current status: V1 complete; V2.0-V2.6 implemented
+## Current status: V1 complete; V2.0-V2.7 complete
 
 The gateway forwards ordinary HTTP requests to one fixed upstream using a shared
 connection pool, bounded LRU/TTL cache, request coalescing, and downstream concurrency
@@ -307,3 +307,19 @@ publication/release and bounded polling. See [configuration, guarantees and kill
 Choose protection-first or available-local behavior for lease-dependent misses.
 Separate cache-flight/client caps bound shared work and waiting. See
 [policy tradeoffs, isolated fault reproduction, and evidence](docs/v2/faults.md).
+
+## V2.7 final comparison and reproduction
+
+[Final results, architecture and guarantees](docs/v2/final.md) compare one local
+node, two independent nodes, shared responses, and shared responses with leases.
+The study includes trial ranges, per-process CPU/RSS, cold bursts, a five-minute
+soak, retained errors, ten fault reproductions, and a source-only rebuild.
+
+With the documented Go/Python/Redis prerequisites:
+
+```powershell
+python bench/run-v27.py --complete
+```
+
+Use `--quick --complete` for a shorter functional reproduction. See the final
+report for safe resume and the limits of the measurements.

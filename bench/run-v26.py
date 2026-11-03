@@ -50,10 +50,14 @@ def redis(port,*args):
         with connection.makefile("rb") as stream:
             return read_resp(stream)
 
+_allocated_ports=set()
 def port():
-    with socket.socket() as s:
-        s.bind(("127.0.0.1",0))
-        return s.getsockname()[1]
+    for _ in range(100):
+        with socket.socket() as s:
+            s.bind(("127.0.0.1",0));value=s.getsockname()[1]
+        if value not in _allocated_ports:
+            _allocated_ports.add(value);return value
+    raise RuntimeError("unable to allocate a distinct fixture port")
 
 def request(port,path="/healthz"):
     connection=http.client.HTTPConnection("127.0.0.1",port,timeout=5)
@@ -97,7 +101,7 @@ class Topology:
         def check():
             if self.redis_process.poll() is not None:raise RuntimeError("owned Redis exited")
             try:return redis(self.redis_port,"PING")=="PONG"
-            except (OSError,EOFError):return False
+            except (OSError,EOFError,http.client.HTTPException):return False
         wait_until(check,15)
         info=redis(self.redis_port,"INFO","server")
         assert "redis_version:7.4.2" in info,info
@@ -116,7 +120,7 @@ class Topology:
         def check():
             if process.poll() is not None:raise RuntimeError("child exited before readiness")
             try:return request(port)["status"]==200
-            except (OSError,EOFError):return False
+            except (OSError,EOFError,http.client.HTTPException):return False
         wait_until(check)
     def gateway(self,i):
         command=[ROOT/"bin"/(("gateway-race" if self.args.race else "gateway")+SUFFIX),"-addr",f"127.0.0.1:{self.data[i]}","-admin-addr",f"127.0.0.1:{self.admin[i]}",
