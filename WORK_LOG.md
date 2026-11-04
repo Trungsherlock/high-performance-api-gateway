@@ -697,6 +697,33 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
   - This work is uncommitted, along with V3.1.
 - **Report:** [V3 experiment records](bench/results/v3/README.md).
 
+### 2026-11-04 - Resume bullet candidates
+
+- **Scope:** Draft resume bullets for the whole project, V1 through V3.1, for
+  choosing the top three.
+- **Changes:** Added `resume_bullets.md`. It has 15 bullets in three groups:
+  core gateway, distributed caching and reliability, and measurement. It also
+  suggests a top three and lists what to be ready to explain in an interview.
+- **Evidence:** Every number links to its recorded source: `docs/results.md`,
+  `docs/v2/`, `docs/v3/` or the V3.1 baseline logs. All link anchors were
+  checked to exist.
+- **Decisions/limits:**
+  - Only measured results are used. The V3.2 lease fix is described as
+    designed, not built.
+  - V1 numbers carry their single-process, single-laptop caveat.
+  - Update the file when V3.2 and later results are measured.
+- **Report:** `resume_bullets.md` (local only; ignored by git).
+
+### 2026-11-04 - Resume evidence review
+
+- Reviewed candidate claims against V1 results and V2/V3.1 reports.
+- Selected three final bullets covering performance, distributed coordination,
+  and reliability tooling in `resume_bullets.md`.
+- Removed unsupported steady-memory wording and brittle test counts; separated
+  historical V1 measurements from later admission changes and proposed work.
+- Qualified latency comparisons and limited timeout attribution to V3.1.
+- Documentation-only review; no application changes or benchmark reruns.
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title

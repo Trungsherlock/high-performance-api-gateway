@@ -9,3 +9,5 @@ coverage.html
 # Python benchmark-summary artifacts
 __pycache__/
 *.pyc
+
+resume_bullets.md
