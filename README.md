@@ -3,7 +3,7 @@
 A learning project exploring a single-upstream reverse proxy, bounded caching,
 request coalescing, and overload protection. See the project plan for the full scope.
 
-## Current status: V1 complete; V2.0-V2.7 complete; V3.0 implemented
+## Current status: V1 complete; V2.0-V2.7 complete; V3.0-V3.1 implemented
 
 The gateway forwards ordinary HTTP requests to one fixed upstream using a shared
 connection pool, bounded LRU/TTL cache, request coalescing, and downstream concurrency
@@ -336,3 +336,19 @@ python bench/run-v3.py --quick --complete
 ```
 
 See [V3.0 harness, counters and acceptance evidence](docs/v3/README.md).
+
+## V3.1 noise floor and V3 baseline
+
+Every V3 block now also runs `local-two-aa`, a second copy of `local-two`. The
+largest gap between the two copies is the noise floor. The summary reports each
+mode's per-block difference from `local-two` against that floor.
+
+In the unpinned V3 baseline (5 blocks):
+- the floor was 0.40 ms at p95 and 2.63 ms at p99;
+- shared cost +1.93 ms at p95 and leased +4.39 ms, both beyond the floor in
+  every block;
+- backend calls matched V2.7 on V2.7's seeds.
+
+The plan's CPU pinning made the floor larger on this laptop, so `--affinity`
+is opt-in. See [V3.1 noise floor and baseline](docs/v3/noise-floor.md).
+

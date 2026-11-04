@@ -1,5 +1,7 @@
 """V3 separate-process comparison. Modes, workload, offered rates, backend timing and
-gateway count are parameters; --complete adds tests, the V2.6 faults and a clean-source check."""
+gateway count are parameters; --complete adds tests, the V2.6 faults and a clean-source check.
+local-two-aa repeats local-two in every block as an A/A noise control, and --affinity can pin the
+generator, gateways and backend+front to disjoint logical-CPU sets."""
 import argparse
 from datetime import datetime, timezone
 import hashlib
@@ -17,15 +19,17 @@ import time
 spec=importlib.util.spec_from_file_location("final",Path(__file__).with_name("run-v27.py"))
 final=importlib.util.module_from_spec(spec);spec.loader.exec_module(final);faults=final.faults
 from process_usage import process_usage
+import host
+import pack_logs
 ROOT=Path(__file__).resolve().parent.parent
 SUFFIX=".exe" if os.name=="nt" else ""
-MODES=("local-one","local-two","shared","leased")
+MODES=("local-one","local-two","shared","leased","local-two-aa")
 WORKLOADS=("hot","mixed","unique")
 # Aggregate budgets are split evenly across gateways, matching V2.7.
 BUDGET={"aggregate_permits":32,"aggregate_permit_queue":32,"aggregate_cache_flights":64,"aggregate_cache_waiters":1024,
         "cache_entries_per_node":1000,"cache_payload_bytes_per_node":16*2**20,"redis_timeout_ms":50,"redis_maxmemory":64*2**20,"redis_policy":"noeviction"}
 BINARIES=("gateway","mockbackend","frontproxy","loadgen","burst")
-SETTINGS=("seconds","warmup","trials","cold_trials","soak","soak_mode","rates","modes","workload","gateways","delay","cold_delay","max_age","concurrency","redis_server","wsl","complete")
+SETTINGS=("seconds","warmup","trials","cold_trials","soak","soak_mode","rates","modes","workload","gateways","delay","cold_delay","max_age","concurrency","redis_server","wsl","complete","affinity")
 
 class Topology(faults.Topology):
     def __init__(self,folder,label,args,mode,delay):
@@ -34,7 +38,19 @@ class Topology(faults.Topology):
         nodes=1 if mode=="local-one" else args.gateways
         self.data=[faults.port() for _ in range(nodes)];self.admin=[faults.port() for _ in range(nodes)]
     def launch(self,command,name):
-        process=super().launch(command,name);self.roles[process.pid]=name;return process
+        # V2.6 launch plus CPU pinning: Redis runs in the WSL2 VM and cannot be pinned this way.
+        group="generator" if name=="generator" else "gateways" if name.startswith("gateway") else "support" if name in ("backend","front") else None
+        cpus=self.args.layout["groups"][group] if self.args.layout and group else None
+        env={**os.environ,"CACHE_ENABLED":"true","GORACE":"halt_on_error=1"}
+        # Go sizes GOMAXPROCS before affinity is applied on Windows, so set it explicitly.
+        if cpus:env["GOMAXPROCS"]=str(len(cpus))
+        log=open(self.folder/f"{self.label}-{name}-{len(self.children)}.log","w");self.logs.append(log)
+        process=subprocess.Popen(list(map(str,command)),cwd=ROOT,stdout=log,stderr=log,env=env,**host.launch_options(cpus))
+        self.children.append(process);self.roles[process.pid]=name
+        entry={"pid":process.pid,"argv":list(map(str,command))}
+        if cpus:
+            entry.update(group=group,cpus=host.pin(process.pid,cpus),gomaxprocs=len(cpus));assert entry["cpus"]==cpus,(name,entry["cpus"],cpus)
+        self.commands.append(entry);return process
     def gateway(self,i):
         nodes=len(self.data)
         command=[ROOT/"bin"/("gateway"+SUFFIX),"-addr",f"127.0.0.1:{self.data[i]}","-admin-addr",f"127.0.0.1:{self.admin[i]}",
@@ -85,14 +101,14 @@ def run_trial(folder,args,mode,kind,rate,trial):
     if args.attempt:label+=f"-attempt-{args.attempt}"
     topology=Topology(folder,label,args,mode,args.cold_delay if kind=="cold" else args.delay)
     try:
-        topology.open();before={"gateways":topology.views(),"backend":faults.snapshot(topology.backend,"/stats"),"front":faults.snapshot(topology.front_admin)}
+        power=host.power();topology.open();before={"gateways":topology.views(),"backend":faults.snapshot(topology.backend,"/stats"),"front":faults.snapshot(topology.front_admin)}
         seconds=args.soak if kind=="soak" else args.seconds
         resources=folder/f"{topology.label}-resources.jsonl"
         output=topology.generate(kind,seconds,0 if kind=="cold" else args.warmup,42+trial,rate,resources)
         after={"gateways":topology.views(),"backend":faults.snapshot(topology.backend,"/stats"),"front":faults.snapshot(topology.front_admin)}
         assert all(all(v==0 for v in n["gauges"].values()) for n in after["gateways"])
         assert after["backend"]["active"]==0 and after["backend"]["peak"]<=BUDGET["aggregate_permits"]
-        return {"mode":mode,"kind":kind,"rate":rate,"trial":trial,"gateways":len(topology.data),"commands":topology.commands,"before":before,"after":after,"output":output,"resources":resources.name,"redis_info":topology.redis_info}
+        return {"mode":mode,"kind":kind,"rate":rate,"trial":trial,"gateways":len(topology.data),"commands":topology.commands,"before":before,"after":after,"output":output,"resources":resources.name,"redis_info":topology.redis_info,"power":power}
     finally:topology.close()
 
 def clean_check(folder,args):
@@ -109,7 +125,7 @@ def clean_check(folder,args):
         if os.name=="nt":server="/mnt/"+server[0].lower()+server[2:]
     # Same topology and workload as the parent run, at smoke-test duration.
     command=[sys.executable,str(destination/"bench/run-v3.py"),"--quick","--redis-server",server,"--modes",",".join(args.modes),"--workload",args.workload,
-             "--rates",",".join(map(str,args.rates)),"--gateways",str(args.gateways),"--delay",str(args.delay),"--cold-delay",str(args.cold_delay),"--max-age",str(args.max_age),"--concurrency",str(args.concurrency)]
+             "--rates",",".join(map(str,args.rates)),"--gateways",str(args.gateways),"--delay",str(args.delay),"--cold-delay",str(args.cold_delay),"--max-age",str(args.max_age),"--concurrency",str(args.concurrency),"--affinity",args.affinity]
     if args.wsl:command+=["--wsl",args.wsl]
     with (folder/"clean-source.log").open("w") as out:subprocess.run(command,cwd=destination,stdout=out,stderr=subprocess.STDOUT,check=True)
     runs=sorted((destination/"bench/results/v3").glob("*-v3"));assert len(runs)==1 and (runs[0]/"SUCCESS").exists()
@@ -119,15 +135,17 @@ def clean_check(folder,args):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--redis-server",default="bin/redis-build/redis-server");parser.add_argument("--wsl",default="Ubuntu" if os.name=="nt" else None)
-    parser.add_argument("--modes",default=",".join(MODES),help="comma-separated subset of "+", ".join(MODES))
+    parser.add_argument("--modes",default=",".join(MODES),help="comma-separated subset of "+", ".join(MODES)+"; local-two-aa needs local-two")
     parser.add_argument("--workload",default="mixed",choices=WORKLOADS)
     parser.add_argument("--rates",default="500",help="comma-separated scheduled arrivals/sec; each rate gets its own trial blocks")
     parser.add_argument("--gateways",type=int,default=2,choices=(2,4,8),help="gateway count for every mode except local-one")
     parser.add_argument("--delay",type=int,default=50,help="steady backend delay, ms");parser.add_argument("--cold-delay",type=int,default=500,help="cold-burst backend delay, ms")
     parser.add_argument("--max-age",type=int,default=10,help="backend max-age, seconds; gateways cap cached lifetimes at 10")
     parser.add_argument("--concurrency",type=int,default=256,help="generator in-flight request and connection limit")
-    parser.add_argument("--seconds",type=int,default=30);parser.add_argument("--warmup",type=int,default=5);parser.add_argument("--trials",type=int,default=3)
+    parser.add_argument("--seconds",type=int,default=30);parser.add_argument("--warmup",type=int,default=5);parser.add_argument("--trials",type=int,default=5)
     parser.add_argument("--cold-trials",type=int,default=3);parser.add_argument("--soak",type=int,default=300);parser.add_argument("--soak-mode",default="leased",choices=MODES)
+    # V3.1 measured auto pinning as noisier than none on this laptop (docs/v3/noise-floor.md), so it is opt-in.
+    parser.add_argument("--affinity",default="off",help="'off', 'auto', or explicit sets such as 'generator=0-3;gateways=4-9;support=10-11'")
     parser.add_argument("--quick",action="store_true");parser.add_argument("--skip-build",action="store_true");parser.add_argument("--complete",action="store_true")
     parser.add_argument("--resume",type=Path,help="resume an interrupted artifact directory without repeating completed trials")
     args=parser.parse_args();args.race=False;args.attempt=0
@@ -135,8 +153,11 @@ def main():
     try:args.rates=[int(v) for v in args.rates.split(",") if v]
     except ValueError:parser.error("rates must be integers")
     if not args.modes or len(set(args.modes))!=len(args.modes) or any(m not in MODES for m in args.modes):parser.error("modes must be distinct values from "+", ".join(MODES))
+    if "local-two-aa" in args.modes and "local-two" not in args.modes:parser.error("local-two-aa is an A/A copy and needs local-two")
     if not args.rates or len(set(args.rates))!=len(args.rates) or min(args.rates)<1:parser.error("rates must be distinct positive integers")
     if args.quick:args.seconds=2;args.warmup=1;args.trials=1;args.cold_trials=1;args.soak=0
+    try:args.layout=host.layout(args.affinity)
+    except (ValueError,OSError) as error:parser.error(f"affinity: {error}")
     if args.seconds<1 or args.warmup<0 or not 1<=args.trials<=20 or not 0<=args.cold_trials<=20 or args.soak<0 or args.delay<0 or args.cold_delay<0 or args.max_age<0 or args.concurrency<1:parser.error("invalid workload settings")
     folder=args.resume.resolve() if args.resume else ROOT/"bench/results/v3"/datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-v3")
     if not folder.is_relative_to(ROOT/"bench/results/v3"):parser.error("artifact directory must be inside this checkout's bench/results/v3")
@@ -145,7 +166,8 @@ def main():
     if args.resume:
         original=json.loads((folder/"manifest.json").read_text())
         for key in SETTINGS:
-            if original["settings"][key]!=getattr(args,key):parser.error(f"resume setting differs: {key}")
+            if original["settings"].get(key)!=getattr(args,key):parser.error(f"resume setting differs: {key}")
+        if (original.get("affinity") or {}).get("groups")!=(args.layout or {}).get("groups"):parser.error("resume CPU sets differ")
         for name,digest in original["hashes"].items():
             if name.endswith((".go",".exe")) or name in ("go.mod","go.sum"):
                 if hashlib.sha256((ROOT/name).read_bytes()).hexdigest()!=digest:parser.error(f"resume application/binary hash differs: {name}")
@@ -159,7 +181,8 @@ def main():
         sources=list((ROOT/"cmd").rglob("*.go"))+list((ROOT/"internal").rglob("*.go"))+list((ROOT/"bench").glob("*.py"))+[ROOT/"go.mod",ROOT/"go.sum"]
         binaries=[ROOT/"bin"/(name+SUFFIX) for name in BINARIES]
         manifest={"source":final.identity(),"time":datetime.now(timezone.utc).isoformat(),"platform":sys.platform,"host":__import__("platform").platform(),"python":sys.version,"cpu_count":os.cpu_count(),"go":subprocess.check_output(["go","version"],text=True).strip(),
-                  "settings":{k:str(v) if isinstance(v,Path) else v for k,v in vars(args).items()},"budget":BUDGET,"redis_version":"7.4.2",
+                  "settings":{k:str(v) if isinstance(v,Path) else v for k,v in vars(args).items() if k!="layout"},"budget":BUDGET,
+                  "affinity":args.layout and {**args.layout,"unpinned":"Redis (inside the WSL2 VM on Windows), the Python harness and the OS are not pinned."},"power":host.power(),"redis_version":"7.4.2",
                   "hashes":{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sources+binaries}}
         if not args.resume:(folder/"manifest.json").write_text(json.dumps(manifest,indent=2))
         with (folder/"trials.jsonl").open("a" if args.resume else "w") as out:
@@ -168,7 +191,8 @@ def main():
                 row=run_trial(folder,args,mode,kind,rate,trial);out.write(json.dumps(row)+"\n");out.flush();print(mode,kind,rate,trial,flush=True)
             for rate in args.rates:
                 for trial in range(1,args.trials+1):
-                    # Rotate order while preserving the same seed/offered workload within each block.
+                    # Rotate order while preserving the same seed/offered workload within each block;
+                    # with as many trials as modes, every mode runs once in every position.
                     shift=(trial-1)%len(args.modes)
                     for mode in args.modes[shift:]+args.modes[:shift]:record(mode,"steady",rate,trial)
             for trial in range(1,args.cold_trials+1):
@@ -181,8 +205,13 @@ def main():
             if args.wsl:command+=["--wsl",args.wsl]
             with (folder/"fault-reproduction.log").open("w") as out:subprocess.run(command,cwd=ROOT,stdout=out,stderr=subprocess.STDOUT,check=True)
             clean_check(folder,args)
+        # Process logs are only read during their trial; one archive keeps the run folder small.
+        pack_logs.pack(folder)
         (folder/"SUCCESS").write_text("Comparison assertions and requested checks passed.\n");print(folder,flush=True)
     except BaseException as error:
-        (folder/"FAILED").write_text(str(error)+"\n");raise
+        (folder/"FAILED").write_text(str(error)+"\n")
+        try:pack_logs.pack(folder)
+        except Exception as packing:print("log packing failed; logs left in place:",packing,file=sys.stderr)
+        raise
 
 if __name__=="__main__":main()

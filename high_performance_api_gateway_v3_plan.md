@@ -1,7 +1,8 @@
 # API Gateway v3 — Turning V2's mechanisms into measured results
 
 **Status:** V3.0 implemented: [harness, error causes and derived costs](docs/v3/README.md).
-V3.1–V3.6 planned.
+V3.1 implemented: [noise floor and V3 baseline](docs/v3/noise-floor.md).
+V3.2–V3.6 planned.
 
 **Baseline:** V2.7 final study [`20261103-224701-v27`](bench/results/v2/20261103-224701-v27/summary.json),
 reported in [docs/v2/final.md](docs/v2/final.md). V1 and V2 results stay unchanged.
@@ -89,6 +90,11 @@ It did not show a steady-state benefit from either one. V3 does three things:
   so also set `GOMAXPROCS` to the size of each set. Record the masks. Redis
   inside WSL2 cannot be pinned this way; record that limitation.
 - Record the power plan and AC power state in the manifest.
+
+**Outcome:** Pinning made the noise floor larger on this hybrid laptop, so it
+is opt-in (`--affinity auto`). The unpinned baseline's floor is 0.40 ms at p95
+and 2.63 ms at p99. Paired p95 is +1.93 ms for shared and +4.39 ms for leased,
+which puts the leased−shared gap that V3.2 targets at about 2.5 ms.
 
 **Acceptance**
 

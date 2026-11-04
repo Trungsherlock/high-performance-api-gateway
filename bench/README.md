@@ -170,10 +170,32 @@ startup interruption, with original FAILED/logs and resume-1.json preserved.
 
 ## V3.0 configurable comparison
 
-`python bench/run-v3.py` defaults to the V2.7 settings and writes to
+`python bench/run-v3.py` uses V2.7's workload and budget and writes to
 `bench/results/v3/`. `--modes`, `--workload`, `--rates`, `--gateways`, `--delay`,
 `--cold-delay`, `--max-age` and `--concurrency` select the experiment;
 `--complete` adds ordinary/race/vet/build checks, the ten V2.6 fault cases (kept
 under the run's `faults/` folder) and a source-only rebuild. `summarize-v3.py`
 reconciles counters, checks error causes and prints ops/fill and ops/request.
 See [V3.0 harness and counters](../docs/v3/README.md).
+
+## V3.1 noise floor
+
+V3.1 changes two defaults and adds an option:
+- every block also runs `local-two-aa`, a second copy of `local-two`;
+- `--trials` is 5;
+- `--affinity auto` (opt-in) pins the generator, gateways and backend plus
+  front proxy to disjoint sets of whole physical cores, using `bench/host.py`,
+  and sets `GOMAXPROCS` to match. On this laptop it made the A/A noise floor
+  larger, so the default is `off`.
+
+`summarize-v3.py` prints paired differences against `local-two` in the same
+block, and the A/A noise floor beside the latency table. Each manifest records
+the CPU sets, power plan, power-mode overlay and AC state. Explicit sets, such
+as `generator=0-3;gateways=4-9;support=10-11`, select other layouts. See
+[V3.1 noise floor](../docs/v3/noise-floor.md).
+
+At the end of every run, `run-v3.py` moves process logs and Redis configs into
+the run's `logs.zip` with `pack_logs.py`. That cuts the file count about
+fivefold. Summaries read only `manifest.json`, `trials.jsonl` and
+`*-resources.jsonl`. To pack an existing folder, run
+`python bench/pack_logs.py <run>`.

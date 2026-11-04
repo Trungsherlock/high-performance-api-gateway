@@ -3,6 +3,10 @@
 V3.0 prepares the measurements the [V3 plan](../../high_performance_api_gateway_v3_plan.md)
 needs. It does not change caching, coalescing, admission or lease behavior.
 
+V3.1 adds an A/A control, paired differences, CPU pinning and power records. It
+also reruns the four-mode baseline: see [noise-floor.md](noise-floor.md). The
+options table below shows current defaults.
+
 ## Baseline
 
 - V2.7 is tagged `v2-final` at `66c9ccd`. V1 and V2 artifacts are unchanged.
@@ -13,7 +17,7 @@ needs. It does not change caching, coalescing, admission or lease behavior.
 ## Run
 
 ```powershell
-# Defaults reproduce the V2.7 study: 3 trials per mode, cold bursts, 5-minute soak.
+# V2.7's four modes plus the A/A copy, 5 unpinned blocks, cold bursts, 5-minute soak.
 python bench/run-v3.py --complete
 
 # Functional check: short trials, then tests, race tests, faults and a source-only rebuild.
@@ -28,14 +32,15 @@ python bench/summarize-v3.py bench/results/v3/<run>
 
 | Option | Default | Meaning |
 |---|---|---|
-| `--modes` | `local-one,local-two,shared,leased` | Modes to compare, rotated per trial block |
+| `--modes` | `local-one,local-two,shared,leased,local-two-aa` | Modes to compare, rotated per trial block; `local-two-aa` is the V3.1 A/A copy |
 | `--workload` | `mixed` | Generator workload: `hot`, `mixed` or `unique` |
 | `--rates` | `500` | Scheduled arrivals/sec; every rate gets its own trial blocks |
 | `--gateways` | `2` | Gateways for every mode except `local-one`: 2, 4 or 8 |
 | `--delay` / `--cold-delay` | `50` / `500` | Backend delay in ms for steady and cold-burst trials |
 | `--max-age` | `10` | Backend `Cache-Control` max-age; gateways cap lifetimes at 10 s |
 | `--concurrency` | `256` | Generator in-flight requests and connections |
-| `--seconds` / `--warmup` / `--trials` | `30` / `5` / `3` | Steady-trial shape |
+| `--seconds` / `--warmup` / `--trials` | `30` / `5` / `5` | Steady-trial shape (V3.0 defaulted to 3 trials) |
+| `--affinity` | `off` | V3.1 CPU sets: `off`, `auto`, or `generator=..;gateways=..;support=..`. `auto` measured noisier than `off` on this laptop |
 | `--cold-trials` / `--soak` / `--soak-mode` | `3` / `300` / `leased` | Cold bursts and the soak |
 | `--resume <run>` | — | Continue an interrupted run with identical settings and hashes |
 

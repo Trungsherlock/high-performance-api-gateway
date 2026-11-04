@@ -549,6 +549,154 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
   - V3.0 work is uncommitted. V1/V2 artifacts are unchanged.
 - **Report:** [V3.0 harness, counters and acceptance evidence](docs/v3/README.md).
 
+### 2026-11-03 - V3.1 noise floor and V3 baseline
+
+- **Scope:** Second V3 milestone from the
+  [V3 plan](high_performance_api_gateway_v3_plan.md): measure the noise floor,
+  reduce host noise, and rerun the four-mode comparison as the V3 baseline. No
+  Go code changed. Caching, coalescing, admission and lease behavior are the
+  same as in V3.0.
+- **Changes:**
+  - Added `bench/host.py`, with no dependencies:
+    - reads physical cores and efficiency classes
+      (`GetLogicalProcessorInformationEx` on Windows, sysfs on Linux);
+    - resolves `--affinity off|auto|explicit sets`;
+    - pins processes (`SetProcessAffinityMask` after start on Windows,
+      `sched_setaffinity` before `exec` on Linux);
+    - records the power plan, the Windows 11 power-mode overlay and AC state.
+  - `run-v3.py`:
+    - New `local-two-aa` mode: a second copy of `local-two` in every block,
+      included by default. It is refused without `local-two`.
+    - `--trials` now defaults to 5. With five modes, the rotation puts every
+      mode once in every position.
+    - New `--affinity` option. Its default became `off` after the pinned runs
+      below. When pinning, the V3 topology launches its own processes: the
+      gateways, the generator, and backend plus front proxy each get a CPU set
+      and `GOMAXPROCS` equal to its size, and every mask is read back and
+      asserted.
+    - The manifest records the CPU sets and power state, and so does every
+      trial.
+    - Resume requires the same resolved CPU sets.
+    - The clean-source check passes `--affinity` through.
+  - `summarize-v3.py`:
+    - Paired per-block differences against `local-two` for send p50/p95/p99,
+      scheduled p99 and backend calls, with positive-block counts.
+    - The A/A noise floor: the largest |`local-two-aa` − `local-two`| per metric
+      and rate. A median difference beyond it is marked `*`.
+    - Reports the CPU sets and counts trials not on AC power. V3.0 artifacts
+      still summarize, printing a no-floor warning.
+  - Docs:
+    - Added `docs/v3/noise-floor.md`. Its predictions were written before any
+      measured run.
+    - Updated the V3 README options, the bench README, the results index, the
+      plan status and outcome, and the project README.
+- **Evidence:** six runs, all `SUCCESS`, all on AC with the Balanced plan and
+  the balanced overlay.
+  - `20261104-043055-v3` (`--quick`) was a functional check. Every process
+    recorded its read-back CPU set and `GOMAXPROCS`.
+  - Pinning made noise worse. These are unfavorable results, and they are kept:
+
+    | Run | Affinity | p95 / p99 floor | Late arrivals per trial | Median p50 |
+    |---|---|---|---|---|
+    | `043318`, 5-mode baseline, `--complete` | auto | 61.75 / 373.24 ms | 409–1,875 | 1.45 ms |
+    | `045906`, A/A only | off | 1.02 / 11.81 ms | 46–351 | 0.66 ms |
+    | `050522`, A/A only | auto | 6.73 / 87.69 ms | 340–1,056 | 1.19 ms |
+    | `053815`, A/A only | backend and front off CPU 0's core | 1.14 / 53.01 ms | 499–724 | 1.26 ms |
+
+    - The first pinned baseline had front-proxy 503s in 3 trials (45, 23, 82)
+      as 250 ms readiness probes timed out. Its leased soak had 27 503s from 8
+      Redis errors, all classified `timeout`.
+    - Moving backend and front off CPU 0's core removed the 503s and the p95
+      spread. Late arrivals, p50 and the p99 floor stayed high, so the cause is
+      only partly isolated.
+  - The **V3 baseline** is `20261104-051315-v3`: `--complete`, unpinned, 5
+    modes × 5 blocks.
+    - The noise floor was p50 0.14, p95 0.40 and p99 2.63 ms; scheduled p99
+      4.02 ms; backend calls 0.
+    - Paired against local-two: shared p95 **+1.93\*** ms (5/5 blocks) and
+      p99 +3.37\*; leased p95 **+4.39\*** ms (5/5) and p99 +5.86\*; local-one
+      p95 −0.06 ms, within noise.
+    - Backend calls: leased and local-one −3\* per block, shared 0.
+    - Ops per fill were 2.00 / 5.01. Blocks 1–3, which share V2.7's seeds,
+      match V2.7's backend calls exactly (leased block 3 is off by 1).
+    - Cold fills were 1/2/2/1/2 in each of 3 trials.
+    - Leased block 4 had one host spike: p99 161 ms, 495 late arrivals, and 2
+      coordination 503s from 2 Redis `timeout` errors.
+    - The soak: 150,000/150,000 successes, 0 dependency errors, p99 59.66 ms,
+      5.005 ops per fill. V2.7's soak had 3 coordination 503s.
+  - Predictions:
+    - Held: the floor range, in the A/A-only run; the paired p95 ranges for
+      leased and shared; counts unaffected.
+    - Partly failed: shared also exceeded the p99 floor, by 0.7 ms.
+    - **Failed:** the prediction that pinning would lower noise.
+- **Verification:**
+  - The baseline's `--complete` passed:
+    - 10/10 ordinary and 10/10 race test packages against harness-owned Redis;
+    - empty vet and build logs;
+    - all ten fault cases (`faults/20261104-053621-v26`);
+    - the source-only rebuild.
+  - Locally, `go build ./...` and `go vet ./...` passed, and `gofmt -l` was
+    empty.
+  - Argument checks reject overlapping CPU sets and an A/A copy without
+    `local-two`.
+- **Decisions/limits:**
+  - `--affinity` defaults to `off`; `auto` and explicit sets remain for other
+    hosts.
+  - The floor is the largest of five A/A differences. It is a conservative,
+    crude bound, not a confidence interval.
+  - The floor differs between runs (0.40 against 1.02 ms at p95 unpinned), so
+    every run carries its own A/A copy.
+  - The A/A copy was slightly slower in all 5 blocks (0.03–0.40 ms), even with
+    rotation. There may be a small systematic offset; its cause is unknown.
+  - The pinned-against-unpinned comparison ran sequentially, but the unpinned
+    run sat between two pinned ones.
+  - Redis inside WSL2 and the harness are never pinned.
+  - V3.0 is committed as `ac24ab8`. A test re-summary of its artifact
+    `20261104-021358-v3` rewrote that `summary.json`, so it was restored from
+    git.
+  - The V3.1 work is uncommitted.
+- **Report:** [V3.1 noise floor and baseline](docs/v3/noise-floor.md).
+
+### 2026-11-04 - Pack V3 run logs into one archive per run
+
+- **Scope:** The six V3.1 run folders held 1,092 files, mostly per-process
+  logs: 6–8 per trial, plus fault and clean-source copies. Reduce the count
+  without losing anything the summaries or a later investigation need.
+- **Changes:**
+  - Added `bench/pack_logs.py`. It moves every `*.log` and `*.conf` under a
+    run folder, including `faults/` and `clean-source-results/`, into that
+    folder's `logs.zip`.
+    - It appends on repeat packing, as after a resume, and renames clashing
+      names `~N`.
+    - It CRC-checks the archive and compares sizes before deleting the
+      originals.
+    - It also runs standalone: `python bench/pack_logs.py <run>`.
+  - `run-v3.py` packs at the end of every run. On success it packs before
+    writing `SUCCESS`. On failure it packs after `FAILED`, and a packing
+    error leaves the logs in place without hiding the original error.
+  - `manifest.json`, `trials.jsonl`, `*-resources.jsonl`, `summary.json` and
+    the check outputs stay as files.
+  - Documented the folder layout in `bench/results/v3/README.md` and the
+    bench README.
+- **Evidence:**
+  - Scratch test: a nested `faults/` log was archived with its relative path;
+    a second pack appended a clashing name as `~2`; a third pack was a no-op;
+    data files were left alone.
+  - `bench/results/v3/20261104-070718-v3` (`--quick --skip-build`) passed and
+    packed its own logs: 70 files became 14, with 56 in `logs.zip`.
+  - The six V3.1 folders were packed afterwards: 1,092 files became 198, and
+    about 23 MB became 20 MB.
+  - Each folder was re-summarized from a copy of its remaining files, and every
+    `summary.json` matched exactly.
+- **Decisions/limits:**
+  - Resource samples stay unpacked. The summarizer reads them, and they are
+    most of the bytes.
+  - The committed V3.0 folders and the V2 folders keep their loose logs as
+    recorded.
+  - No docs linked to individual logs, so no links changed.
+  - This work is uncommitted, along with V3.1.
+- **Report:** [V3 experiment records](bench/results/v3/README.md).
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title
