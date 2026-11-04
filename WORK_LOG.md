@@ -496,6 +496,59 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
 - **Report:** [Final comparison and reproduction](docs/v2/final.md),
   [process resources](docs/v2/final-resources.md), and [tradeoffs](docs/tradeoffs.md).
 
+### 2026-11-03 - V3.0 frozen baseline and configurable harness
+
+- **Scope:** First V3 milestone from the
+  [V3 plan](high_performance_api_gateway_v3_plan.md). Freeze V2, generalize the
+  runner, attribute dependency errors, and add cost-per-fill columns. No caching,
+  coalescing, admission or lease behavior changed.
+- **Changes:**
+  - Tagged `66c9ccd` as `v2-final`.
+  - Added `bench/run-v3.py`. Its defaults reproduce V2.7. It parameterizes
+    modes, workload, a rate list, gateway count (2/4/8), steady and cold backend
+    delay, backend max-age and generator concurrency. It reuses the frozen V2.7
+    build, verification and identity code, plus its resume and clean-source flow.
+  - Added `bench/summarize-v3.py`, which keeps every V2.7 reconciliation check
+    and adds ops per fill, ops per request, backend calls per request and
+    per-trial error causes.
+  - `run-v26.py` gained `--results`, with an unchanged default, so V3 fault
+    runs stay inside V3 artifacts.
+  - The backend gained `-max-age` (default 10).
+  - Four fixed counters split `dependency_errors` into timeout, pool_timeout,
+    connection and other.
+  - The Redis adapter now reserves one slot per pool connection inside the
+    existing operation deadline, so a saturated pool reports `ErrPoolWait`.
+- **Evidence:**
+  - `bench/results/v3/20261104-021358-v3` ran one 30-second V2.7-settings block
+    per mode. Backend calls were 2,973/2,976/2,976/2,973. Dependency operations
+    were 5,952 and 14,880, which is 2.00 and 5.01 per fill. Cold fills were 1/2/2/1.
+    Every count was inside V2.7's trial ranges. There were no drops, 503s,
+    transport errors or dependency errors.
+  - Latency did not reproduce. local-one ran first after the build, at p95/p99
+    65.66/153.80 ms with 939 late arrivals; the cause was not established.
+    The other modes were below their V2.7 ranges. With a single trial, neither
+    is an effect.
+- **Verification:**
+  - `20261104-020914-v3` (`--quick --complete`) passed: real-Redis ordinary and
+    race suites, empty vet/build logs, all ten fault cases, and a source-only
+    rebuild with eight smoke trials.
+  - In those fault runs, causes matched each fault and summed to the totals:
+    outage 12/2 connection, `CLIENT PAUSE` 2/2 timeout, OOM 16/2 other,
+    restart 1/1 connection, corrupt value 0.
+  - Before the harness runs, local `gofmt`, `go build ./...`, `go vet ./...` and
+    `go test ./...` passed.
+- **Decisions/limits:**
+  - go-redis v9.7.3 keeps its pool-timeout sentinel internal, and its 50 ms pool
+    wait equals the operation deadline, which starts first. Hence the adapter
+    slots rather than matching error text. The plan's claim that go-redis exports
+    `ErrPoolTimeout` was corrected.
+  - The lease-protocol option waits for V3.2. `local-two` keeps its V2.7 name
+    for any gateway count.
+  - `92a0ad7` keeps its `\` message; rewording it would rewrite the commit both
+    branches share.
+  - V3.0 work is uncommitted. V1/V2 artifacts are unchanged.
+- **Report:** [V3.0 harness, counters and acceptance evidence](docs/v3/README.md).
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title

@@ -56,6 +56,9 @@ func TestDegradationPolicies(t *testing.T) {
 					}
 				}
 				c := m.Snapshot()["counters"].(map[string]int64)
+				if !causesReconcile(c) {
+					t.Fatal(c)
+				}
 				if policy == "available-local" {
 					if calls.Load() != 1 || c["degraded_flights"] != 1 || c["cache_hits"] != 1 {
 						t.Fatal(calls.Load(), c)

@@ -1,0 +1,14 @@
+?   	high-performance-api-gateway/cmd/bench	[no test files]
+?   	high-performance-api-gateway/cmd/burst	[no test files]
+?   	high-performance-api-gateway/cmd/frontproxy	[no test files]
+ok  	high-performance-api-gateway/cmd/gateway	6.076s
+ok  	high-performance-api-gateway/cmd/loadgen	5.407s
+?   	high-performance-api-gateway/cmd/mockbackend	[no test files]
+ok  	high-performance-api-gateway/internal/cache	2.428s
+ok  	high-performance-api-gateway/internal/coalesce	1.752s
+ok  	high-performance-api-gateway/internal/front	3.819s
+ok  	high-performance-api-gateway/internal/gateway	9.014s
+ok  	high-performance-api-gateway/internal/limiter	2.297s
+ok  	high-performance-api-gateway/internal/mockbackend	2.698s
+ok  	high-performance-api-gateway/internal/observe	0.983s
+ok  	high-performance-api-gateway/internal/sharedcache	2.973s

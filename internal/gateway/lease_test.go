@@ -447,7 +447,7 @@ func TestLeaseAcquisitionDeadlineReason(t *testing.T) {
 		t.Fatal(w.Code, w.Header())
 	}
 	c := m.Snapshot()["counters"].(map[string]int64)
-	if c["lease_wait_timeouts"] != 1 || c["dependency_errors"] != 1 || c["backend_attempts"] != 0 {
+	if c["lease_wait_timeouts"] != 1 || c["dependency_errors"] != 1 || c["dependency_error_timeout"] != 1 || !causesReconcile(c) || c["backend_attempts"] != 0 {
 		t.Fatal(c)
 	}
 }

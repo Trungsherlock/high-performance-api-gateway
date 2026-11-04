@@ -30,7 +30,7 @@ func (o LeaseOptions) valid() bool {
 }
 
 func (t *cacheTransport) leaseError(err error) error {
-	t.metrics.Add("dependency_errors", 1)
+	t.dependencyError(err)
 	t.metrics.Add("lease_errors", 1)
 	return fmt.Errorf("%w: %v", ErrCoordination, err)
 }

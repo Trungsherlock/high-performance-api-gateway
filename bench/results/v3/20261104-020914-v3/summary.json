@@ -1,0 +1,814 @@
+{
+  "groups": {
+    "500": {
+      "local-one": {
+        "trials": 1,
+        "gateways": 1,
+        "successful_rps": {
+          "median": 487.7776338833758,
+          "min": 487.7776338833758,
+          "max": 487.7776338833758
+        },
+        "send_p50_ms": {
+          "median": 0.5614,
+          "min": 0.5614,
+          "max": 0.5614
+        },
+        "send_p95_ms": {
+          "median": 51.752,
+          "min": 51.752,
+          "max": 51.752
+        },
+        "send_p99_ms": {
+          "median": 52.9531,
+          "min": 52.9531,
+          "max": 52.9531
+        },
+        "scheduled_p99_ms": {
+          "median": 53.2614,
+          "min": 53.2614,
+          "max": 53.2614
+        },
+        "backend_calls": {
+          "median": 189,
+          "min": 189,
+          "max": 189
+        },
+        "dependency_operations": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "l1_hit_ratio": {
+          "median": 0.811,
+          "min": 0.811,
+          "max": 0.811
+        },
+        "shared_lookup_hit_ratio": null,
+        "dependency_ops_per_fill": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "dependency_ops_per_request": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "backend_calls_per_request": {
+          "median": 0.189,
+          "min": 0.189,
+          "max": 0.189
+        },
+        "generator_drops": [
+          0
+        ],
+        "late_arrivals": [
+          0
+        ],
+        "transport_errors": [
+          0
+        ],
+        "rejected": [
+          0
+        ],
+        "dependency_errors": [
+          0
+        ],
+        "front_unavailable": [
+          0
+        ],
+        "dependency_error_causes": {
+          "timeout": 0,
+          "pool_timeout": 0,
+          "connection": 0,
+          "other": 0
+        }
+      },
+      "local-two": {
+        "trials": 1,
+        "gateways": 2,
+        "successful_rps": {
+          "median": 487.9023157112449,
+          "min": 487.9023157112449,
+          "max": 487.9023157112449
+        },
+        "send_p50_ms": {
+          "median": 0.5524,
+          "min": 0.5524,
+          "max": 0.5524
+        },
+        "send_p95_ms": {
+          "median": 51.7772,
+          "min": 51.7772,
+          "max": 51.7772
+        },
+        "send_p99_ms": {
+          "median": 52.3418,
+          "min": 52.3418,
+          "max": 52.3418
+        },
+        "scheduled_p99_ms": {
+          "median": 52.7049,
+          "min": 52.7049,
+          "max": 52.7049
+        },
+        "backend_calls": {
+          "median": 189,
+          "min": 189,
+          "max": 189
+        },
+        "dependency_operations": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "l1_hit_ratio": {
+          "median": 0.811,
+          "min": 0.811,
+          "max": 0.811
+        },
+        "shared_lookup_hit_ratio": null,
+        "dependency_ops_per_fill": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "dependency_ops_per_request": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "backend_calls_per_request": {
+          "median": 0.189,
+          "min": 0.189,
+          "max": 0.189
+        },
+        "generator_drops": [
+          0
+        ],
+        "late_arrivals": [
+          0
+        ],
+        "transport_errors": [
+          0
+        ],
+        "rejected": [
+          0
+        ],
+        "dependency_errors": [
+          0
+        ],
+        "front_unavailable": [
+          0
+        ],
+        "dependency_error_causes": {
+          "timeout": 0,
+          "pool_timeout": 0,
+          "connection": 0,
+          "other": 0
+        }
+      },
+      "shared": {
+        "trials": 1,
+        "gateways": 2,
+        "successful_rps": {
+          "median": 487.0394421099561,
+          "min": 487.0394421099561,
+          "max": 487.0394421099561
+        },
+        "send_p50_ms": {
+          "median": 1.0448,
+          "min": 1.0448,
+          "max": 1.0448
+        },
+        "send_p95_ms": {
+          "median": 56.121,
+          "min": 56.121,
+          "max": 56.121
+        },
+        "send_p99_ms": {
+          "median": 62.0064,
+          "min": 62.0064,
+          "max": 62.0064
+        },
+        "scheduled_p99_ms": {
+          "median": 62.6908,
+          "min": 62.6908,
+          "max": 62.6908
+        },
+        "backend_calls": {
+          "median": 189,
+          "min": 189,
+          "max": 189
+        },
+        "dependency_operations": {
+          "median": 378,
+          "min": 378,
+          "max": 378
+        },
+        "l1_hit_ratio": {
+          "median": 0.811,
+          "min": 0.811,
+          "max": 0.811
+        },
+        "shared_lookup_hit_ratio": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "dependency_ops_per_fill": {
+          "median": 2.0,
+          "min": 2.0,
+          "max": 2.0
+        },
+        "dependency_ops_per_request": {
+          "median": 0.378,
+          "min": 0.378,
+          "max": 0.378
+        },
+        "backend_calls_per_request": {
+          "median": 0.189,
+          "min": 0.189,
+          "max": 0.189
+        },
+        "generator_drops": [
+          0
+        ],
+        "late_arrivals": [
+          7
+        ],
+        "transport_errors": [
+          0
+        ],
+        "rejected": [
+          0
+        ],
+        "dependency_errors": [
+          0
+        ],
+        "front_unavailable": [
+          0
+        ],
+        "dependency_error_causes": {
+          "timeout": 0,
+          "pool_timeout": 0,
+          "connection": 0,
+          "other": 0
+        }
+      },
+      "leased": {
+        "trials": 1,
+        "gateways": 2,
+        "successful_rps": {
+          "median": 486.95951632843435,
+          "min": 486.95951632843435,
+          "max": 486.95951632843435
+        },
+        "send_p50_ms": {
+          "median": 0.5463,
+          "min": 0.5463,
+          "max": 0.5463
+        },
+        "send_p95_ms": {
+          "median": 55.4232,
+          "min": 55.4232,
+          "max": 55.4232
+        },
+        "send_p99_ms": {
+          "median": 57.1917,
+          "min": 57.1917,
+          "max": 57.1917
+        },
+        "scheduled_p99_ms": {
+          "median": 57.5886,
+          "min": 57.5886,
+          "max": 57.5886
+        },
+        "backend_calls": {
+          "median": 189,
+          "min": 189,
+          "max": 189
+        },
+        "dependency_operations": {
+          "median": 945,
+          "min": 945,
+          "max": 945
+        },
+        "l1_hit_ratio": {
+          "median": 0.811,
+          "min": 0.811,
+          "max": 0.811
+        },
+        "shared_lookup_hit_ratio": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "dependency_ops_per_fill": {
+          "median": 5.0,
+          "min": 5.0,
+          "max": 5.0
+        },
+        "dependency_ops_per_request": {
+          "median": 0.945,
+          "min": 0.945,
+          "max": 0.945
+        },
+        "backend_calls_per_request": {
+          "median": 0.189,
+          "min": 0.189,
+          "max": 0.189
+        },
+        "generator_drops": [
+          0
+        ],
+        "late_arrivals": [
+          0
+        ],
+        "transport_errors": [
+          0
+        ],
+        "rejected": [
+          0
+        ],
+        "dependency_errors": [
+          0
+        ],
+        "front_unavailable": [
+          0
+        ],
+        "dependency_error_causes": {
+          "timeout": 0,
+          "pool_timeout": 0,
+          "connection": 0,
+          "other": 0
+        }
+      }
+    }
+  },
+  "cold_backend_calls": {
+    "local-one": [
+      1
+    ],
+    "local-two": [
+      2
+    ],
+    "shared": [
+      2
+    ],
+    "leased": [
+      1
+    ]
+  },
+  "trials": [
+    {
+      "mode": "local-one",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 1,
+      "gateways": 1,
+      "offered": 1000,
+      "sent": 1000,
+      "success": 1000,
+      "successful_rps": 487.7776338833758,
+      "generator_drops": 0,
+      "late_arrivals": 0,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 60.0938,
+        "p50": 0.5614,
+        "p95": 51.752,
+        "p99": 52.9531
+      },
+      "scheduled_latency_ms": {
+        "p100": 60.3264,
+        "p50": 1.06,
+        "p95": 52.2211,
+        "p99": 53.2614
+      },
+      "scheduling_lag_ms": {
+        "p100": 1.8953,
+        "p50": 0.4155,
+        "p95": 0.8282,
+        "p99": 0.9767
+      },
+      "backend_calls": 189,
+      "backend_peak_process_lifetime": 11,
+      "cache_l1_hits": 811,
+      "cache_misses": 189,
+      "l1_hit_ratio": 0.811,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.189,
+      "local_followers": 0,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 2,
+          "sampled_cpu_seconds": 0.078125,
+          "sampled_span_seconds": 1.0461986064910889,
+          "max_sampled_rss_mib": 15.8203125,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": 15.8203125
+        },
+        "front": {
+          "samples": 2,
+          "sampled_cpu_seconds": 0.421875,
+          "sampled_span_seconds": 1.0461986064910889,
+          "max_sampled_rss_mib": 22.4453125,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": 22.33984375
+        },
+        "gateway-0": {
+          "samples": 2,
+          "sampled_cpu_seconds": 0.3125,
+          "sampled_span_seconds": 1.0461986064910889,
+          "max_sampled_rss_mib": 16.80078125,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": 16.80078125
+        },
+        "generator": {
+          "samples": 2,
+          "sampled_cpu_seconds": 0.234375,
+          "sampled_span_seconds": 1.0461986064910889,
+          "max_sampled_rss_mib": 21.45703125,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": 21.45703125
+        }
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 1,
+      "gateways": 2,
+      "offered": 1000,
+      "sent": 1000,
+      "success": 1000,
+      "successful_rps": 487.9023157112449,
+      "generator_drops": 0,
+      "late_arrivals": 0,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 53.1576,
+        "p50": 0.5524,
+        "p95": 51.7772,
+        "p99": 52.3418
+      },
+      "scheduled_latency_ms": {
+        "p100": 53.9958,
+        "p50": 1.0314,
+        "p95": 52.2405,
+        "p99": 52.7049
+      },
+      "scheduling_lag_ms": {
+        "p100": 1.728,
+        "p50": 0.4028,
+        "p95": 0.8455,
+        "p99": 1.0262
+      },
+      "backend_calls": 189,
+      "backend_peak_process_lifetime": 12,
+      "cache_l1_hits": 811,
+      "cache_misses": 189,
+      "l1_hit_ratio": 0.811,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.189,
+      "local_followers": 0,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 2,
+          "sampled_cpu_seconds": 0.03125,
+          "sampled_span_seconds": 1.0160388946533203,
+          "max_sampled_rss_mib": 10.078125,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": 10.078125
+        },
+        "front": {
+          "samples": 2,
+          "sampled_cpu_seconds": 0.4375,
+          "sampled_span_seconds": 1.0160388946533203,
+          "max_sampled_rss_mib": 16.3359375,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": 16.3359375
+        },
+        "gateway-0": {
+          "samples": 2,
+          "sampled_cpu_seconds": 0.25,
+          "sampled_span_seconds": 1.0160388946533203,
+          "max_sampled_rss_mib": 15.83203125,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": 15.83203125
+        },
+        "gateway-1": {
+          "samples": 2,
+          "sampled_cpu_seconds": 0.171875,
+          "sampled_span_seconds": 1.0160388946533203,
+          "max_sampled_rss_mib": 15.625,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": 15.625
+        },
+        "generator": {
+          "samples": 2,
+          "sampled_cpu_seconds": 0.1875,
+          "sampled_span_seconds": 1.0160388946533203,
+          "max_sampled_rss_mib": 15.55078125,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": 15.55078125
+        }
+      }
+    },
+    {
+      "mode": "shared",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 1,
+      "gateways": 2,
+      "offered": 1000,
+      "sent": 1000,
+      "success": 1000,
+      "successful_rps": 487.0394421099561,
+      "generator_drops": 0,
+      "late_arrivals": 7,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 71.298,
+        "p50": 1.0448,
+        "p95": 56.121,
+        "p99": 62.0064
+      },
+      "scheduled_latency_ms": {
+        "p100": 71.547,
+        "p50": 1.4965,
+        "p95": 56.7673,
+        "p99": 62.6908
+      },
+      "scheduling_lag_ms": {
+        "p100": 4.0554,
+        "p50": 0.4721,
+        "p95": 1.0532,
+        "p99": 1.8574
+      },
+      "backend_calls": 189,
+      "backend_peak_process_lifetime": 12,
+      "cache_l1_hits": 811,
+      "cache_misses": 189,
+      "l1_hit_ratio": 0.811,
+      "shared_hits": 0,
+      "shared_misses": 189,
+      "shared_lookup_hit_ratio": 0.0,
+      "dependency_operations": 378,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 2.0,
+      "dependency_ops_per_request": 0.378,
+      "backend_calls_per_request": 0.189,
+      "local_followers": 0,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 1,
+          "sampled_cpu_seconds": null,
+          "sampled_span_seconds": 0.0,
+          "max_sampled_rss_mib": 9.55078125,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": null
+        },
+        "front": {
+          "samples": 1,
+          "sampled_cpu_seconds": null,
+          "sampled_span_seconds": 0.0,
+          "max_sampled_rss_mib": 16.6484375,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": null
+        },
+        "gateway-0": {
+          "samples": 1,
+          "sampled_cpu_seconds": null,
+          "sampled_span_seconds": 0.0,
+          "max_sampled_rss_mib": 15.4765625,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": null
+        },
+        "gateway-1": {
+          "samples": 1,
+          "sampled_cpu_seconds": null,
+          "sampled_span_seconds": 0.0,
+          "max_sampled_rss_mib": 15.8046875,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": null
+        },
+        "generator": {
+          "samples": 1,
+          "sampled_cpu_seconds": null,
+          "sampled_span_seconds": 0.0,
+          "max_sampled_rss_mib": 15.8828125,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": null
+        },
+        "redis": {
+          "samples": 1,
+          "sampled_cpu_seconds": null,
+          "sampled_span_seconds": 0.0,
+          "max_sampled_rss_mib": 5.84375,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": null
+        }
+      }
+    },
+    {
+      "mode": "leased",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 1,
+      "gateways": 2,
+      "offered": 1000,
+      "sent": 1000,
+      "success": 1000,
+      "successful_rps": 486.95951632843435,
+      "generator_drops": 0,
+      "late_arrivals": 0,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 59.0242,
+        "p50": 0.5463,
+        "p95": 55.4232,
+        "p99": 57.1917
+      },
+      "scheduled_latency_ms": {
+        "p100": 59.5459,
+        "p50": 1.0316,
+        "p95": 55.8705,
+        "p99": 57.5886
+      },
+      "scheduling_lag_ms": {
+        "p100": 1.6281,
+        "p50": 0.4202,
+        "p95": 0.8339,
+        "p99": 1.0217
+      },
+      "backend_calls": 189,
+      "backend_peak_process_lifetime": 12,
+      "cache_l1_hits": 811,
+      "cache_misses": 189,
+      "l1_hit_ratio": 0.811,
+      "shared_hits": 0,
+      "shared_misses": 378,
+      "shared_lookup_hit_ratio": 0.0,
+      "dependency_operations": 945,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 5.0,
+      "dependency_ops_per_request": 0.945,
+      "backend_calls_per_request": 0.189,
+      "local_followers": 0,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 1,
+          "sampled_cpu_seconds": null,
+          "sampled_span_seconds": 0.0,
+          "max_sampled_rss_mib": 9.6328125,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": null
+        },
+        "front": {
+          "samples": 1,
+          "sampled_cpu_seconds": null,
+          "sampled_span_seconds": 0.0,
+          "max_sampled_rss_mib": 16.44140625,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": null
+        },
+        "gateway-0": {
+          "samples": 1,
+          "sampled_cpu_seconds": null,
+          "sampled_span_seconds": 0.0,
+          "max_sampled_rss_mib": 16.11328125,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": null
+        },
+        "gateway-1": {
+          "samples": 1,
+          "sampled_cpu_seconds": null,
+          "sampled_span_seconds": 0.0,
+          "max_sampled_rss_mib": 15.5234375,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": null
+        },
+        "generator": {
+          "samples": 1,
+          "sampled_cpu_seconds": null,
+          "sampled_span_seconds": 0.0,
+          "max_sampled_rss_mib": 15.60546875,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": null
+        },
+        "redis": {
+          "samples": 1,
+          "sampled_cpu_seconds": null,
+          "sampled_span_seconds": 0.0,
+          "max_sampled_rss_mib": 5.84375,
+          "early_median_rss_mib": null,
+          "late_median_rss_mib": null
+        }
+      }
+    },
+    {
+      "mode": "local-one",
+      "kind": "cold",
+      "trial": 1,
+      "gateways": 1,
+      "backend_calls": 1,
+      "duration_seconds": 0.5210736,
+      "local_followers": 99,
+      "distributed_followers": 0
+    },
+    {
+      "mode": "local-two",
+      "kind": "cold",
+      "trial": 1,
+      "gateways": 2,
+      "backend_calls": 2,
+      "duration_seconds": 0.5221759,
+      "local_followers": 98,
+      "distributed_followers": 0
+    },
+    {
+      "mode": "shared",
+      "kind": "cold",
+      "trial": 1,
+      "gateways": 2,
+      "backend_calls": 2,
+      "duration_seconds": 0.5220933,
+      "local_followers": 98,
+      "distributed_followers": 0
+    },
+    {
+      "mode": "leased",
+      "kind": "cold",
+      "trial": 1,
+      "gateways": 2,
+      "backend_calls": 1,
+      "duration_seconds": 0.5431755,
+      "local_followers": 98,
+      "distributed_followers": 1
+    }
+  ]
+}

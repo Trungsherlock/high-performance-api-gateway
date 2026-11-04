@@ -32,8 +32,11 @@ func (r *Redis) Acquire(ctx context.Context, key string, ttl time.Duration) (str
 		return "", false, err
 	}
 	token := hex.EncodeToString(raw[:])
-	ctx, cancel := context.WithTimeout(ctx, r.timeout)
-	defer cancel()
+	ctx, done, err := r.bound(ctx)
+	if err != nil {
+		return "", false, err
+	}
+	defer done()
 	ok, err := r.client.SetNX(ctx, LeaseKey(key), token, ttl).Result()
 	if !ok || err != nil {
 		return "", false, err
@@ -56,8 +59,11 @@ func (r *Redis) Publish(ctx context.Context, key, token string, v cache.Response
 	if raw == nil {
 		return false, ErrUnshareable
 	}
-	ctx, cancel := context.WithTimeout(ctx, r.timeout)
-	defer cancel()
+	ctx, done, err := r.bound(ctx)
+	if err != nil {
+		return false, err
+	}
+	defer done()
 	n, err := r.client.Eval(ctx, ownedPublish, []string{LeaseKey(key), Key(key)}, token, raw, expiry.UnixMilli()).Int()
 	return n == 1, err
 }
@@ -65,8 +71,11 @@ func (r *Redis) Release(ctx context.Context, key, token string) (bool, error) {
 	if token == "" {
 		return false, errors.New("empty lease token")
 	}
-	ctx, cancel := context.WithTimeout(ctx, r.timeout)
-	defer cancel()
+	ctx, done, err := r.bound(ctx)
+	if err != nil {
+		return false, err
+	}
+	defer done()
 	n, err := r.client.Eval(ctx, ownedRelease, []string{LeaseKey(key)}, token).Int()
 	return n == 1, err
 }

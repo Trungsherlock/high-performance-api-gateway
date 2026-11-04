@@ -256,9 +256,12 @@ def main():
     parser.add_argument("--wsl",default="Ubuntu" if os.name=="nt" else None)
     parser.add_argument("--trials",type=int,default=1)
     parser.add_argument("--race",action="store_true",help="use prebuilt bin/gateway-race[.exe] with halt_on_error")
+    parser.add_argument("--results",type=Path,default=Path("bench/results/v2"),help="parent directory for the timestamped artifact folder, inside this checkout")
     args=parser.parse_args()
     if not 1<=args.trials<=20:parser.error("trials must be 1..20")
-    folder=ROOT/"bench/results/v2"/datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-v26");folder.mkdir(parents=True)
+    parent=(ROOT/args.results).resolve()
+    if not parent.is_relative_to(ROOT):parser.error("results directory must be inside this checkout")
+    folder=parent/datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-v26");folder.mkdir(parents=True)
     sources=list((ROOT/"internal").rglob("*.go"))+list((ROOT/"cmd").rglob("*.go"))+[ROOT/"go.mod",ROOT/"go.sum",Path(__file__)]
     binaries=[ROOT/"bin"/(n+SUFFIX) for n in (("gateway-race" if args.race else "gateway"),"mockbackend","burst")]
     manifest={"time":datetime.now(timezone.utc).isoformat(),"platform":platform.platform(),"python":platform.python_version(),"go":subprocess.check_output(["go","version"],text=True).strip(),

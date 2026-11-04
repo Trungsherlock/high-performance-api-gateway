@@ -205,9 +205,14 @@ func TestSharedFailureFallsBackAndLocalHitsSkipDependency(t *testing.T) {
 		}
 	}
 	counters := m.Snapshot()["counters"].(map[string]int64)
-	if calls.Load() != 1 || counters["dependency_errors"] != 2 || counters["shared_read_errors"] != 1 || counters["shared_write_errors"] != 1 || counters["shared_misses"] != 0 || counters["cache_hits"] != 1 {
+	if calls.Load() != 1 || counters["dependency_errors"] != 2 || counters["dependency_error_other"] != 2 || !causesReconcile(counters) || counters["shared_read_errors"] != 1 || counters["shared_write_errors"] != 1 || counters["shared_misses"] != 0 || counters["cache_hits"] != 1 {
 		t.Fatal(calls.Load(), counters)
 	}
+}
+
+// causesReconcile reports whether every dependency error has exactly one fixed cause.
+func causesReconcile(c map[string]int64) bool {
+	return c["dependency_error_timeout"]+c["dependency_error_pool_timeout"]+c["dependency_error_connection"]+c["dependency_error_other"] == c["dependency_errors"]
 }
 func TestSharedRejectsUnsafeResponses(t *testing.T) {
 	addr := os.Getenv("REDIS_TEST_ADDR")

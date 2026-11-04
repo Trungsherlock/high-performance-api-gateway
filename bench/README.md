@@ -167,3 +167,13 @@ completed trials when settings/application hashes match. See [final methods,
 results, retained failures and process resources](../docs/v2/final.md).
 The final 25-trial study is `20261103-224701-v27`; its SUCCESS follows a recorded
 startup interruption, with original FAILED/logs and resume-1.json preserved.
+
+## V3.0 configurable comparison
+
+`python bench/run-v3.py` defaults to the V2.7 settings and writes to
+`bench/results/v3/`. `--modes`, `--workload`, `--rates`, `--gateways`, `--delay`,
+`--cold-delay`, `--max-age` and `--concurrency` select the experiment;
+`--complete` adds ordinary/race/vet/build checks, the ten V2.6 fault cases (kept
+under the run's `faults/` folder) and a source-only rebuild. `summarize-v3.py`
+reconciles counters, checks error causes and prints ops/fill and ops/request.
+See [V3.0 harness and counters](../docs/v3/README.md).

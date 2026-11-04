@@ -8,6 +8,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"net"
 	"net/http"
 	"time"
 
@@ -29,7 +31,28 @@ type Store interface {
 type Redis struct {
 	client  *redis.Client
 	timeout time.Duration
+	slots   chan struct{}
 }
+
+// ErrPoolWait means the operation deadline expired before a pooled connection was free.
+var ErrPoolWait = errors.New("shared cache connection wait expired")
+
+// ErrorKind maps a failed operation to a fixed metric suffix; raw error text is
+// never a label. go-redis keeps its own pool sentinels internal, so pool waits
+// are recognized through ErrPoolWait from this adapter's connection slots.
+func ErrorKind(err error) string {
+	var network net.Error
+	switch {
+	case errors.Is(err, ErrPoolWait):
+		return "pool_timeout"
+	case errors.Is(err, context.DeadlineExceeded) || (errors.As(err, &network) && network.Timeout()):
+		return "timeout"
+	case errors.Is(err, redis.ErrClosed) || errors.Is(err, io.EOF) || errors.Is(err, io.ErrUnexpectedEOF) || errors.Is(err, net.ErrClosed) || errors.As(err, &network):
+		return "connection"
+	}
+	return "other"
+}
+
 type envelope struct {
 	Version          int         `json:"version"`
 	ExpiresUnixMilli int64       `json:"expires_unix_milli"`
@@ -42,9 +65,23 @@ func New(addr string, timeout time.Duration, pool int) (*Redis, error) {
 		return nil, fmt.Errorf("invalid Redis address, timeout or pool size")
 	}
 	c := redis.NewClient(&redis.Options{Addr: addr, Protocol: 2, MaxRetries: -1, DialTimeout: timeout, ReadTimeout: timeout, WriteTimeout: timeout, PoolTimeout: timeout, ContextTimeoutEnabled: true, PoolSize: pool, MaxActiveConns: pool, MaxIdleConns: pool, DisableIdentity: true})
-	return &Redis{c, timeout}, nil
+	return &Redis{c, timeout, make(chan struct{}, pool)}, nil
 }
 func (r *Redis) Close() error { return r.client.Close() }
+
+// bound applies the per-operation deadline and reserves a pool connection first,
+// so a saturated pool is distinguishable from a slow reply. Slots equal the pool
+// size; go-redis's own pool wait therefore never blocks behind them.
+func (r *Redis) bound(ctx context.Context) (context.Context, func(), error) {
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
+	select {
+	case r.slots <- struct{}{}:
+		return ctx, func() { <-r.slots; cancel() }, nil
+	case <-ctx.Done():
+		cancel()
+		return nil, nil, fmt.Errorf("%w: %w", ErrPoolWait, ctx.Err())
+	}
+}
 func Key(key string) string {
 	h := sha256.Sum256([]byte(key))
 	return "gateway:response:v1:" + hex.EncodeToString(h[:])
@@ -55,8 +92,11 @@ const lookup = `local n=redis.call('STRLEN',KEYS[1]); if n==0 or n>tonumber(ARGV
 
 func (r *Redis) Get(ctx context.Context, key string) (cache.Response, bool, error) {
 	start := time.Now()
-	ctx, cancel := context.WithTimeout(ctx, r.timeout)
-	defer cancel()
+	ctx, done, err := r.bound(ctx)
+	if err != nil {
+		return cache.Response{}, false, err
+	}
+	defer done()
 	values, err := r.client.Eval(ctx, lookup, []string{Key(key)}, MaxValue).Slice()
 	if err != nil {
 		return cache.Response{}, false, err
@@ -181,7 +221,10 @@ func (r *Redis) Put(ctx context.Context, key string, v cache.Response) error {
 	if err != nil || raw == nil {
 		return err
 	}
-	ctx, cancel := context.WithTimeout(ctx, r.timeout)
-	defer cancel()
+	ctx, done, err := r.bound(ctx)
+	if err != nil {
+		return err
+	}
+	defer done()
 	return r.client.Do(ctx, "SET", Key(key), raw, "PXAT", expiry.UnixMilli()).Err()
 }

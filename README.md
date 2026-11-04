@@ -3,7 +3,7 @@
 A learning project exploring a single-upstream reverse proxy, bounded caching,
 request coalescing, and overload protection. See the project plan for the full scope.
 
-## Current status: V1 complete; V2.0-V2.7 complete
+## Current status: V1 complete; V2.0-V2.7 complete; V3.0 implemented
 
 The gateway forwards ordinary HTTP requests to one fixed upstream using a shared
 connection pool, bounded LRU/TTL cache, request coalescing, and downstream concurrency
@@ -323,3 +323,16 @@ python bench/run-v27.py --complete
 
 Use `--quick --complete` for a shorter functional reproduction. See the final
 report for safe resume and the limits of the measurements.
+
+## V3.0 frozen baseline and configurable harness
+
+V2.7 is tagged `v2-final`. The [V3 plan](high_performance_api_gateway_v3_plan.md)
+targets measured wins for shared storage and leases. V3.0 adds a parameterized
+runner (modes, workload, rate list, backend delay/max-age, gateway count), fixed
+dependency-error cause counters, and per-fill/per-request cost columns:
+
+```powershell
+python bench/run-v3.py --quick --complete
+```
+
+See [V3.0 harness, counters and acceptance evidence](docs/v3/README.md).
