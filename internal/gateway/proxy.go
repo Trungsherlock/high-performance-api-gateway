@@ -45,11 +45,17 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 		return nil, nil, fmt.Errorf("cache admission requires coalescing and positive caps")
 	}
 	var coordinator sharedcache.Coordinator
+	var claimer sharedcache.AtomicCoordinator
 	if options.Lease != nil {
 		var ok bool
 		coordinator, ok = options.Shared.(sharedcache.Coordinator)
 		if !ok || !options.Coalesce || !options.Lease.valid() {
 			return nil, nil, fmt.Errorf("leases require shared coordinator, local coalescing and valid finite timing")
+		}
+		if options.Lease.Protocol == "v2" {
+			if claimer, ok = options.Shared.(sharedcache.AtomicCoordinator); !ok {
+				return nil, nil, fmt.Errorf("lease protocol v2 requires an atomic read-or-acquire coordinator")
+			}
 		}
 	}
 	if options.Lifecycle == nil {
@@ -90,6 +96,7 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 		}
 		if options.Lease != nil {
 			ct.leases = coordinator
+			ct.atomic = claimer
 			ct.lease = *options.Lease
 		}
 		if options.Coalesce {

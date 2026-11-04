@@ -724,6 +724,94 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
 - Qualified latency comparisons and limited timeout attribution to V3.1.
 - Documentation-only review; no application changes or benchmark reruns.
 
+### 2026-11-04 - V3.2 lease protocol v2
+
+- **Scope:** Third V3 milestone from the
+  [V3 plan](high_performance_api_gateway_v3_plan.md): cut leased mode's
+  coordination round trips, keep v1 selectable in the same binary, and compare
+  both protocols in the same blocks.
+- **Changes:**
+  - `internal/sharedcache/lease.go` adds `ReadOrAcquire`, a single Lua script
+    that keeps the lookup script's size and PTTL checks. It returns hit (value
+    and PTTL), owner (`SET NX PX` with a fresh 256-bit token) or wait.
+    - The script sits behind a new `AtomicCoordinator` interface, so v1 code and
+      fakes are unchanged.
+    - An undecodable value is reported unusable. The caller then claims again
+      with the read skipped, so an owner overwrites it.
+    - `newToken` is shared with v1's `Acquire`.
+  - `internal/gateway/lease.go`:
+    - One `claim` step per loop iteration: v1 reads then acquires, v2 runs the
+      script.
+    - v2 has no post-acquire recheck and skips the release only after an
+      acknowledged publish. Every other exit still releases by token.
+    - Followers poll with the same script.
+    - The lease start time is taken at the acquiring operation, so v1's
+      deadline is exactly as before.
+  - `-lease-protocol v1|v2` gateway flag and `LeaseOptions.Protocol`. v2
+    requires an `AtomicCoordinator`. After acceptance, the CLI default became
+    `v2`; the library zero value still means v1.
+  - Tests:
+    - 12 existing lease, degradation and publication tests now run under both
+      protocols (`forProtocols`).
+    - New: `claim_test.go` (atomic hit-or-acquire, unusable and oversize values,
+      stale v2 owner) and `lease_v2_test.go` (5 against 2 operations per fill,
+      corrupt value refilled without stall, recovery after an abandoned lease,
+      protocol validation).
+  - Harness:
+    - `run-v3.py` adds a `leased-v2` mode; `leased` passes v1 explicitly.
+    - `--complete` builds `bin/gateway-race` and runs the ten fault cases under
+      v1, v2 and v2 race. `--soak-mode` now defaults to `leased-v2`.
+    - `run-v26.py` gains `--lease-protocol`, defaulting to v1.
+    - `summarize-v3.py` adds Redis commands per fill (`total_commands_processed`
+      in the sampled window, net of the sampler's `INFO` calls), same-block
+      protocol contrasts and a rejection total.
+  - Docs: added `docs/v3/lease-protocol.md`, with predictions written before
+    the run. Updated the plan status, outcome and resume bullet, the README,
+    the V2 lease flag table, the V3 README, the bench README and the results
+    index.
+- **Evidence:** acceptance run `bench/results/v3/20261104-153628-v3` (`--complete
+  --trials 6 --soak-mode leased-v2`, 6 modes × 6 blocks), `SUCCESS`.
+  - Ops per fill: shared 2.00, leased 5.00, leased-v2 2.00.
+  - Redis commands per fill: shared 3.00, leased 12.01, leased-v2 8.01 (−33%).
+  - Same-block contrasts, against a floor of 0.72 ms p95 and 2.03 ms p99:
+    - leased-v2 − leased p95 **−2.11\*** ms [−2.95, −1.25], 0 of 6 blocks
+      slower; p99 **−3.77\*** ms;
+    - leased-v2 − shared p95 +0.07 ms, within the floor;
+    - leased − shared p95 +1.96\* ms.
+  - Backend work was identical to leased in every block (3 fewer than
+    local-two), with 3 distributed followers per block and 1 fill per cold
+    burst.
+  - All 36 steady trials had 0 503s and 0 dependency errors.
+  - leased-v2 soak: 150,000/150,000 successes, 0 errors, p99 55.44 ms, 2.003
+    ops per fill, gateway RSS 18.2 → 19.6–19.8 MiB.
+  - Predictions: 6 held. The p95 gain (−2.11 ms) fell below the predicted −2.5
+    to −3.5 ms, but closed the whole v1 gap to shared in this run (1.96 ms).
+    The plan's original "−60% Redis commands" was replaced by −33% before the
+    run, because V3.1's data showed Redis counts commands inside scripts. The
+    measured drop was −33.3%.
+- **Verification:**
+  - Before the run: `go build`, `go vet` and `gofmt -l` were clean. Ordinary
+    and race suites passed against a temporary Redis 7.4.2, with no skipped
+    real-Redis tests.
+  - The acceptance run's own checks: 10/10 ordinary and race packages; empty
+    vet, build and race-build logs; all ten fault cases in `faults/v1`,
+    `faults/v2` and `faults/v2-race`, with the same error causes per fault
+    under both protocols; and the source-only rebuild.
+  - Functional check `20261104-153406-v3` (`--quick`) passed.
+  - After the default switch, `go test ./cmd/gateway` passed.
+- **Decisions/limits:**
+  - The default switched to v2 after the acceptance run. That run's binaries
+    had the v1 default, but every mode passed its protocol explicitly.
+  - Like v1, v2 is one Redis authority with expiring tokens, not fencing. The
+    script touches two keys, so Redis Cluster would need a shared hash slot;
+    Cluster is out of scope.
+  - `mixed` still has no cross-node reuse, so V3.2 removed lease cost without
+    adding benefit; that is V3.3's job.
+  - Go files must stay LF (`.gitattributes`). Two files briefly became CRLF
+    through a Python edit and were restored before testing.
+  - Work is uncommitted.
+- **Report:** [V3.2 lease protocol v2](docs/v3/lease-protocol.md).
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title

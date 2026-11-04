@@ -17,6 +17,9 @@ import (
 )
 
 func TestDegradationPolicies(t *testing.T) {
+	forProtocols(t, testDegradationPolicies)
+}
+func testDegradationPolicies(t *testing.T, protocol string) {
 	for _, policy := range []string{"protection-first", "available-local"} {
 		for _, fault := range []string{"unavailable", "wait-timeout"} {
 			t.Run(policy+"/"+fault, func(t *testing.T) {
@@ -33,7 +36,7 @@ func TestDegradationPolicies(t *testing.T) {
 				}
 				local := cache.New(10, 1<<20, nil)
 				m := observe.New("test", nil, 0)
-				o := leaseSettings()
+				o := leaseSettingsFor(protocol)
 				o.Degradation = policy
 				o.WaitTimeout = 25 * time.Millisecond
 				h, tr, err := NewWithOptions(backend.URL, time.Second, local, Options{Shared: contendedCoordinator{store}, Lease: o, Coalesce: true, Metrics: m, MaxConcurrent: 1, CacheAdmission: &CacheAdmission{MaxFlights: 2, MaxWaiters: 4}})
@@ -85,6 +88,9 @@ func (publicationFault) Acquire(context.Context, string, time.Duration) (string,
 	return "owner", true, nil
 }
 func (publicationFault) Release(context.Context, string, string) (bool, error) { return true, nil }
+func (publicationFault) ReadOrAcquire(context.Context, string, time.Duration, bool) (sharedcache.Claim, cache.Response, string, error) {
+	return sharedcache.ClaimOwner, cache.Response{}, "owner", nil
+}
 func (s publicationFault) Publish(context.Context, string, string, cache.Response) (bool, error) {
 	if s.reject {
 		return false, nil
@@ -92,6 +98,9 @@ func (s publicationFault) Publish(context.Context, string, string, cache.Respons
 	return false, errors.New("ambiguous publication")
 }
 func TestPublicationDegradationNeverWarmsOrRefetches(t *testing.T) {
+	forProtocols(t, testPublicationDegradationNeverWarmsOrRefetches)
+}
+func testPublicationDegradationNeverWarmsOrRefetches(t *testing.T, protocol string) {
 	for _, policy := range []string{"protection-first", "available-local"} {
 		for _, reject := range []bool{false, true} {
 			t.Run(fmt.Sprint(policy, reject), func(t *testing.T) {
@@ -104,7 +113,7 @@ func TestPublicationDegradationNeverWarmsOrRefetches(t *testing.T) {
 				defer backend.Close()
 				local := cache.New(10, 1<<20, nil)
 				m := observe.New("test", nil, 0)
-				o := leaseSettings()
+				o := leaseSettingsFor(protocol)
 				o.Degradation = policy
 				h, tr, err := NewWithOptions(backend.URL, time.Second, local, Options{Shared: publicationFault{emptyStore{}, reject}, Lease: o, Coalesce: true, Metrics: m})
 				if err != nil {
@@ -208,16 +217,19 @@ func TestCacheAdmissionBoundsAndCancellation(t *testing.T) {
 	}
 }
 
-type committedReplyLost struct{ sharedcache.Coordinator }
+type committedReplyLost struct{ sharedcache.AtomicCoordinator }
 
 func (s committedReplyLost) Publish(ctx context.Context, key, token string, v cache.Response) (bool, error) {
-	ok, err := s.Coordinator.Publish(ctx, key, token, v)
+	ok, err := s.AtomicCoordinator.Publish(ctx, key, token, v)
 	if err != nil || !ok {
 		return ok, err
 	}
 	return false, errors.New("reply lost after commit")
 }
 func TestCommittedPublicationReplyLost(t *testing.T) {
+	forProtocols(t, testCommittedPublicationReplyLost)
+}
+func testCommittedPublicationReplyLost(t *testing.T, protocol string) {
 	shared := realCoordinator(t)
 	for _, policy := range []string{"protection-first", "available-local"} {
 		t.Run(policy, func(t *testing.T) {
@@ -230,7 +242,7 @@ func TestCommittedPublicationReplyLost(t *testing.T) {
 			defer backend.Close()
 			local := cache.New(10, 1<<20, nil)
 			m := observe.New("test", nil, 0)
-			o := leaseSettings()
+			o := leaseSettingsFor(protocol)
 			o.Degradation = policy
 			h, tr, err := NewWithOptions(backend.URL, time.Second, local, Options{Shared: committedReplyLost{shared}, Lease: o, Coalesce: true, Metrics: m})
 			if err != nil {
@@ -258,6 +270,9 @@ func TestCommittedPublicationReplyLost(t *testing.T) {
 	}
 }
 func TestAvailableLocalBackendTimeoutDoesNotRefetch(t *testing.T) {
+	forProtocols(t, testAvailableLocalBackendTimeoutDoesNotRefetch)
+}
+func testAvailableLocalBackendTimeoutDoesNotRefetch(t *testing.T, protocol string) {
 	var calls atomic.Int64
 	backend := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if calls.Add(1) == 1 {
@@ -269,7 +284,7 @@ func TestAvailableLocalBackendTimeoutDoesNotRefetch(t *testing.T) {
 	}))
 	defer backend.Close()
 	m := observe.New("test", nil, 0)
-	o := leaseSettings()
+	o := leaseSettingsFor(protocol)
 	o.Degradation = "available-local"
 	o.FillTimeout = 30 * time.Millisecond
 	h, tr, err := NewWithOptions(backend.URL, time.Second, nil, Options{Shared: publicationFault{emptyStore{}, false}, Lease: o, Coalesce: true, Metrics: m, MaxConcurrent: 1})

@@ -3,7 +3,7 @@
 A learning project exploring a single-upstream reverse proxy, bounded caching,
 request coalescing, and overload protection. See the project plan for the full scope.
 
-## Current status: V1 complete; V2.0-V2.7 complete; V3.0-V3.1 implemented
+## Current status: V1 complete; V2.0-V2.7 complete; V3.0-V3.2 implemented
 
 The gateway forwards ordinary HTTP requests to one fixed upstream using a shared
 connection pool, bounded LRU/TTL cache, request coalescing, and downstream concurrency
@@ -351,4 +351,23 @@ In the unpinned V3 baseline (5 blocks):
 
 The plan's CPU pinning made the floor larger on this laptop, so `--affinity`
 is opt-in. See [V3.1 noise floor and baseline](docs/v3/noise-floor.md).
+
+## V3.2 lease protocol v2
+
+Lease protocol v2 replaces leased mode's five Redis calls per cache fill (read,
+`SET NX`, recheck, publish, release) with two: one Lua script that returns the
+cached response or takes the lease, and the existing token-checked publish. The
+publish already deletes the lease, so v2 skips the release after it succeeds.
+
+In 6 same-block comparisons:
+- Redis commands per fill fell from 12.01 to 8.01.
+- Leased p95 fell 2.11 ms and p99 3.77 ms, with leased mode faster in all 6
+  blocks.
+- Leased mode now matches the shared tier within the noise floor (+0.07 ms p95
+  against a 0.72 ms floor).
+- Backend calls, cold-burst coordination and the ten fault cases were
+  unchanged.
+
+`-lease-protocol` now defaults to `v2`; `v1` remains selectable. See
+[V3.2 lease protocol v2](docs/v3/lease-protocol.md).
 

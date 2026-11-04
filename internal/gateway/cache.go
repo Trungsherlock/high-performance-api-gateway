@@ -27,6 +27,7 @@ type cacheTransport struct {
 	cache      *cache.Cache
 	shared     sharedcache.Store
 	leases     sharedcache.Coordinator
+	atomic     sharedcache.AtomicCoordinator // set only for lease protocol v2
 	lease      LeaseOptions
 	group      *coalesce.Group[sharedResult]
 	timeout    time.Duration

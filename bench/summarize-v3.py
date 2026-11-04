@@ -16,6 +16,14 @@ CAUSES=("timeout","pool_timeout","connection","other")
 def gateway_delta(after,before):
     return {k:sum(n["counters"][k]-o["counters"][k] for n,o in zip(after,before)) for k in after[0]["counters"]}
 
+def redis_commands(samples,start,end):
+    """Redis total_commands_processed inside the sampled measurement window, net of the
+    sampler's three INFO calls per interval, and per backend fill in the same window."""
+    rows=[s for s in samples if start<=s["epoch"]<=end and "redis" in s["processes"]]
+    if len(rows)<2:return None,None
+    commands=rows[-1]["processes"]["redis"]["commands"]-rows[0]["processes"]["redis"]["commands"]-3*(len(rows)-1)
+    return commands,ratio(commands,rows[-1]["backend"]["calls"]-rows[0]["backend"]["calls"])
+
 def summarize(folder,budget,row):
     samples=[json.loads(line) for line in (folder/row["resources"]).read_text().splitlines()]
     nodes=len(row["after"]["gateways"]);assert nodes==row["gateways"]
@@ -30,7 +38,7 @@ def summarize(folder,budget,row):
         r=row["output"][0];assert r["StatusCounts"]=={"200":100} and r["TransportErrors"]==0 and r["BodiesConsistent"],r
         backend=row["after"]["backend"]["calls"]-row["before"]["backend"]["calls"]
         # Controlled overlap: one fill per reached gateway unless leases coordinate them.
-        assert backend==(1 if row["mode"] in ("local-one","leased") else nodes),backend
+        assert backend==(1 if row["mode"] in ("local-one","leased","leased-v2") else nodes),backend
         counters=gateway_delta(row["after"]["gateways"],row["before"]["gateways"])
         assert counters["incoming"]==counters["completed"]==100 and counters["backend_attempts"]==backend
         return {"mode":row["mode"],"kind":"cold","trial":row["trial"],"gateways":nodes,"backend_calls":backend,"duration_seconds":r["ElapsedSeconds"],"local_followers":counters["local_followers"],"distributed_followers":counters["distributed_followers"],"power":row.get("power")}
@@ -55,6 +63,7 @@ def summarize(folder,budget,row):
     dependencies=sum(after[n]["histograms"]["cache_dependency"]["Count"]-before[n]["histograms"]["cache_dependency"]["Count"] for n in gateways)
     backend=counters["backend_attempts"]
     start=datetime.fromisoformat(r["StartUTC"]).timestamp();end=start+r["ElapsedSeconds"]
+    commands,commands_per_fill=redis_commands(samples,start,end)
     return {"mode":row["mode"],"kind":row["kind"],"rate":row["rate"],"trial":row["trial"],"gateways":nodes,"offered":r["Offered"],"sent":r["Sent"],"success":r["Success"],"successful_rps":r["Success"]/r["ElapsedSeconds"],
             "generator_drops":r["GeneratorDrops"],"late_arrivals":r["LateArrivals"],"transport_errors":r["TransportErrors"],"rejected":r["Rejected"],"rejection_reasons":r["RejectionReasons"],"degraded_reasons":r.get("DegradedReasons",{}),"front_unavailable":front["Unavailable"],
             "send_latency_ms":r["SendLatencyMS"],"scheduled_latency_ms":r["ScheduledLatencyMS"],"scheduling_lag_ms":r["SchedulingLagMS"],"backend_calls":backend,"backend_peak_process_lifetime":after["backend"]["peak"],
@@ -63,6 +72,7 @@ def summarize(folder,budget,row):
             "dependency_operations":dependencies,"dependency_errors":counters["dependency_errors"],"dependency_error_causes":causes,
             # Each backend call is one fill in these eligible-GET workloads; requests are client requests sent.
             "dependency_ops_per_fill":ratio(dependencies,backend),"dependency_ops_per_request":ratio(dependencies,r["Sent"]),"backend_calls_per_request":ratio(backend,r["Sent"]),
+            "redis_commands":commands,"redis_commands_per_fill":commands_per_fill,
             "local_followers":counters["local_followers"],"distributed_followers":counters["distributed_followers"],"degraded_flights":counters["degraded_flights"],"resources":final.resources(samples,start,end),"power":row.get("power")}
 
 def spread(values):
@@ -72,42 +82,56 @@ def spread(values):
 METRICS=[("successful_rps",lambda x:x["successful_rps"]),("send_p50_ms",lambda x:x["send_latency_ms"]["p50"]),("send_p95_ms",lambda x:x["send_latency_ms"]["p95"]),
          ("send_p99_ms",lambda x:x["send_latency_ms"]["p99"]),("scheduled_p99_ms",lambda x:x["scheduled_latency_ms"]["p99"]),("backend_calls",lambda x:x["backend_calls"]),
          ("dependency_operations",lambda x:x["dependency_operations"]),("l1_hit_ratio",lambda x:x["l1_hit_ratio"]),("shared_lookup_hit_ratio",lambda x:x["shared_lookup_hit_ratio"]),
-         ("dependency_ops_per_fill",lambda x:x["dependency_ops_per_fill"]),("dependency_ops_per_request",lambda x:x["dependency_ops_per_request"]),("backend_calls_per_request",lambda x:x["backend_calls_per_request"])]
+         ("dependency_ops_per_fill",lambda x:x["dependency_ops_per_fill"]),("dependency_ops_per_request",lambda x:x["dependency_ops_per_request"]),("backend_calls_per_request",lambda x:x["backend_calls_per_request"]),
+         ("redis_commands_per_fill",lambda x:x.get("redis_commands_per_fill"))]
 COUNTS=("generator_drops","late_arrivals","transport_errors","rejected","dependency_errors","front_unavailable")
 PAIRED=[m for m in METRICS if m[0] in ("send_p50_ms","send_p95_ms","send_p99_ms","scheduled_p99_ms","backend_calls")]
 
+# Direct same-block contrasts for the V3.2 protocol comparison, judged against the same A/A floor.
+CONTRASTS=(("leased-v2","leased"),("leased-v2","shared"),("leased","shared"))
+
+def differences(steady,mode,base):
+    blocks=sorted(t for m,t in steady if m==mode and (base,t) in steady)
+    return blocks,{key:[fn(steady[mode,t])-fn(steady[base,t]) for t in blocks] for key,fn in PAIRED}
+
+def compare(blocks,d,floor,judge=True):
+    out={"blocks":blocks}
+    for key,_ in PAIRED:
+        # Effect only if the median paired difference exceeds every A/A difference seen.
+        out[key]={"per_block":d[key],**spread(d[key]),"positive_blocks":sum(v>0 for v in d[key]),
+                  "beyond_noise":abs(statistics.median(d[key]))>floor[key]["max_abs"] if floor and judge else None}
+    return out
+
 def paired(results,rate,modes):
-    """Per-block differences from local-two at one rate, and the A/A noise floor when local-two-aa ran."""
+    """Per-block differences from local-two at one rate, the A/A noise floor when local-two-aa
+    ran, and the protocol contrasts between Redis modes."""
     steady={(v["mode"],v["trial"]):v for v in results if v["kind"]=="steady" and v["rate"]==rate}
     diffs={}
     for mode in modes:
-        blocks=sorted(t for m,t in steady if m==mode and ("local-two",t) in steady)
-        if mode!="local-two" and blocks:
-            diffs[mode]={"blocks":blocks,**{key:[fn(steady[mode,t])-fn(steady["local-two",t]) for t in blocks] for key,fn in PAIRED}}
+        blocks,d=differences(steady,mode,"local-two")
+        if mode!="local-two" and blocks:diffs[mode]=(blocks,d)
     floor=None
     if "local-two-aa" in diffs:
-        aa=diffs["local-two-aa"]
-        floor={key:{"max_abs":max(abs(d) for d in aa[key]),"median_abs":statistics.median(abs(d) for d in aa[key]),"blocks":len(aa["blocks"])} for key,_ in PAIRED}
-    out={}
-    for mode,d in diffs.items():
-        out[mode]={"blocks":d["blocks"]}
-        for key,_ in PAIRED:
-            # Effect only if the median paired difference exceeds every A/A difference seen.
-            out[mode][key]={"per_block":d[key],**spread(d[key]),"positive_blocks":sum(v>0 for v in d[key]),
-                            "beyond_noise":abs(statistics.median(d[key]))>floor[key]["max_abs"] if floor and mode!="local-two-aa" else None}
-    return out,floor
+        blocks,aa=diffs["local-two-aa"]
+        floor={key:{"max_abs":max(abs(v) for v in aa[key]),"median_abs":statistics.median(abs(v) for v in aa[key]),"blocks":len(blocks)} for key,_ in PAIRED}
+    out={mode:compare(blocks,d,floor,mode!="local-two-aa") for mode,(blocks,d) in diffs.items()}
+    contrasts={}
+    for mode,base in CONTRASTS:
+        blocks,d=differences(steady,mode,base)
+        if mode in modes and base in modes and blocks:contrasts[f"{mode} - {base}"]=compare(blocks,d,floor)
+    return out,floor,contrasts
 
 def label(key):return key.removesuffix("_ms").removeprefix("send_").replace("scheduled_","sched ").replace("_"," ")
 
-def table(groups,cold,pairs,floors):
+def table(groups,cold,pairs,floors,contrasts):
     def median(g,key,spec):
         return format(g[key]["median"],spec) if g[key] else "-"
     print("Medians across steady trials; dependency errors by cause (timeout/pool/connection/other) are totals.")
-    print(f"{'rate':>6} {'mode':<12} {'n':>2} {'ok rps':>8} {'p95 ms':>7} {'p99 ms':>7} {'backend':>8} {'ops/fill':>8} {'ops/req':>7} {'dep errors':>11}")
+    print(f"{'rate':>6} {'mode':<12} {'n':>2} {'ok rps':>8} {'p95 ms':>7} {'p99 ms':>7} {'backend':>8} {'ops/fill':>8} {'ops/req':>7} {'cmd/fill':>8} {'rejected':>8} {'dep errors':>11}")
     for rate,modes in groups.items():
         for mode,g in modes.items():
             causes="/".join(str(g["dependency_error_causes"][k]) for k in CAUSES)
-            print(f"{rate:>6} {mode:<12} {g['trials']:>2} {median(g,'successful_rps','.2f'):>8} {median(g,'send_p95_ms','.2f'):>7} {median(g,'send_p99_ms','.2f'):>7} {median(g,'backend_calls','.0f'):>8} {median(g,'dependency_ops_per_fill','.2f'):>8} {median(g,'dependency_ops_per_request','.3f'):>7} {causes:>11}")
+            print(f"{rate:>6} {mode:<12} {g['trials']:>2} {median(g,'successful_rps','.2f'):>8} {median(g,'send_p95_ms','.2f'):>7} {median(g,'send_p99_ms','.2f'):>7} {median(g,'backend_calls','.0f'):>8} {median(g,'dependency_ops_per_fill','.2f'):>8} {median(g,'dependency_ops_per_request','.3f'):>7} {median(g,'redis_commands_per_fill','.2f'):>8} {sum(g['rejected']):>8} {causes:>11}")
         floor=floors.get(rate)
         if floor:
             print(f"  noise floor at {rate}/s, largest |local-two-aa - local-two| over {floor['send_p95_ms']['blocks']} blocks: "+", ".join(f"{label(k)} {v['max_abs']:.2f}" for k,v in floor.items()))
@@ -117,6 +141,9 @@ def table(groups,cold,pairs,floors):
             for mode,d in pairs[rate].items():
                 cells=[f"{label(k)} {d[k]['median']:+.2f}{'*' if d[k]['beyond_noise'] else ''} [{d[k]['min']:+.2f}, {d[k]['max']:+.2f}]" for k,_ in PAIRED]
                 print(f"    {mode:<13}"+"  ".join(cells))
+        for name,d in contrasts.get(rate,{}).items():
+            cells=[f"{label(k)} {d[k]['median']:+.2f}{'*' if d[k]['beyond_noise'] else ''} [{d[k]['min']:+.2f}, {d[k]['max']:+.2f}]" for k,_ in PAIRED]
+            print(f"  contrast {name}: "+"  ".join(cells))
     for mode,calls in cold.items():
         print(f"cold {mode}: backend calls by trial {calls}")
 
@@ -137,13 +164,13 @@ def main():
             groups.setdefault(str(rate),{})[mode]=group
     cold={mode:[v["backend_calls"] for v in results if v["kind"]=="cold" and v["mode"]==mode] for mode in settings["modes"]}
     cold={k:v for k,v in cold.items() if v}
-    pairs,floors={},{}
+    pairs,floors,contrasts={},{},{}
     for rate in groups:
-        pairs[rate],floors[rate]=paired(results,int(rate),settings["modes"])
+        pairs[rate],floors[rate],contrasts[rate]=paired(results,int(rate),settings["modes"])
     power=[v["power"] for v in results if v["power"]];battery=sum(p["ac_online"] is not True for p in power)
     host={"affinity":manifest.get("affinity"),"power_at_start":manifest.get("power"),"trials_with_power_record":len(power),"trials_not_on_ac":battery}
-    (folder/"summary.json").write_text(json.dumps({"groups":groups,"paired_vs_local_two":pairs,"noise_floor":floors,"cold_backend_calls":cold,"host":host,"trials":results},indent=2))
-    table(groups,cold,pairs,floors)
+    (folder/"summary.json").write_text(json.dumps({"groups":groups,"paired_vs_local_two":pairs,"paired_contrasts":contrasts,"noise_floor":floors,"cold_backend_calls":cold,"host":host,"trials":results},indent=2))
+    table(groups,cold,pairs,floors,contrasts)
     if host["affinity"]:print("CPU sets:",", ".join(f"{k} {v}" for k,v in host["affinity"]["groups"].items()))
     else:print("CPU sets: none (processes unpinned)")
     if power:print(f"Power: {len(power)} trials recorded, {battery} not confirmed on AC; plan at start {manifest['power'].get('power_plan')}")

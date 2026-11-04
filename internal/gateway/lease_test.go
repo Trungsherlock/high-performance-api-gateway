@@ -20,6 +20,18 @@ import (
 func leaseSettings() *LeaseOptions {
 	return &LeaseOptions{Duration: time.Second, FillTimeout: 700 * time.Millisecond, WaitTimeout: 2 * time.Second, PollInterval: 5 * time.Millisecond, Margin: 100 * time.Millisecond}
 }
+func leaseSettingsFor(protocol string) *LeaseOptions {
+	o := leaseSettings()
+	o.Protocol = protocol
+	return o
+}
+
+// forProtocols runs a lease test under both protocols, which must behave alike.
+func forProtocols(t *testing.T, test func(*testing.T, string)) {
+	for _, protocol := range []string{"v1", "v2"} {
+		t.Run(protocol, func(t *testing.T) { test(t, protocol) })
+	}
+}
 func realCoordinator(t *testing.T) *sharedcache.Redis {
 	t.Helper()
 	addr := os.Getenv("REDIS_TEST_ADDR")
@@ -45,6 +57,9 @@ func waitCondition(t *testing.T, fn func() bool) {
 	t.Fatal("condition deadline")
 }
 func TestLeaseBurstAcrossGateways(t *testing.T) {
+	forProtocols(t, testLeaseBurstAcrossGateways)
+}
+func testLeaseBurstAcrossGateways(t *testing.T, protocol string) {
 	shared := realCoordinator(t)
 	entered := make(chan struct{}, 2)
 	release := make(chan struct{})
@@ -67,7 +82,7 @@ func TestLeaseBurstAcrossGateways(t *testing.T) {
 	var metrics []*observe.Metrics
 	for i := 0; i < 2; i++ {
 		m := observe.New(fmt.Sprint(i), nil, 0)
-		o := leaseSettings()
+		o := leaseSettingsFor(protocol)
 		o.FillTimeout = 2 * time.Second
 		o.Duration = 3 * time.Second
 		h, tr, err := NewWithOptions(backend.URL, 4*time.Second, cache.New(10, 1<<20, nil), Options{Shared: shared, Lease: o, Coalesce: true, Metrics: m})
@@ -113,24 +128,27 @@ func TestLeaseBurstAcrossGateways(t *testing.T) {
 	}
 }
 
-type replaceOwner struct{ sharedcache.Coordinator }
+type replaceOwner struct{ sharedcache.AtomicCoordinator }
 
 func (s replaceOwner) Publish(ctx context.Context, key, token string, v cache.Response) (bool, error) {
-	if _, err := s.Coordinator.Release(ctx, key, token); err != nil {
+	if _, err := s.AtomicCoordinator.Release(ctx, key, token); err != nil {
 		return false, err
 	}
-	next, ok, err := s.Coordinator.Acquire(ctx, key, time.Second)
+	next, ok, err := s.AtomicCoordinator.Acquire(ctx, key, time.Second)
 	if err != nil || !ok {
 		return false, fmt.Errorf("replacement acquisition: %v", err)
 	}
 	newer := v
 	newer.Body = []byte("new-version")
-	if ok, err := s.Coordinator.Publish(ctx, key, next, newer); err != nil || !ok {
+	if ok, err := s.AtomicCoordinator.Publish(ctx, key, next, newer); err != nil || !ok {
 		return false, fmt.Errorf("replacement publication: %v", err)
 	}
-	return s.Coordinator.Publish(ctx, key, token, v)
+	return s.AtomicCoordinator.Publish(ctx, key, token, v)
 }
 func TestRejectedLeasePublicationNeverWarmsLocal(t *testing.T) {
+	forProtocols(t, testRejectedLeasePublicationNeverWarmsLocal)
+}
+func testRejectedLeasePublicationNeverWarmsLocal(t *testing.T, protocol string) {
 	shared := realCoordinator(t)
 	var calls atomic.Int64
 	backend := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -141,7 +159,7 @@ func TestRejectedLeasePublicationNeverWarmsLocal(t *testing.T) {
 	defer backend.Close()
 	local := cache.New(10, 1<<20, nil)
 	m := observe.New("test", nil, 0)
-	h, tr, err := NewWithOptions(backend.URL, 3*time.Second, local, Options{Shared: replaceOwner{shared}, Lease: leaseSettings(), Coalesce: true, Metrics: m})
+	h, tr, err := NewWithOptions(backend.URL, 3*time.Second, local, Options{Shared: replaceOwner{shared}, Lease: leaseSettingsFor(protocol), Coalesce: true, Metrics: m})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -168,6 +186,12 @@ func (contendedCoordinator) Acquire(context.Context, string, time.Duration) (str
 	return "", false, nil
 }
 func (contendedCoordinator) Release(context.Context, string, string) (bool, error) { return false, nil }
+
+// ReadOrAcquire fails like the store's read would, and otherwise always finds another owner.
+func (s contendedCoordinator) ReadOrAcquire(ctx context.Context, key string, _ time.Duration, _ bool) (sharedcache.Claim, cache.Response, string, error) {
+	_, _, err := s.Store.Get(ctx, key)
+	return sharedcache.ClaimWait, cache.Response{}, "", err
+}
 func (contendedCoordinator) Publish(context.Context, string, string, cache.Response) (bool, error) {
 	panic("nonowner published")
 }
@@ -179,6 +203,9 @@ func (emptyStore) Get(context.Context, string) (cache.Response, bool, error) {
 }
 func (emptyStore) Put(context.Context, string, cache.Response) error { return nil }
 func TestLeaseWaitBoundAndFailure(t *testing.T) {
+	forProtocols(t, testLeaseWaitBoundAndFailure)
+}
+func testLeaseWaitBoundAndFailure(t *testing.T, protocol string) {
 	for _, failure := range []bool{false, true} {
 		t.Run(fmt.Sprint(failure), func(t *testing.T) {
 			var store sharedcache.Store = emptyStore{}
@@ -186,7 +213,7 @@ func TestLeaseWaitBoundAndFailure(t *testing.T) {
 				store = unavailableStore{}
 			}
 			m := observe.New("test", nil, 0)
-			o := leaseSettings()
+			o := leaseSettingsFor(protocol)
 			o.WaitTimeout = 30 * time.Millisecond
 			h, tr, err := NewWithOptions("http://127.0.0.1:1", time.Second, nil, Options{Shared: contendedCoordinator{store}, Lease: o, Coalesce: true, Metrics: m})
 			if err != nil {
@@ -215,6 +242,9 @@ func TestLeaseWaitBoundAndFailure(t *testing.T) {
 	}
 }
 func TestLeaseCallerCancellationDoesNotCancelOtherGateway(t *testing.T) {
+	forProtocols(t, testLeaseCallerCancellationDoesNotCancelOtherGateway)
+}
+func testLeaseCallerCancellationDoesNotCancelOtherGateway(t *testing.T, protocol string) {
 	shared := realCoordinator(t)
 	entered := make(chan struct{})
 	release := make(chan struct{})
@@ -237,7 +267,7 @@ func TestLeaseCallerCancellationDoesNotCancelOtherGateway(t *testing.T) {
 	var metrics []*observe.Metrics
 	for i := 0; i < 2; i++ {
 		m := observe.New("test", nil, 0)
-		o := leaseSettings()
+		o := leaseSettingsFor(protocol)
 		o.Duration = 3 * time.Second
 		o.FillTimeout = 2 * time.Second
 		h, tr, err := NewWithOptions(backend.URL, 4*time.Second, nil, Options{Shared: shared, Lease: o, Coalesce: true, Metrics: m})
@@ -291,6 +321,9 @@ func TestInvalidLeaseOptions(t *testing.T) {
 }
 
 func TestLeaseUnshareableStreamingFallback(t *testing.T) {
+	forProtocols(t, testLeaseUnshareableStreamingFallback)
+}
+func testLeaseUnshareableStreamingFallback(t *testing.T, protocol string) {
 	shared := realCoordinator(t)
 	for _, kind := range []string{"private", "large"} {
 		t.Run(kind, func(t *testing.T) {
@@ -308,7 +341,7 @@ func TestLeaseUnshareableStreamingFallback(t *testing.T) {
 			defer backend.Close()
 			local := cache.New(10, 1<<20, nil)
 			m := observe.New("test", nil, 0)
-			h, tr, err := NewWithOptions(backend.URL, 3*time.Second, local, Options{Shared: shared, Lease: leaseSettings(), Coalesce: true, Metrics: m})
+			h, tr, err := NewWithOptions(backend.URL, 3*time.Second, local, Options{Shared: shared, Lease: leaseSettingsFor(protocol), Coalesce: true, Metrics: m})
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -337,6 +370,9 @@ func TestLeaseUnshareableStreamingFallback(t *testing.T) {
 	}
 }
 func TestLeaseOwnerTimeoutReleasesForNextRequest(t *testing.T) {
+	forProtocols(t, testLeaseOwnerTimeoutReleasesForNextRequest)
+}
+func testLeaseOwnerTimeoutReleasesForNextRequest(t *testing.T, protocol string) {
 	shared := realCoordinator(t)
 	var calls atomic.Int64
 	backend := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -348,7 +384,7 @@ func TestLeaseOwnerTimeoutReleasesForNextRequest(t *testing.T) {
 		io.WriteString(w, "recovered")
 	}))
 	defer backend.Close()
-	o := leaseSettings()
+	o := leaseSettingsFor(protocol)
 	o.FillTimeout = 50 * time.Millisecond
 	m := observe.New("test", nil, 0)
 	h, tr, err := NewWithOptions(backend.URL, 3*time.Second, nil, Options{Shared: shared, Lease: o, Coalesce: true, Metrics: m})
@@ -407,10 +443,13 @@ func TestLeaseRechecksAfterAcquiring(t *testing.T) {
 	}
 }
 func TestLeaseFreshLocalHitSurvivesDependencyFailure(t *testing.T) {
+	forProtocols(t, testLeaseFreshLocalHitSurvivesDependencyFailure)
+}
+func testLeaseFreshLocalHitSurvivesDependencyFailure(t *testing.T, protocol string) {
 	local := cache.New(10, 1<<20, nil)
 	local.Put(`http://127.0.0.1:1/api/public/item|""|""|""`, cache.Response{Header: http.Header{"Cache-Control": {"public, max-age=10"}}, Body: []byte("fresh"), ExpiresAt: time.Now().Add(time.Second)})
 	m := observe.New("test", nil, 0)
-	h, tr, err := NewWithOptions("http://127.0.0.1:1", time.Second, local, Options{Shared: contendedCoordinator{unavailableStore{}}, Lease: leaseSettings(), Coalesce: true, Metrics: m})
+	h, tr, err := NewWithOptions("http://127.0.0.1:1", time.Second, local, Options{Shared: contendedCoordinator{unavailableStore{}}, Lease: leaseSettingsFor(protocol), Coalesce: true, Metrics: m})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -432,9 +471,16 @@ func (expiringAcquire) Acquire(ctx context.Context, _ string, _ time.Duration) (
 	<-ctx.Done()
 	return "", false, ctx.Err()
 }
+func (expiringAcquire) ReadOrAcquire(ctx context.Context, _ string, _ time.Duration, _ bool) (sharedcache.Claim, cache.Response, string, error) {
+	<-ctx.Done()
+	return sharedcache.ClaimWait, cache.Response{}, "", ctx.Err()
+}
 func TestLeaseAcquisitionDeadlineReason(t *testing.T) {
+	forProtocols(t, testLeaseAcquisitionDeadlineReason)
+}
+func testLeaseAcquisitionDeadlineReason(t *testing.T, protocol string) {
 	m := observe.New("test", nil, 0)
-	o := leaseSettings()
+	o := leaseSettingsFor(protocol)
 	o.WaitTimeout = 20 * time.Millisecond
 	h, tr, err := NewWithOptions("http://127.0.0.1:1", time.Second, nil, Options{Shared: expiringAcquire{contendedCoordinator{emptyStore{}}}, Lease: o, Coalesce: true, Metrics: m})
 	if err != nil {

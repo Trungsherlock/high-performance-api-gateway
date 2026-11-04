@@ -199,3 +199,17 @@ the run's `logs.zip` with `pack_logs.py`. That cuts the file count about
 fivefold. Summaries read only `manifest.json`, `trials.jsonl` and
 `*-resources.jsonl`. To pack an existing folder, run
 `python bench/pack_logs.py <run>`.
+
+## V3.2 lease protocol v2
+
+The `leased-v2` mode runs the gateway with `-lease-protocol v2` in the same
+blocks as `leased`, which stays on v1. The summary adds:
+- `cmd/fill`: Redis `total_commands_processed` per backend fill, net of the
+  sampler's `INFO` calls;
+- same-block contrasts (`leased-v2 − leased`, `leased-v2 − shared`,
+  `leased − shared`) against the A/A floor;
+- a total-rejections column.
+
+`--complete` runs the ten fault cases under v1, v2 and v2 with a race-built
+gateway. `run-v26.py --lease-protocol v2` runs them on their own. See
+[V3.2 lease protocol](../docs/v3/lease-protocol.md).

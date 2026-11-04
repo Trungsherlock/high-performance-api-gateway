@@ -2,7 +2,8 @@
 
 **Status:** V3.0 implemented: [harness, error causes and derived costs](docs/v3/README.md).
 V3.1 implemented: [noise floor and V3 baseline](docs/v3/noise-floor.md).
-V3.2–V3.6 planned.
+V3.2 implemented: [lease protocol v2](docs/v3/lease-protocol.md).
+V3.3–V3.6 planned.
 
 **Baseline:** V2.7 final study [`20261103-224701-v27`](bench/results/v2/20261103-224701-v27/summary.json),
 reported in [docs/v2/final.md](docs/v2/final.md). V1 and V2 results stay unchanged.
@@ -146,6 +147,16 @@ which puts the leased−shared gap that V3.2 targets at about 2.5 ms.
   Report operations per fill, paired p95/p99 differences, and 503 counts with causes.
 - If the p95 gap does not shrink as predicted, report that. Find the remaining
   cost (polling, pool waits, scheduling) before starting V3.3.
+
+**Outcome:** Accepted, and `-lease-protocol` now defaults to `v2`.
+- Operations per fill fell from 5.00 to 2.00, the same as shared.
+- Redis commands per fill fell from 12.01 to 8.01 (−33%). The ~60% above
+  assumed one command per operation, but Redis also counts the commands a
+  script runs.
+- In the same blocks, leased p95 fell 2.11 ms and p99 3.77 ms, slower in none
+  of 6 blocks. Leased-v2 is within the noise floor of shared (+0.07 ms p95,
+  0.72 ms floor).
+- There were zero 503s, and all 30 fault runs passed (v1, v2, v2 race).
 
 ### V3.3 — Workloads with cross-node reuse
 
@@ -314,8 +325,9 @@ V3.3 is the next most valuable, because it gives the shared tier something to do
 
 Fill these only from measured results:
 
-- Cut Redis round trips per cache fill from 5 to [measured] with an atomic Lua
-  read-or-acquire script, removing [measured] ms from leased p95.
+- Cut Redis round trips per cache fill from 5 to 2 with an atomic Lua
+  read-or-acquire script, removing 2.1 ms from leased p95 (3.8 ms at p99) and
+  matching the shared tier within a 0.7 ms noise floor. Measured in V3.2.
 - Reduced backend calls by [measured]% across 2 gateways with a shared Redis
   tier on a Zipf workload, raising capacity at a p99 SLO from [X] to [Y] req/s
   under the same backend budget.

@@ -125,7 +125,7 @@ class Topology:
     def gateway(self,i):
         command=[ROOT/"bin"/(("gateway-race" if self.args.race else "gateway")+SUFFIX),"-addr",f"127.0.0.1:{self.data[i]}","-admin-addr",f"127.0.0.1:{self.admin[i]}",
                  "-upstream",f"http://127.0.0.1:{self.backend}","-cache-mode","layered","-leases","-redis-addr",f"127.0.0.1:{self.redis_port}",
-                 "-redis-timeout","50ms","-degradation",self.policy,"-instance",f"v26-{i}","-request-log-every","1",
+                 "-redis-timeout","50ms","-degradation",self.policy,"-lease-protocol",getattr(self.args,"lease_protocol","v1"),"-instance",f"v26-{i}","-request-log-every","1",
                  "-lease-duration","1s","-lease-fill-timeout","600ms","-lease-wait","500ms","-lease-poll","10ms",
                  "-max-concurrent","16","-max-waiters","16","-max-cache-flights","16","-max-cache-waiters","128"]
         process=self.launch(command,f"gateway-{i}");self.ready(self.admin[i],process);return process
@@ -256,6 +256,7 @@ def main():
     parser.add_argument("--wsl",default="Ubuntu" if os.name=="nt" else None)
     parser.add_argument("--trials",type=int,default=1)
     parser.add_argument("--race",action="store_true",help="use prebuilt bin/gateway-race[.exe] with halt_on_error")
+    parser.add_argument("--lease-protocol",default="v1",choices=("v1","v2"),help="gateway lease protocol; v1 reproduces V2.6")
     parser.add_argument("--results",type=Path,default=Path("bench/results/v2"),help="parent directory for the timestamped artifact folder, inside this checkout")
     args=parser.parse_args()
     if not 1<=args.trials<=20:parser.error("trials must be 1..20")
@@ -266,7 +267,7 @@ def main():
     binaries=[ROOT/"bin"/(n+SUFFIX) for n in (("gateway-race" if args.race else "gateway"),"mockbackend","burst")]
     manifest={"time":datetime.now(timezone.utc).isoformat(),"platform":platform.platform(),"python":platform.python_version(),"go":subprocess.check_output(["go","version"],text=True).strip(),
               "commit":subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),"dirty":bool(subprocess.check_output(["git","status","--porcelain"],cwd=ROOT,text=True)),
-              "gateway_race":args.race,"gateway_build_info":subprocess.check_output(["go","version","-m",str(binaries[0])],text=True),"redis_server":args.redis_server,"wsl":args.wsl,"trials":args.trials,"redis_version":"7.4.2","redis_policy":"noeviction","redis_memory":64*1024*1024,
+              "gateway_race":args.race,"lease_protocol":args.lease_protocol,"gateway_build_info":subprocess.check_output(["go","version","-m",str(binaries[0])],text=True),"redis_server":args.redis_server,"wsl":args.wsl,"trials":args.trials,"redis_version":"7.4.2","redis_policy":"noeviction","redis_memory":64*1024*1024,
               "workload":"two gateways, 16 permits and queue slots each, 16 cache flights and 128 cache-miss clients each; 50ms backend; dependency timeout 50ms",
               "hashes":{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sources+binaries}}
     (folder/"manifest.json").write_text(json.dumps(manifest,indent=2))

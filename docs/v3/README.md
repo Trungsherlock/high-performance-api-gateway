@@ -4,8 +4,12 @@ V3.0 prepares the measurements the [V3 plan](../../high_performance_api_gateway_
 needs. It does not change caching, coalescing, admission or lease behavior.
 
 V3.1 adds an A/A control, paired differences, CPU pinning and power records. It
-also reruns the four-mode baseline: see [noise-floor.md](noise-floor.md). The
-options table below shows current defaults.
+also reruns the four-mode baseline: see [noise-floor.md](noise-floor.md).
+
+V3.2 adds lease protocol v2 and the `leased-v2` mode: see
+[lease-protocol.md](lease-protocol.md).
+
+The options table below shows current defaults.
 
 ## Baseline
 
@@ -32,7 +36,7 @@ python bench/summarize-v3.py bench/results/v3/<run>
 
 | Option | Default | Meaning |
 |---|---|---|
-| `--modes` | `local-one,local-two,shared,leased,local-two-aa` | Modes to compare, rotated per trial block; `local-two-aa` is the V3.1 A/A copy |
+| `--modes` | `local-one,local-two,shared,leased,leased-v2,local-two-aa` | Modes to compare, rotated per trial block. `local-two-aa` is the V3.1 A/A copy; `leased-v2` is the V3.2 lease protocol (`leased` stays on v1) |
 | `--workload` | `mixed` | Generator workload: `hot`, `mixed` or `unique` |
 | `--rates` | `500` | Scheduled arrivals/sec; every rate gets its own trial blocks |
 | `--gateways` | `2` | Gateways for every mode except `local-one`: 2, 4 or 8 |
@@ -41,7 +45,7 @@ python bench/summarize-v3.py bench/results/v3/<run>
 | `--concurrency` | `256` | Generator in-flight requests and connections |
 | `--seconds` / `--warmup` / `--trials` | `30` / `5` / `5` | Steady-trial shape (V3.0 defaulted to 3 trials) |
 | `--affinity` | `off` | V3.1 CPU sets: `off`, `auto`, or `generator=..;gateways=..;support=..`. `auto` measured noisier than `off` on this laptop |
-| `--cold-trials` / `--soak` / `--soak-mode` | `3` / `300` / `leased` | Cold bursts and the soak |
+| `--cold-trials` / `--soak` / `--soak-mode` | `3` / `300` / `leased-v2` | Cold bursts and the soak (soak mode was `leased` before V3.2) |
 | `--resume <run>` | — | Continue an interrupted run with identical settings and hashes |
 
 These stay fixed across runs and are recorded under `budget` in each manifest:
@@ -52,13 +56,15 @@ These stay fixed across runs and are recorded under `budget` in each manifest:
 
 `--gateways` is limited to 2, 4 or 8 so those budgets divide evenly. `local-two`
 keeps its V2.7 name and means independent local-only gateways, however many
-`--gateways` selects. Cold bursts assert one backend fill for `local-one` and
-`leased`, and one fill per gateway for `local-two` and `shared`.
+`--gateways` selects. Cold bursts assert one backend fill for `local-one`,
+`leased` and `leased-v2`, and one fill per gateway for `local-two` and `shared`.
 
 `--complete` does three things:
 - reuses the V2.7 ordinary, race, vet and build checks;
 - runs the ten V2.6 fault cases into the run's `faults/` folder (`run-v26.py`
-  gained `--results`; its default is still `bench/results/v2`);
+  gained `--results`; its default is still `bench/results/v2`). From V3.2, it
+  builds `bin/gateway-race` and runs them three times: lease protocol v1, v2,
+  and v2 with the race detector, into `faults/v1`, `faults/v2` and `faults/v2-race`;
 - rebuilds a source-only snapshot and smoke-tests it with the same topology and workload.
 
 ## Dependency-error causes

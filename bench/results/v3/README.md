@@ -11,6 +11,8 @@
 | [20261104-051315-v3](20261104-051315-v3/summary.json) | **V3 baseline**: `--complete`, unpinned, 5 modes × 5 blocks, cold bursts, soak, tests, faults, clean rebuild | SUCCESS; floor 0.40/2.63 ms; paired p95 shared +1.93, leased +4.39 ms |
 | [20261104-053815-v3](20261104-053815-v3/summary.json) | V3.1 diagnostic: auto layout with backend and front off CPU 0's core | SUCCESS; floor 1.14/53.01 ms, no front 503s |
 | [20261104-070718-v3](20261104-070718-v3/summary.json) | `--quick` check that the harness packs logs into `logs.zip` | SUCCESS; 70 files reduced to 14 |
+| [20261104-153406-v3](20261104-153406-v3/summary.json) | V3.2 `--quick` functional check with `leased-v2` | SUCCESS; 2.00 ops per fill, cold fill 1 |
+| [20261104-153628-v3](20261104-153628-v3/summary.json) | **V3.2 acceptance**: `--complete --trials 6 --soak-mode leased-v2`, 6 modes × 6 blocks, faults under v1, v2 and v2 race | SUCCESS; leased-v2 − leased p95 −2.11 ms, ops per fill 5.00 → 2.00, commands per fill 12.01 → 8.01, 0 503s |
 
 Each folder holds:
 

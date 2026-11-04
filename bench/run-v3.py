@@ -23,7 +23,10 @@ import host
 import pack_logs
 ROOT=Path(__file__).resolve().parent.parent
 SUFFIX=".exe" if os.name=="nt" else ""
-MODES=("local-one","local-two","shared","leased","local-two-aa")
+MODES=("local-one","local-two","shared","leased","leased-v2","local-two-aa")
+REDIS_MODES=("shared","leased","leased-v2")
+# leased keeps V2.7's protocol; leased-v2 runs the V3.2 read-or-acquire protocol in the same blocks.
+LEASE_PROTOCOL={"leased":"v1","leased-v2":"v2"}
 WORKLOADS=("hot","mixed","unique")
 # Aggregate budgets are split evenly across gateways, matching V2.7.
 BUDGET={"aggregate_permits":32,"aggregate_permit_queue":32,"aggregate_cache_flights":64,"aggregate_cache_waiters":1024,
@@ -54,14 +57,14 @@ class Topology(faults.Topology):
     def gateway(self,i):
         nodes=len(self.data)
         command=[ROOT/"bin"/("gateway"+SUFFIX),"-addr",f"127.0.0.1:{self.data[i]}","-admin-addr",f"127.0.0.1:{self.admin[i]}",
-                 "-upstream",f"http://127.0.0.1:{self.backend}","-cache-mode","layered" if self.mode in ("shared","leased") else "local",
+                 "-upstream",f"http://127.0.0.1:{self.backend}","-cache-mode","layered" if self.mode in REDIS_MODES else "local",
                  "-redis-addr",f"127.0.0.1:{self.redis_port}","-redis-timeout",f"{BUDGET['redis_timeout_ms']}ms","-instance",f"v3-{i}","-request-log-every","1000",
                  "-max-concurrent",BUDGET["aggregate_permits"]//nodes,"-max-waiters",BUDGET["aggregate_permit_queue"]//nodes,
                  "-max-cache-flights",BUDGET["aggregate_cache_flights"]//nodes,"-max-cache-waiters",BUDGET["aggregate_cache_waiters"]//nodes]
-        if self.mode=="leased":command+=["-leases"]
+        if self.mode in LEASE_PROTOCOL:command+=["-leases","-lease-protocol",LEASE_PROTOCOL[self.mode]]
         process=self.launch(command,f"gateway-{i}");self.ready(self.admin[i],process);return process
     def open(self):
-        self.redis_info=self.start_redis() if self.mode in ("shared","leased") else None
+        self.redis_info=self.start_redis() if self.mode in REDIS_MODES else None
         backend=self.launch([ROOT/"bin"/("mockbackend"+SUFFIX),"-addr",f"127.0.0.1:{self.backend}","-delay",f"{self.delay}ms","-max-age",self.args.max_age],"backend");self.ready(self.backend,backend)
         self.gateways=[self.gateway(i) for i in range(len(self.data))]
         front=self.launch([ROOT/"bin"/("frontproxy"+SUFFIX),"-addr",f"127.0.0.1:{self.front}","-admin-addr",f"127.0.0.1:{self.front_admin}",
@@ -111,6 +114,20 @@ def run_trial(folder,args,mode,kind,rate,trial):
         return {"mode":mode,"kind":kind,"rate":rate,"trial":trial,"gateways":len(topology.data),"commands":topology.commands,"before":before,"after":after,"output":output,"resources":resources.name,"redis_info":topology.redis_info,"power":power}
     finally:topology.close()
 
+def fault_runs(folder,args):
+    """The ten V2.6 fault cases: protocol v1 as the regression reference, then v2 with
+    ordinary and race-detector gateways."""
+    environment=dict(os.environ)
+    if os.name=="nt" and Path("C:/msys64/mingw64/bin/gcc.exe").exists():environment["PATH"]="C:/msys64/mingw64/bin;"+environment["PATH"]
+    with (folder/"race-build.txt").open("w") as out:
+        subprocess.run(["go","build","-race","-o",str(ROOT/"bin"/("gateway-race"+SUFFIX)),"./cmd/gateway"],cwd=ROOT,env=environment,stdout=out,stderr=subprocess.STDOUT,check=True)
+    for protocol,race in (("v1",False),("v2",False),("v2",True)):
+        name=protocol+("-race" if race else "")
+        command=[sys.executable,str(ROOT/"bench/run-v26.py"),"--redis-server",args.redis_server,"--results",str((folder/"faults"/name).relative_to(ROOT)),"--lease-protocol",protocol]
+        if race:command+=["--race"]
+        if args.wsl:command+=["--wsl",args.wsl]
+        with (folder/f"fault-reproduction-{name}.log").open("w") as out:subprocess.run(command,cwd=ROOT,stdout=out,stderr=subprocess.STDOUT,check=True)
+
 def clean_check(folder,args):
     destination=ROOT/"bin"/("v3-clean-"+datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S"));destination.mkdir(parents=True)
     for name in ("cmd","internal"):shutil.copytree(ROOT/name,destination/name)
@@ -143,7 +160,7 @@ def main():
     parser.add_argument("--max-age",type=int,default=10,help="backend max-age, seconds; gateways cap cached lifetimes at 10")
     parser.add_argument("--concurrency",type=int,default=256,help="generator in-flight request and connection limit")
     parser.add_argument("--seconds",type=int,default=30);parser.add_argument("--warmup",type=int,default=5);parser.add_argument("--trials",type=int,default=5)
-    parser.add_argument("--cold-trials",type=int,default=3);parser.add_argument("--soak",type=int,default=300);parser.add_argument("--soak-mode",default="leased",choices=MODES)
+    parser.add_argument("--cold-trials",type=int,default=3);parser.add_argument("--soak",type=int,default=300);parser.add_argument("--soak-mode",default="leased-v2",choices=MODES)
     # V3.1 measured auto pinning as noisier than none on this laptop (docs/v3/noise-floor.md), so it is opt-in.
     parser.add_argument("--affinity",default="off",help="'off', 'auto', or explicit sets such as 'generator=0-3;gateways=4-9;support=10-11'")
     parser.add_argument("--quick",action="store_true");parser.add_argument("--skip-build",action="store_true");parser.add_argument("--complete",action="store_true")
@@ -201,9 +218,7 @@ def main():
         subprocess.run([sys.executable,str(ROOT/"bench/summarize-v3.py"),str(folder)],cwd=ROOT,check=True)
         if args.complete:
             final.verify(folder,args)
-            command=[sys.executable,str(ROOT/"bench/run-v26.py"),"--redis-server",args.redis_server,"--results",str((folder/"faults").relative_to(ROOT))]
-            if args.wsl:command+=["--wsl",args.wsl]
-            with (folder/"fault-reproduction.log").open("w") as out:subprocess.run(command,cwd=ROOT,stdout=out,stderr=subprocess.STDOUT,check=True)
+            fault_runs(folder,args)
             clean_check(folder,args)
         # Process logs are only read during their trial; one archive keeps the run folder small.
         pack_logs.pack(folder)
