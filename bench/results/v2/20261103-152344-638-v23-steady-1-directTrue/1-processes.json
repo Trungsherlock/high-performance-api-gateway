@@ -1,0 +1,66 @@
+﻿[
+    {
+        "role":  "backend",
+        "pid":  35732,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:57429",
+                          "-delay",
+                          "50ms"
+                      ],
+        "executable":  "mockbackend",
+        "time":  "2026-11-03T21:23:46.1623667Z"
+    },
+    {
+        "role":  "gateway-1",
+        "pid":  3192,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:57431",
+                          "-admin-addr",
+                          "127.0.0.1:57432",
+                          "-upstream",
+                          "http://127.0.0.1:57429",
+                          "-instance",
+                          "gateway-1",
+                          "-max-concurrent",
+                          32,
+                          "-max-waiters",
+                          32,
+                          "-permit-wait",
+                          "50ms",
+                          "-request-log-every",
+                          1000
+                      ],
+        "executable":  "gateway",
+        "time":  "2026-11-03T21:23:46.7810234Z"
+    },
+    {
+        "role":  "generator",
+        "pid":  33696,
+        "arguments":  [
+                          "-target",
+                          "http://127.0.0.1:57431",
+                          "-admins",
+                          "http://127.0.0.1:57432",
+                          "-backend",
+                          "http://127.0.0.1:57429",
+                          "-workload",
+                          "unique",
+                          "-mode",
+                          "scheduled",
+                          "-duration",
+                          "6s",
+                          "-warmup",
+                          "1s",
+                          "-rate",
+                          800,
+                          "-concurrency",
+                          256,
+                          "-seed",
+                          43
+                      ],
+        "executable":  "loadgen",
+        "time":  "2026-11-03T21:23:48.2312395Z"
+    }
+]

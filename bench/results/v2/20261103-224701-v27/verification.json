@@ -1,0 +1,23 @@
+{
+  "completed_measurement_trials": 25,
+  "principal_trials": 12,
+  "cold_trials": 12,
+  "soak_seconds": 300,
+  "runtime_and_binary_hashes_match_initial_manifest": true,
+  "resumed_harness_hashes_match_resume_manifest": true,
+  "completed_trials_preserved_at_resume": 22,
+  "initial_failed_marker_retained": true,
+  "checks": [
+    "ordinary tests with real Redis",
+    "race tests with real Redis",
+    "go vet ./...",
+    "go build ./...",
+    "ten final fault reproductions",
+    "source-only rebuild and eight normal/cold smoke cases"
+  ],
+  "fault_artifacts": "../20261103-230623-v26",
+  "clean_source_artifacts": "clean-source-results",
+  "redis_source_sha256": "4ddebbf09061cbb589011786febdb34f29767dd7f89dbe712d2b68e808af6a1f",
+  "redis_binary_sha256": "d38cd44a5141c67e45c4fc23ec298284eaf9490907388bd2c7b870a430c8de9c",
+  "redis_build": "7.4.2; MALLOC=libc OPT=-O1 REDIS_CFLAGS= REDIS_LDFLAGS="
+}

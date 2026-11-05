@@ -1,0 +1,9 @@
+2026/11/03 16:50:44 gateway listening on 127.0.0.1:62275 (upstream=http://127.0.0.1:62274, cache=true)
+{"degraded_reason":"","duration_ms":0.5073,"instance":"v27-0","outcome":"response","rejection_reason":"","request_id":"1000","route":"public_item","status":200,"time":"2026-11-03T22:50:50.0451364Z"}
+{"degraded_reason":"","duration_ms":0,"instance":"v27-0","outcome":"response","rejection_reason":"","request_id":"2000","route":"public_item","status":200,"time":"2026-11-03T22:50:54.1095097Z"}
+{"degraded_reason":"","duration_ms":0.5431,"instance":"v27-0","outcome":"response","rejection_reason":"","request_id":"3000","route":"public_item","status":200,"time":"2026-11-03T22:50:58.1136963Z"}
+{"degraded_reason":"","duration_ms":0,"instance":"v27-0","outcome":"response","rejection_reason":"","request_id":"4000","route":"public_item","status":200,"time":"2026-11-03T22:51:02.1079856Z"}
+{"degraded_reason":"","duration_ms":53.3036,"instance":"v27-0","outcome":"response","rejection_reason":"","request_id":"5000","route":"public_item","status":200,"time":"2026-11-03T22:51:06.1619094Z"}
+{"degraded_reason":"","duration_ms":0,"instance":"v27-0","outcome":"response","rejection_reason":"","request_id":"6000","route":"public_item","status":200,"time":"2026-11-03T22:51:10.1112209Z"}
+{"degraded_reason":"","duration_ms":57.129,"instance":"v27-0","outcome":"response","rejection_reason":"","request_id":"7000","route":"public_item","status":200,"time":"2026-11-03T22:51:14.167478Z"}
+{"degraded_reason":"","duration_ms":54.5981,"instance":"v27-0","outcome":"response","rejection_reason":"","request_id":"8000","route":"public_item","status":200,"time":"2026-11-03T22:51:18.1641335Z"}

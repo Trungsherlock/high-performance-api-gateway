@@ -1,0 +1,74 @@
+﻿[
+    {
+        "role":  "backend",
+        "pid":  33068,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:54112",
+                          "-delay",
+                          "500ms"
+                      ],
+        "executable":  "mockbackend",
+        "time":  "2026-11-03T21:23:04.6557177Z"
+    },
+    {
+        "role":  "gateway-1",
+        "pid":  35404,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:54114",
+                          "-admin-addr",
+                          "127.0.0.1:54115",
+                          "-upstream",
+                          "http://127.0.0.1:54112",
+                          "-instance",
+                          "gateway-1",
+                          "-max-concurrent",
+                          16,
+                          "-max-waiters",
+                          16,
+                          "-permit-wait",
+                          "50ms",
+                          "-request-log-every",
+                          1000
+                      ],
+        "executable":  "gateway",
+        "time":  "2026-11-03T21:23:05.4825705Z"
+    },
+    {
+        "role":  "gateway-2",
+        "pid":  9108,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:54118",
+                          "-admin-addr",
+                          "127.0.0.1:54119",
+                          "-upstream",
+                          "http://127.0.0.1:54112",
+                          "-instance",
+                          "gateway-2",
+                          "-max-concurrent",
+                          16,
+                          "-max-waiters",
+                          16,
+                          "-permit-wait",
+                          "50ms",
+                          "-request-log-every",
+                          1000
+                      ],
+        "executable":  "gateway",
+        "time":  "2026-11-03T21:23:06.7281621Z"
+    },
+    {
+        "role":  "generator",
+        "pid":  35672,
+        "arguments":  [
+                          "-targets",
+                          "http://127.0.0.1:54114,http://127.0.0.1:54118",
+                          "-requests",
+                          100
+                      ],
+        "executable":  "burst",
+        "time":  "2026-11-03T21:23:08.9555725Z"
+    }
+]

@@ -1,0 +1,32 @@
+﻿{
+    "os":  "Microsoft Windows NT 10.0.26300.0",
+    "rate":  500,
+    "seconds":  2,
+    "commit":  "a56736256c3b50310fe006e761bc2d62c92193bf",
+    "delayMS":  50,
+    "concurrency":  100,
+    "payload":  "id 42: 31 bytes; mixed IDs variable",
+    "arrival":  "scheduled",
+    "gateway":  {
+                    "cacheEntries":  1000,
+                    "cacheBodyBytes":  16777216,
+                    "maxEntryBytes":  65536,
+                    "maxConcurrent":  32,
+                    "ttlCap":  "10s",
+                    "permitWait":  "50ms",
+                    "timeout":  "10s"
+                },
+    "go":  "go version go1.25.7 windows/amd64",
+    "command":  "",
+    "observe":  false,
+    "diff":  "",
+    "warmup":  1,
+    "dirty":  true,
+    "seed":  42,
+    "placement":  "three native processes on one Windows host",
+    "ramBytes":  16595509248,
+    "mode":  "proxy",
+    "cpu":  "Intel(R) Core(TM) Ultra 7 155H",
+    "trials":  1,
+    "workload":  "mixed"
+}

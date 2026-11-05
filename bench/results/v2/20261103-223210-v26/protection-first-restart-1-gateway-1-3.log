@@ -1,0 +1,4 @@
+2026/11/03 16:32:30 gateway listening on 127.0.0.1:55971 (upstream=http://127.0.0.1:55969, cache=true)
+{"degraded_reason":"","duration_ms":6.0859,"instance":"v26-1","outcome":"response","rejection_reason":"","request_id":"1","route":"public_item","status":200,"time":"2026-11-03T22:32:31.2614079Z"}
+{"degraded_reason":"","duration_ms":0,"instance":"v26-1","outcome":"response","rejection_reason":"","request_id":"2","route":"public_item","status":200,"time":"2026-11-03T22:32:32.4959686Z"}
+{"degraded_reason":"","duration_ms":1.081,"instance":"v26-1","outcome":"response","rejection_reason":"coordination_error","request_id":"3","route":"public_item","status":503,"time":"2026-11-03T22:32:33.1887127Z"}

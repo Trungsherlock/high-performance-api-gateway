@@ -53,14 +53,16 @@ every possible response. Requests already known to be private bypass speculation
 | Stored entries | 1,000 | Same as above |
 | Unknown-size fill buffer | 64 KiB plus one byte before fallback | Response completion/close |
 | Active upstream operations | 32 by default | Body EOF/read error or close; network errors release immediately |
+| Queued permit waiters | 32 by default since V2.2; -1 selects the legacy unbounded policy | Acquisition, cancellation, or wait expiry |
 | Permit waiting duration | 50 ms by default | Acquire, timeout, or caller cancellation |
 | Shared fetch lifetime | Upstream timeout, 10s by default | Completion, deadline, or lifecycle cancellation |
 | Graceful shutdown | 5s | Close remaining server connections after deadline |
 | Streaming copy buffers | Reused through sync.Pool | Returned after copying; pool can discard at GC |
 
 Keys, headers, defensive copies, goroutines, inbound connections, flight records,
-and pooled buffers are outside the cache payload budget. Waiting duration is
-bounded, but the number of waiting clients is not. There is no total RSS guarantee.
+and pooled buffers are outside the cache payload budget. Waiting duration and queued permit waiters are bounded in the V2.2 CLI default.
+Per-key followers, inbound connections, and legacy-mode waiter count remain
+unbounded. There is no total RSS guarantee.
 
 ## Overload, latency, and error rate
 
@@ -70,7 +72,8 @@ upstream body rather than releasing it when headers arrive. Cached responses and
 followers consume no permit.
 
 Queueing can absorb a short burst, but excessive waiting raises tail latency and
-retains resources. A bounded wait sheds load with 503. Those responses must count
+retains resources. A full permit queue or expired wait sheds load with 503. The response header
+`X-Gateway-Rejection` distinguishes `queue_full` and `wait_timeout`. Those responses must count
 as failures, even if total completed responses/sec increases. The recorded mixed
 workload illustrates this: full mode protected the backend but had about 10.44%
 rejections and lower successful throughput than cache-only.
@@ -123,3 +126,18 @@ also showed that load shedding can protect the backend while lowering availabili
 Be ready to draw the request paths, explain the unshareable-response fallback,
 distinguish cache capacity from process memory, and describe the limits of the
 measurement setup. Use only results supported by the recorded experiments.
+
+
+## V2.3 process boundary
+
+The optional front selects one probe-healthy gateway once per request. It does not
+reroute a failed request. Health checks own readiness; caller cancellations do not
+mark instances unhealthy. Check observations can become stale before forwarding,
+and short probe deadlines can exclude an otherwise-running instance.
+
+Each gateway owns its own LRU, flight group, permit pool, and queued-waiter pool.
+The harness compares one 32-permit instance with two 16-permit instances, keeping
+aggregate configured permits and queued slots at 32. This is not a distributed
+limiter or cache: a controlled cold burst causes one fill per reached instance.
+See [V2.3 evidence](v2/multi-instance.md) for restart resets, front connection-pool
+queueing, resource attribution, and readiness/availability observations.

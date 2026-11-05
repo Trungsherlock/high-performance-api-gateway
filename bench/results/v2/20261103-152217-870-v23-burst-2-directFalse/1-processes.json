@@ -1,0 +1,92 @@
+﻿[
+    {
+        "role":  "backend",
+        "pid":  31552,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:51237",
+                          "-delay",
+                          "500ms"
+                      ],
+        "executable":  "mockbackend",
+        "time":  "2026-11-03T21:22:21.2207176Z"
+    },
+    {
+        "role":  "gateway-1",
+        "pid":  3900,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:51239",
+                          "-admin-addr",
+                          "127.0.0.1:51240",
+                          "-upstream",
+                          "http://127.0.0.1:51237",
+                          "-instance",
+                          "gateway-1",
+                          "-max-concurrent",
+                          16,
+                          "-max-waiters",
+                          16,
+                          "-permit-wait",
+                          "50ms",
+                          "-request-log-every",
+                          1000
+                      ],
+        "executable":  "gateway",
+        "time":  "2026-11-03T21:22:22.1475704Z"
+    },
+    {
+        "role":  "gateway-2",
+        "pid":  35764,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:51243",
+                          "-admin-addr",
+                          "127.0.0.1:51244",
+                          "-upstream",
+                          "http://127.0.0.1:51237",
+                          "-instance",
+                          "gateway-2",
+                          "-max-concurrent",
+                          16,
+                          "-max-waiters",
+                          16,
+                          "-permit-wait",
+                          "50ms",
+                          "-request-log-every",
+                          1000
+                      ],
+        "executable":  "gateway",
+        "time":  "2026-11-03T21:22:22.6796612Z"
+    },
+    {
+        "role":  "front",
+        "pid":  35120,
+        "arguments":  [
+                          "-addr",
+                          "127.0.0.1:51247",
+                          "-admin-addr",
+                          "127.0.0.1:51248",
+                          "-targets",
+                          "http://127.0.0.1:51239,http://127.0.0.1:51243",
+                          "-readiness",
+                          "http://127.0.0.1:51240/readyz,http://127.0.0.1:51244/readyz",
+                          "-timeout",
+                          "2s"
+                      ],
+        "executable":  "frontproxy",
+        "time":  "2026-11-03T21:22:24.2082299Z"
+    },
+    {
+        "role":  "generator",
+        "pid":  32628,
+        "arguments":  [
+                          "-targets",
+                          "http://127.0.0.1:51247",
+                          "-requests",
+                          100
+                      ],
+        "executable":  "burst",
+        "time":  "2026-11-03T21:22:25.5827823Z"
+    }
+]

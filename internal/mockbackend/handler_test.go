@@ -2,6 +2,7 @@ package mockbackend
 
 import (
 	"context"
+	"encoding/json"
 	"net/http/httptest"
 	"sync"
 	"testing"
@@ -19,7 +20,15 @@ func TestDeterministicItemAndCounter(t *testing.T) {
 	}
 	w := httptest.NewRecorder()
 	b.ServeHTTP(w, httptest.NewRequest("GET", "/stats", nil))
-	if w.Body.String() != "{\"calls\":2}\n" {
+	var stats struct {
+		Calls  int
+		Active int
+		Peak   int
+	}
+	if err := json.Unmarshal(w.Body.Bytes(), &stats); err != nil {
+		t.Fatal(err)
+	}
+	if stats.Calls != 2 || stats.Active != 0 || stats.Peak != 1 {
 		t.Fatal(w.Body.String())
 	}
 }
@@ -49,5 +58,24 @@ func TestCanceledRequestStopsDelay(t *testing.T) {
 	case <-done:
 	case <-time.After(time.Second):
 		t.Fatal("canceled request did not stop")
+	}
+}
+
+func TestSlowdownWindowAndActiveCleanup(t *testing.T) {
+	b := NewWithSlowdown(time.Millisecond, time.Hour, time.Hour, 10*time.Millisecond)
+	if b.currentDelay() != time.Millisecond {
+		t.Fatal("healthy delay")
+	}
+	b.started = time.Now().Add(-time.Hour - time.Minute)
+	if b.currentDelay() != 10*time.Millisecond {
+		t.Fatal("slow delay")
+	}
+	b.started = time.Now().Add(-3 * time.Hour)
+	if b.currentDelay() != time.Millisecond {
+		t.Fatal("did not recover")
+	}
+	b.ServeHTTP(httptest.NewRecorder(), httptest.NewRequest("GET", "/api/public/item", nil))
+	if b.active.Load() != 0 || b.peak.Load() != 1 {
+		t.Fatal("active work leaked")
 	}
 }

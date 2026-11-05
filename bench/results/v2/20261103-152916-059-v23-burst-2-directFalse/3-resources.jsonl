@@ -1,0 +1,5 @@
+{"cpuSeconds":0.015625,"time":"2026-11-03T21:29:30.2649317Z","pid":9856,"rssBytes":8323072,"role":"backend"}
+{"cpuSeconds":0.015625,"time":"2026-11-03T21:29:30.2798322Z","pid":23432,"rssBytes":9166848,"role":"gateway-1"}
+{"cpuSeconds":0.015625,"time":"2026-11-03T21:29:30.2948512Z","pid":28624,"rssBytes":9080832,"role":"gateway-2"}
+{"cpuSeconds":0.03125,"time":"2026-11-03T21:29:30.3460793Z","pid":31192,"rssBytes":9637888,"role":"front"}
+{"cpuSeconds":0,"time":"2026-11-03T21:29:30.3805987Z","pid":17060,"rssBytes":15097856,"role":"generator"}

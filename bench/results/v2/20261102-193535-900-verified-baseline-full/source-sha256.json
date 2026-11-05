@@ -1,0 +1,106 @@
+﻿[
+    {
+        "path":  "server/cmd\\gateway\\main.go",
+        "sha256":  "CF2112D815708F9B84ECC7D58D0C3E6512762CDA94B2D195DE0CDE8C5E78C076"
+    },
+    {
+        "path":  "server/cmd\\gateway\\main_test.go",
+        "sha256":  "F00AF9104DC0BD3D414AEDF1A95145BC3CB75254930CD2346800602B9DB86AAB"
+    },
+    {
+        "path":  "server/cmd\\mockbackend\\main.go",
+        "sha256":  "E5BF096AF536BBE953ABA267ED899E2888FC4903FB49B5C8ED1DC94E97021068"
+    },
+    {
+        "path":  "server/internal\\cache\\lru.go",
+        "sha256":  "82B8126D2C5E4396253435E927A3AD714A778F4B345E57146942AC097AF4B707"
+    },
+    {
+        "path":  "server/internal\\cache\\lru_bench_test.go",
+        "sha256":  "B309E4DFE94784787993828DF09B6E7631A79A23779220E7869500211984207D"
+    },
+    {
+        "path":  "server/internal\\cache\\lru_test.go",
+        "sha256":  "E96EE08392D502221AEED20AF0EBBD62B021F410344C262B04A8A6C8E9F902D4"
+    },
+    {
+        "path":  "server/internal\\cache\\policy.go",
+        "sha256":  "B0F0E6CA183881D0E20A0BD163578DFBB2D0F7ADAFDF4DF486063375F1F2201D"
+    },
+    {
+        "path":  "server/internal\\cache\\policy_test.go",
+        "sha256":  "65FF9CEFCE91955716E7E41F5D1481F4D9BBE8A08715F93927B8261C3356FEA1"
+    },
+    {
+        "path":  "server/internal\\coalesce\\group.go",
+        "sha256":  "B54B9D6180E36A67136512AC6FCED693B19367510260F612ECFCE9730CE5DAE8"
+    },
+    {
+        "path":  "server/internal\\coalesce\\group_bench_test.go",
+        "sha256":  "3AFCCD9A995EECF6A002EF7E09F0A0DC9D7BA5706E2072B1DE908B5234E436CC"
+    },
+    {
+        "path":  "server/internal\\coalesce\\group_test.go",
+        "sha256":  "0FA02DDCD9816FEA09B1C157BCC3348471DE8267930F52A1339D9666EED6D9C3"
+    },
+    {
+        "path":  "server/internal\\gateway\\buffer.go",
+        "sha256":  "0030CA21EFCE4B483A5224A68064F943708E5D13476B395CEB4D6B81A950278D"
+    },
+    {
+        "path":  "server/internal\\gateway\\buffer_test.go",
+        "sha256":  "A2BA730BFEA1EAD85F0F2EB5F03DF84E8A4B727A92597746C01BA15C8D2FB82B"
+    },
+    {
+        "path":  "server/internal\\gateway\\cache.go",
+        "sha256":  "9C433B43F52E7468080B62F3BC0660B570B55052A8BEC8D6ADCA193CE94889FA"
+    },
+    {
+        "path":  "server/internal\\gateway\\cache_test.go",
+        "sha256":  "AAA04EC226ADC35C81833C3CF2F495DD586CC30E6D1C43034F8928A19CA16E4F"
+    },
+    {
+        "path":  "server/internal\\gateway\\concurrency_test.go",
+        "sha256":  "9878FBC128EB87413D5570524F48848B1B3962CA20CAAB8B6CAD5F00D3B399C4"
+    },
+    {
+        "path":  "server/internal\\gateway\\proxy.go",
+        "sha256":  "C10D98BA1ABBBC620B598AB2FE794CD8E191479AA3DB62E8D8EFD977CEFCCA8B"
+    },
+    {
+        "path":  "server/internal\\gateway\\proxy_test.go",
+        "sha256":  "B5AFAD9D2591CE7B8EFD63B3A7A268F30858A70D794116301AF6D029FE7A33A5"
+    },
+    {
+        "path":  "server/internal\\limiter\\transport.go",
+        "sha256":  "5E2BF32D544692A94554509A7D43AC4AA811EF5372E88F2A39DF5087B73DAC66"
+    },
+    {
+        "path":  "server/internal\\limiter\\transport_test.go",
+        "sha256":  "247553628EF27BB150BCBB789C5166EE45A2C755F6AF28B92852F7A023D8AEC8"
+    },
+    {
+        "path":  "server/internal\\mockbackend\\handler.go",
+        "sha256":  "0779893BC565A99747F011C099AFBE12BA8A7C782F92F88A06759935BA5B1749"
+    },
+    {
+        "path":  "server/internal\\mockbackend\\handler_test.go",
+        "sha256":  "58F5464D02A53CBA003EB20725B775E39EB6BD4B6D887CE6007F6C79D818E9D0"
+    },
+    {
+        "path":  "server/go.mod",
+        "sha256":  "5B8DF162E100F0E9BBD51FA10B28D201AAEA9128956E1B08FE98228656AA97D1"
+    },
+    {
+        "path":  "generator/main.go",
+        "sha256":  "2096C5CCB85A50A7FD48A05A3DA2CB9B39BAC12840737BB25ACB2473148EF21B"
+    },
+    {
+        "path":  "generator/main_test.go",
+        "sha256":  "DCAFA157EA7F30AD4D8FC050DE2D57B98F70C5A0A7A1772BDBA916B7AB8FD578"
+    },
+    {
+        "path":  "bench/run-v2.ps1",
+        "sha256":  "429DF5AA5C1FF6F806197E1136A4DC2E732476694EDF7F9EBE2DFE9CE7EC6A0D"
+    }
+]

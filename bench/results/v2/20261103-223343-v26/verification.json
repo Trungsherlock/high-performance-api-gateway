@@ -1,0 +1,9 @@
+{
+  "runtime_source_hashes_match": true,
+  "race_instrumented_gateway": true,
+  "race_reports_in_process_logs": 0,
+  "ordinary_tests": "../v26-tests.txt",
+  "race_tests": "../v26-race.txt",
+  "owner_death_regression": "../20261103-223608-v25/summary.json",
+  "redis_source_sha256": "4ddebbf09061cbb589011786febdb34f29767dd7f89dbe712d2b68e808af6a1f"
+}

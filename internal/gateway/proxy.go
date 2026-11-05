@@ -7,6 +7,8 @@ import (
 	"high-performance-api-gateway/internal/cache"
 	"high-performance-api-gateway/internal/coalesce"
 	"high-performance-api-gateway/internal/limiter"
+	"high-performance-api-gateway/internal/observe"
+	"high-performance-api-gateway/internal/sharedcache"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -24,15 +26,31 @@ func NewWithCache(upstream string, timeout time.Duration, storage *cache.Cache) 
 }
 
 type Options struct {
-	Coalesce      bool
-	MaxConcurrent int // Zero disables the limiter for baseline experiments.
-	PermitWait    time.Duration
-	Lifecycle     context.Context
+	Shared         sharedcache.Store
+	Lease          *LeaseOptions
+	CacheAdmission *CacheAdmission
+	Metrics        *observe.Metrics
+	Coalesce       bool
+	MaxConcurrent  int // Zero disables the limiter for baseline experiments.
+	PermitWait     time.Duration
+	MaxWaiters     *int // nil preserves legacy waiter behavior; -1 is explicitly unbounded.
+	Lifecycle      context.Context
 }
 
 func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache, options Options) (http.Handler, *http.Transport, error) {
-	if options.MaxConcurrent < 0 || options.PermitWait < 0 {
+	if options.MaxConcurrent < 0 || options.PermitWait < 0 || (options.MaxWaiters != nil && *options.MaxWaiters < -1) {
 		return nil, nil, fmt.Errorf("limiter settings must be nonnegative")
+	}
+	if options.CacheAdmission != nil && (!options.Coalesce || options.CacheAdmission.MaxFlights < 1 || options.CacheAdmission.MaxWaiters < 1) {
+		return nil, nil, fmt.Errorf("cache admission requires coalescing and positive caps")
+	}
+	var coordinator sharedcache.Coordinator
+	if options.Lease != nil {
+		var ok bool
+		coordinator, ok = options.Shared.(sharedcache.Coordinator)
+		if !ok || !options.Coalesce || !options.Lease.valid() {
+			return nil, nil, fmt.Errorf("leases require shared coordinator, local coalescing and valid finite timing")
+		}
 	}
 	if options.Lifecycle == nil {
 		options.Lifecycle = context.Background()
@@ -52,11 +70,28 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 		DisableCompression: true,
 	}
 	var outbound http.RoundTripper = transport
-	if options.MaxConcurrent > 0 {
-		outbound = limiter.New(outbound, options.MaxConcurrent, options.PermitWait)
+	if options.Metrics != nil {
+		outbound = &observe.Transport{Next: outbound, Metrics: options.Metrics}
 	}
-	if storage != nil {
-		ct := &cacheTransport{next: outbound, cache: storage, timeout: timeout, lifecycle: options.Lifecycle}
+	if options.MaxConcurrent > 0 {
+		maxWaiters := -1
+		if options.MaxWaiters != nil {
+			maxWaiters = *options.MaxWaiters
+		}
+		limited := limiter.NewWithQueue(outbound, options.MaxConcurrent, options.PermitWait, maxWaiters)
+		limited.Metrics = options.Metrics
+		outbound = limited
+	}
+	if storage != nil || options.Shared != nil {
+		ct := &cacheTransport{metrics: options.Metrics, next: outbound, cache: storage, shared: options.Shared, timeout: timeout, lifecycle: options.Lifecycle}
+		if options.CacheAdmission != nil {
+			ct.waiters = make(chan struct{}, options.CacheAdmission.MaxWaiters)
+			ct.maxFlights = options.CacheAdmission.MaxFlights
+		}
+		if options.Lease != nil {
+			ct.leases = coordinator
+			ct.lease = *options.Lease
+		}
 		if options.Coalesce {
 			ct.group = &coalesce.Group[sharedResult]{}
 		}
@@ -86,11 +121,35 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 			}
 			if errors.Is(err, limiter.ErrOverloaded) {
 				status = http.StatusServiceUnavailable
+				reason := "wait_timeout"
+				if errors.Is(err, limiter.ErrQueueFull) {
+					reason = "queue_full"
+				}
+				w.Header().Set("X-Gateway-Rejection", reason)
+			}
+			if errors.Is(err, ErrCacheWaiters) || errors.Is(err, coalesce.ErrFull) {
+				status = http.StatusServiceUnavailable
+				reason := "cache_waiters_full"
+				if errors.Is(err, coalesce.ErrFull) {
+					reason = "cache_flights_full"
+				}
+				w.Header().Set("X-Gateway-Rejection", reason)
+			}
+			if errors.Is(err, ErrCoordination) {
+				status = http.StatusServiceUnavailable
+				reason := "coordination_error"
+				if errors.Is(err, ErrLeaseLost) {
+					reason = "lease_lost"
+				}
+				if errors.Is(err, ErrLeaseWait) {
+					reason = "coordination_timeout"
+				}
+				w.Header().Set("X-Gateway-Rejection", reason)
 			}
 			http.Error(w, http.StatusText(status), status)
 		},
 	}
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return options.Metrics.Wrap(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodConnect || r.Header.Get("Upgrade") != "" {
 			http.Error(w, "tunneling and protocol upgrades are unsupported", http.StatusNotImplemented)
 			return
@@ -98,5 +157,5 @@ func NewWithOptions(upstream string, timeout time.Duration, storage *cache.Cache
 		ctx, cancel := context.WithTimeout(r.Context(), timeout)
 		defer cancel()
 		proxy.ServeHTTP(w, r.WithContext(ctx))
-	}), transport, nil
+	})), transport, nil
 }

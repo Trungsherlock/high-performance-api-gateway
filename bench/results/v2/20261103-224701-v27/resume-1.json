@@ -1,0 +1,16 @@
+{
+  "time": "2026-11-03T23:00:04.530203+00:00",
+  "completed_trials_preserved": 22,
+  "note": "Readiness HTTP parsing retry and distinct fixture ports; no application/binary changes. Original FAILED marker/logs retained.",
+  "harness_hashes": {
+    "bench\\process_usage.py": "6edc40b72f590d43d72a60ec3f38d09704d364fabc6dc1b98196797756b9364e",
+    "bench\\run-v24.py": "5b630be03a3345d5ccfa52689409d04d5e5888fc5d023ab4111242ee5598e168",
+    "bench\\run-v25.py": "a1737ebee7d001a85004d83c78c9d929bf5eed6c114752a6ba9ca6373c7cce10",
+    "bench\\run-v26.py": "7967d8dc73da33a6763b784efba4ce0c4aa2455e51bdbfd025eacf6d1245e13d",
+    "bench\\run-v27.py": "e58db2b00af96efc3720b8f6f90f8ae8657e0e5b1023ef055c333f11aec4678d",
+    "bench\\summarize-v2.py": "14e55891691961b73a02ce215c335cb6003d389357bdc3fd39d8d702e83e0b9f",
+    "bench\\summarize-v22.py": "137142a9d94f80c07ec2d801717409747e489a38a5bd7849451984e99ad67446",
+    "bench\\summarize-v23.py": "778dbb07b29bf6d7c462afcf5e01062823005c6e4a25fc840f5e1ae658d22c9f",
+    "bench\\summarize-v27.py": "24dd7302836440297716f11afa93fc87fc4300927728439970a18fccca45f67a"
+  }
+}

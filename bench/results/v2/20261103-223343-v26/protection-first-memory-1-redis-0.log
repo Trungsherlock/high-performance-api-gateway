@@ -1,0 +1,11 @@
+490:C 03 Nov 2026 16:33:58.691 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+490:C 03 Nov 2026 16:33:58.692 * oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+490:C 03 Nov 2026 16:33:58.693 * Redis version=7.4.2, bits=64, commit=00000000, modified=1, pid=490, just started
+490:C 03 Nov 2026 16:33:58.693 * Configuration loaded
+490:M 03 Nov 2026 16:33:58.695 * monotonic clock: POSIX clock_gettime
+490:M 03 Nov 2026 16:33:58.701 * Running mode=standalone, port=56012.
+490:M 03 Nov 2026 16:33:58.702 * Server initialized
+490:M 03 Nov 2026 16:33:58.704 * Ready to accept connections tcp
+490:M 03 Nov 2026 16:34:01.981 # WARNING: the new maxmemory value set via CONFIG SET (1) is smaller than the current memory usage (2072784). This will result in key eviction and/or the inability to accept new write commands depending on the maxmemory-policy.
+490:M 03 Nov 2026 16:34:02.431 * User requested shutdown...
+490:M 03 Nov 2026 16:34:02.431 # Redis is now ready to exit, bye bye...

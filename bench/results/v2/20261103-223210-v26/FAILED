@@ -1,0 +1,1 @@
+protection-first/restart/1: [{'status': 200, 'body': '{"id":"44","name":"demo item"}\n', 'degraded': '', 'rejection': '', 'seconds': 0.06199999999807915}, {'status': 503, 'body': 'Service Unavailable\n', 'degraded': '', 'rejection': 'coordination_error', 'seconds': 0.0}]

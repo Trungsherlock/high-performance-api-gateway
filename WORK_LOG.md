@@ -243,11 +243,258 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
 
 - Created [the v2 plan](high_performance_api_gateway_v2_plan.md) for stronger
   measurements, overload experiments, multiple gateways, shared caching, bounded
-  leases, and failure injection. This is planning only; v2 implementation has not begun.
+  leases, and failure injection. The plan was created before implementation; V2.0/V2.1 progress is recorded below.
 
 - Consider longer, isolated-process or separate-machine measurements before making stronger performance claims.
 - Install wrk/Go in a Linux environment if executing the optional wrk scenarios.
 - Rehearse the request paths and tradeoffs; automated verification does not certify personal understanding.
+
+## 2026-11-02 - V2.0 and V2.1
+
+**Status:** Implemented and verified. Later V2 milestones remain planned.
+
+- **Preservation:** Tagged the existing V1 snapshot `a567362` as `v1-baseline`;
+  its implementation is unchanged from `465d9f4`. Used the existing V2 development
+  branch. Original V1 plan and historical results were not modified.
+- **Harness:** Added `cmd/loadgen` and `bench/run-v2.ps1`: three native processes,
+  readiness checks, fresh state, metadata/source/binary fingerprints, captured
+  logs, per-process CPU/RSS, watchdog, completion markers, and failure cleanup.
+- **Visibility:** Added fixed-name JSON metrics on loopback administration,
+  body-lifetime upstream gauges/histograms, cache/coalescing/admission counters,
+  bounded sampled request-log queue, safe route classes, and readiness semantics.
+- **Arrival accounting:** Added fixed-seed scheduled and closed-loop modes,
+  bounded generator concurrency/connections, request deadlines, generator drops,
+  scheduling lag, and scheduled/send latency percentiles. Warmup and measurement
+  have separate before/after metric and backend snapshots.
+- **Evidence:** Completed twelve 30-second steady trials after 5-second warmups,
+  plus a 300-second soak. Preserved unchanged-server baselines and diagnostics.
+  Raw records and reconciliation output are under `bench/results/v2/`;
+  interpretation is in [V2 results](docs/v2/results.md).
+- **Findings:** Same-rate full mode avoided about 80% of backend calls without
+  increasing throughput when both modes kept up. Closed-loop full mode shed
+  about 10.39% of clients. The soak served 150,000/150,000 requests with 30,031
+  backend calls and zero drops/errors/rejections; active-work gauges drained to
+  zero. Gateway RSS increased modestly, so flat-memory behavior is not claimed.
+- **Corrections:** Fixed Windows process exit-code handling and transient artifact
+  append sharing errors. Retained unsuccessful/interrupted runs outside canonical
+  comparisons. Corrected analyzer semantics: one rejected flight can return 503
+  to several followers; admission counters and client statuses are separate.
+- **Verification:** Ordinary/race tests, vet, build, formatting, and diff whitespace
+  checks passed. Tests cover burst counter reconciliation, shared error fanout,
+  waiter cancellation/rejection cleanup, body ownership, blocked logging, and
+  generator saturation. An intentional backend startup failure exited nonzero
+  and left no child processes. Non-loopback admin binding was rejected.
+- **Limits:** One Windows host, periodic resource samples, exact-percentile
+  generator memory growth, fixed run order, and synthetic backend/workload.
+  No Redis, multi-instance coordination, or bounded gateway waiter queue yet.
+  See [V2 verification](docs/v2/verification.md) and [tradeoffs](docs/tradeoffs.md).
+
+## 2026-11-02 - V2.2 bounded admission and overload study
+
+**Status:** Implemented and verified. V2.3 and later remain planned.
+
+- **Implementation:** Added independent queued-permit capacity, with CLI default
+  32; zero rejects under saturation and -1 selects legacy unlimited waiting.
+  Acquiring, canceling, or timing out releases the queue slot; acquired permits
+  still cover upstream body lifetime. Existing library constructors preserve
+  legacy semantics, and cache hits still bypass admission.
+- **Visibility:** Added distinct queue-full/wait-timeout errors, 503 reason header,
+  fixed reason counters, sampled log reason, backend active/peak/delay/uptime stats,
+  and generator rejection counts plus three-second scheduled-start cohorts.
+- **Experiments:** Extended the separate-process harness with admission controls,
+  unique misses, timed slowdown/recovery, backend samples, and build reuse. Added
+  `bench/run-v22.ps1` and its summarizer. Collected 15 four-second screening cases
+  and 24 repeated six/nine-second trials, all after one-second warmup. No V1 or
+  V2.0/V2.1 result files were overwritten.
+- **Findings/default:** Retained 32 permits and 50 ms wait, adding 32 queued slots.
+  Under healthy overload, bounded and legacy modes each delivered about 631
+  successful requests/sec; observed queue peaks were 32 versus 61. Smaller queues
+  traded slightly more rejection for lower tails; larger queues did not add
+  meaningful throughput. Recovery returned toward healthy capacity. RSS varied,
+  so no fixed memory saving or total-memory cap is claimed.
+- **Verification:** Ordinary/race tests, vet, build, formatting, and whitespace
+  checks passed. Deterministic tests covered a 200-request burst (8 queued,
+  192 rejected), cancellation and reuse, reason distinctions, cache-hit bypass,
+  and slowdown selection. All 39 trials reconciled with zero generator drops or
+  transport errors; backend peaks respected permit limits, capped sampled queues
+  respected configured bounds, and final work gauges drained to zero. No harness
+  child processes remained.
+- **Correction:** Initial smoke test exposed a backend argument initialization
+  mistake in the harness edit; fixed it and retained the successful rerun. Smoke
+  attempts are excluded from the study index.
+- **Limits:** Short synthetic trials on one host; no fairness guarantee, bounded
+  follower admission, inbound connection cap, or per-waiter memory estimate.
+  Default selection is a conservative local policy, not universal tuning.
+  See [full policy and evidence](docs/v2/admission.md) and
+  [tradeoffs](docs/tradeoffs.md).
+
+## 2026-11-03 - V2.3 independent gateway instances
+
+**Status:** Implemented and verified. V2.4 and later remain planned.
+
+- **Implementation:** Added health-aware round-robin `internal/front` and
+  `cmd/frontproxy`, with dedicated loopback administration, per-target probe/
+  selection/error state, bounded forwarding/probe deadlines, and no alternate-
+  target application retry. Independent probes own health; caller cancellation
+  cannot mark an instance unhealthy. Gateway cache/coalescing logic is unchanged.
+- **Harness:** Added `cmd/burst`, multi-admin generator snapshots,
+  `bench/run-v23.ps1`, a one-command study wrapper, and strict reconciliation.
+  Captured per-process metadata/resources, source/binary hashes, front state,
+  restart resets, and all child cleanup. Compared aggregate budgets of 1x32 and
+  2x16 permits, with the same total 32 queued slots.
+- **Evidence:** Recorded 18 final canonical trials: three direct bursts, three
+  front bursts, three stop/restart cases, and nine six-second steady comparisons
+  after one-second warmup. Every cold 100-request burst split 50/50 and made
+  exactly two backend fills with 49 local followers per instance. Rejoining an
+  empty-cache instance made one new fill; total backend calls became three.
+- **Findings:** Final steady median successful throughput was about 611 RPS direct,
+  601 through one front target, and 609 through two targets; the backend budget
+  stayed fixed, so scaling did not double capacity. One generator drop and one
+  failed readiness probe (59 front-level 503s) were retained and reconciled
+  separately from gateway admission failures. Probe failure cause is unknown.
+- **Corrections/decisions:** An initial 64-connection front pool masked admission
+  with another queue and produced generator drops. Retained those diagnostic
+  records, increased the per-target ceiling to the generator's 256-client bound,
+  and reran final cases. Updated analysis to report generator drops and distinguish
+  no-healthy-target responses from downstream admission rejections. A test-only
+  stale loop-variable reference was corrected before final checks passed.
+- **Verification:** Ordinary/race tests, vet, build, formatting, and whitespace
+  checks passed. Tests cover held-backend direct/front bursts, routing counts,
+  dead-target 502 without retry, no-target readiness, probe deadlines, input
+  validation, and cancellation independent of readiness. All 18 final trials
+  reconciled; configured instance and aggregate backend bounds held, final work
+  gauges drained, and no owned children remained.
+- **Limits:** Local state still duplicates work across processes. Health checks
+  are best effort, the front adds its own resource/failure costs, and fixed budget
+  allocation is not distributed admission enforcement. Short same-host trials do
+  not establish production capacity or zero-downtime failover. See
+  [V2.3 guide/results](docs/v2/multi-instance.md) and [tradeoffs](docs/tradeoffs.md).
+
+### 2026-11-03 - V2.4 optional shared cache
+
+- **Scope:** Shared response storage without distributed leases.
+- **Changes:** Added pinned go-redis v9.7.3 adapter, small Store interface,
+  local/shared/layered CLI modes, tier/error metrics, bounded pool and operation
+  deadlines, versioned SHA-256 key namespace and safe bounded JSON responses.
+  Atomic STRLEN/GET/PTTL reads subtract lookup time; PXAT and original expiry
+  preserve freshness through publication and repeated L1 promotion.
+- **Decisions:** Redis is optional; failures fall back to local flight/limiter.
+  Readiness stays local. Safe shared replay omits arbitrary extension headers.
+  Publication remains unconditional; cold misses may duplicate across instances.
+- **Verification:** Real Redis 7.4.2 built under WSL2, 64 MiB allkeys-lru,
+  persistence disabled. Nine final fresh-process trials reconciled 102 successes
+  each: local mode two backend fills; shared/layered one. Real integration tests
+  cover promotion expiry, safety, corrupt/oversized/persistent data and duplicate
+  cold fills. Ordinary/race suites, vet and build passed; dependency tests cover
+  slow/unavailable servers, cancellation, capped connections and error metrics.
+- **Corrections:** Windows-mounted Redis compilation was slow, so rebuilt on the
+  native WSL temporary filesystem. Corrected shell line endings and the benchmark
+  client's Connection: close header, which properly triggered cache bypass. Kept
+  the failed client trial and superseded successful trials as diagnostic artifacts.
+- **Evidence/limits:** [V2.4 report](docs/v2/shared-cache.md) and final artifacts
+  `bench/results/v2/20261103-214917-v24`. Short sequential latency is not capacity
+  evidence. Absolute timestamps assume aligned clocks; leases and expanded
+  dependency fault/degradation studies remain V2.5/V2.6 work.
+
+### 2026-11-03 - V2.5 bounded cross-instance leases
+
+- **Scope:** Optional token-owned Redis fill coordination after local coalescing.
+- **Changes:** Atomic lease acquisition, ownership-checked publication/release,
+  recheck after acquisition, shorter owner deadline and bounded jittered polling.
+  Rejected/ambiguous publication never warms L1 and returns an observable 503.
+  Added CLI timing validation, lease counters/gauges/wait timing and rejection logs.
+  Unshareable responses retain individual streaming fallback under the limiter.
+- **Decisions:** Leases are opt-in and require shared storage/local coalescing.
+  Coordination errors fail closed on misses while fresh L1 hits remain available.
+  No renewal, distributed strict limiter or exactly-once guarantee. Lease trials
+  use 64 MiB noeviction, avoiding ordinary data eviction of live leases.
+- **Verification:** Real Redis 7.4.2 tests cover concurrent ownership, expiry,
+  stale publication/release with response versions, 100-client two-gateway sharing,
+  rejected-result L1 safety, cancellation isolation, timeout cleanup, fallback,
+  post-acquisition recheck and fresh L1 dependency isolation. Complete ordinary
+  and race suites, vet and build passed; final three added cases passed focused
+  ordinary/race checks. Nine separate-process trials reconciled: shared-only
+  bursts made two backend attempts; leased bursts made one. Killing an owner
+  yielded an expected client transport error and survivor success in 1.48-1.50s,
+  including the 500ms backend delay. Survivor work gauges drained.
+- **Correction:** Final review classified wait expiry during lease acquisition
+  as coordination_timeout, matching the polling-timeout path. Focused ordinary
+  and race tests cover this boundary; the successful process paths were unchanged.
+- **Evidence:** [V2.5 report](docs/v2/leases.md), raw trials and hashes under
+  `bench/results/v2/20261103-220609-v25`, and v25 test/race logs.
+- **Limits:** Single Redis authority, finite leases and bounded waiting do not
+  bound all followers or prevent duplicate execution after expiry/failure. All
+  participating response writers must use the same lease policy. Broader Redis
+  faults and configurable degraded-mode policy remain V2.6.
+
+### 2026-11-03 - V2.6 fault injection and degraded modes
+
+- **Scope:** Explicit lease degradation policy, bounded cache admission and
+  controlled dependency failure/recovery verification.
+- **Changes:** Added protection-first (default) / available-local policies,
+  local-only fallback publication, ambiguous-result delivery without L1 admission,
+  fallback headers/counters/bounded logs, and separate synchronous flight/client
+  caps (CLI defaults 64/1024). Cache hits bypass admission; canceled clients release
+  slots while shared work retains its flight reservation until completion.
+- **Verification:** Ten final isolated real Redis cases passed with race-instrumented
+  gateway binaries: outage, 350ms delay, OOM, Redis+gateway restart and corrupt data
+  for both policies. Cold fault bursts returned 100 x 503 with zero backend work
+  under protection-first; available-local returned 100 x 200 with two local fills.
+  Fresh L1 hits stayed available. Recovery probes retain errors and prove renewed
+  shared reuse; all final work gauges drained and lease keys were absent.
+  Complete ordinary/race suites, vet and build passed. Real Redis tests cover
+  ambiguous committed replies, stale owners, expiry and rejected local admission;
+  focused tests cover caps, cancellation, timeout/permit cleanup and safe logs.
+  Current-code V2.5 process regression rechecked one leased fill and killed-owner
+  recovery with the expected interrupted-client error retained.
+- **Corrections:** Initial diagnostic runs exposed a transient WSL forwarding EOF
+  and an intentionally unretried stale Redis connection. Hardened harness control
+  readiness/shutdown, retained first-operation failures and recorded bounded
+  external recovery probes; application command/backend retries remain disabled.
+- **Evidence:** [V2.6 report](docs/v2/faults.md), final matrix
+  `bench/results/v2/20261103-223343-v26`, process regression
+  `bench/results/v2/20261103-223608-v25`, and v26 ordinary/race logs.
+- **Tradeoffs/limits:** Available-local can duplicate work, admit summed local
+  capacity and retain divergent L1 copies. Protection-first trades miss availability
+  for backend protection. Admission bounds cover cache flights/waiting clients,
+  not all connections/RSS. OOM fixture is deterministic rejection, not a memory
+  benchmark. Final comparisons/soak remain V2.7; original V1 plan/results unchanged.
+
+### 2026-11-03 - V2.7 final comparison, soak and reproduction
+
+- **Scope:** Final four-mode evidence and explanation; complete the V2 plan.
+- **Changes:** Added a standard-library-only cross-platform process sampler,
+  rotating-order four-mode harness, reconciliation/summary tooling, resumable
+  experiments with application/binary checks and attempt-specific files, one-command
+  ordinary/race/vet/build/fault/source-only verification. Generator reports all
+  coordination/cache admission/degraded reasons. Added graceful-drain and reason
+  accounting tests. Published final topology, configuration, trial ranges,
+  per-process resources, failure boundaries and measured project-story claims.
+- **Evidence:** `bench/results/v2/20261103-224701-v27`: twelve 30-second/5-second-warmup
+  mixed trials (three per mode), twelve 100-client cold bursts, one 300-second soak.
+  Four modes share 500 offered RPS, front hop and aggregate 32 backend permits/queue
+  slots. Cold fills were 1/2/2/1 for local-one/local-two/shared/leased. All 25 trials
+  reconciled. Principal results retain one generator drop and one coordination 503.
+  Soak: 150,000 sent, 149,997 successful, three coordination 503s, no drops/transport
+  errors. Gateway first/last-60s RSS medians were 18.75/20.44 and 18.72/19.65 MiB;
+  generator max sampled RSS 81.54 MiB includes retained latency samples.
+- **Verification:** Complete real-Redis ordinary/race suites, vet and build passed,
+  including graceful draining/forced shutdown. Ten final fault cases passed under
+  `20261103-230623-v26`. A source-only snapshot rebuilt all Go programs and passed
+  eight smoke cases; source hashes match and no prebuilt Go binaries were copied.
+  Redis and all owned child processes were cleaned up by the harness.
+- **Correction:** Readiness returned an invalid echoed HTTP status line before
+  shared cold trial 3; exact cause unproven. Added bounded HTTP parsing retry and
+  distinct fixture ports, then resumed without repeating completed trials. Original
+  FAILED/logs and initial manifest remain; resume-1.json records unchanged app/
+  binaries and updated harness hashes. Final SUCCESS marks completed checks.
+- **Decisions/limits:** Fixed offered-rate throughput is not peak capacity; adding
+  Redis/leases can add cost without much steady-work savings. Redis test build is
+  libc/-O1 in WSL2; process RSS excludes VM/kernel overhead. No leak-free, production
+  reliability, clean Git commit, strict distributed limit or exactly-once claim.
+  Historical V1/earlier V2 evidence and the original V1 plan were preserved.
+- **Report:** [Final comparison and reproduction](docs/v2/final.md),
+  [process resources](docs/v2/final-resources.md), and [tradeoffs](docs/tradeoffs.md).
 
 ## Future entry template
 

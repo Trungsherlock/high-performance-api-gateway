@@ -117,3 +117,53 @@ go tool pprof -top -alloc_space bench/profiles/full.heap
 
 Profiles perturb timing. Profile runs are recorded separately and excluded from
 the main performance comparison. No profiling HTTP endpoint is exposed.
+
+
+## V2 separate-process harness
+
+Use `./bench/run-v2.ps1 -Observe` for three-process experiments with fixed-rate or
+closed-loop arrivals, phase metric snapshots, and separate CPU/RSS samples. V1
+commands and historical results above remain available. See the
+[V2 guide](../docs/v2/README.md) for the full matrix and accounting definitions.
+
+
+For V2.2 admission-policy screening and repeated overload/recovery comparisons,
+run `./bench/run-v22.ps1`; analyze its emitted index with
+`python bench/summarize-v22.py <index-path>`. See
+[admission results and settings](../docs/v2/admission.md). These focused short
+experiments have different workloads and durations from the V2.1 steady matrix.
+
+
+V2.3 topology experiments use `./bench/run-v23-study.ps1`. Analyze the emitted
+portable index with `python bench/summarize-v23.py --index <index> --output <summary>`.
+Individual burst, steady, and failure/rejoin scenarios are available through
+`./bench/run-v23.ps1`. See [multi-instance results](../docs/v2/multi-instance.md).
+
+## V2.4 shared response cache
+
+Use `python bench/run-v24.py --redis-addr 127.0.0.1:6379` with an isolated Redis
+and freshly built gateway/backend binaries for the three-mode comparison.
+See [V2.4 setup, acceptance checks, and collected results](../docs/v2/shared-cache.md).
+
+## V2.5 bounded fill leases
+
+Use `python bench/run-v25.py --redis-addr 127.0.0.1:6379` with an isolated Redis
+and fresh gateway/backend/burst binaries. It compares shared and leased bursts
+and kills an owner during a fill. See [lease setup, semantics and results](../docs/v2/leases.md).
+
+## V2.6 fault injection and degraded modes
+
+`python bench/run-v26.py` owns an isolated Redis and tests outage, delay, OOM,
+restart and corrupt data with both policies. `--race` selects a prebuilt
+race-instrumented gateway. See [setup, policy semantics and results](../docs/v2/faults.md).
+
+## V2.7 final comparison
+
+`python bench/run-v27.py --complete` builds, compares four configurations, runs
+cold bursts and a five-minute soak, verifies ordinary/race tests and shutdown,
+reproduces faults, and rebuilds a source-only smoke snapshot. `--quick --complete`
+is a functional check. `--resume <directory> --skip-build --complete` preserves
+completed trials when settings/application hashes match. See [final methods,
+results, retained failures and process resources](../docs/v2/final.md).
+The final 25-trial study is `20261103-224701-v27`; its SUCCESS follows a recorded
+startup interruption, with original FAILED/logs and resume-1.json preserved.

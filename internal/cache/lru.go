@@ -87,3 +87,10 @@ func (c *Cache) Put(key string, r Response) {
 		c.remove(c.order.Back())
 	}
 }
+
+// Stats includes allocated expired entries until lazy removal.
+func (c *Cache) Stats() (int, int64) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	return len(c.items), c.usedBytes
+}

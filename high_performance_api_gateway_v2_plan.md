@@ -1,8 +1,17 @@
 # API Gateway v2 — Multi-instance caching and overload experiments
 
-**Status:** Proposed work; no v2 features or results are claimed.
+**Status:** V2.0-V2.7 complete and verified.
+V2.7 evidence: [final comparison, soak and reproduction](docs/v2/final.md).
+V2.6 evidence: [fault injection and degraded modes](docs/v2/faults.md).
+V2.5 evidence: [bounded fill leases and owner recovery](docs/v2/leases.md).
+V2.4 evidence: [shared response caching](docs/v2/shared-cache.md).
+V2.3 evidence: [independent gateways and front routing](docs/v2/multi-instance.md).
+V2.2 evidence: [bounded admission study](docs/v2/admission.md).
+See [V2 reproduction](docs/v2/README.md), [results](docs/v2/results.md), and
+[verification](docs/v2/verification.md).
 
-**Baseline:** v1 local commit `465d9f4`. Keep v1 results as historical evidence.
+**Baseline:** v1 local commit `465d9f4`. Keep v1 results as historical evidence. The `v1-baseline` tag points to
+`a567362`, which adds documentation above that implementation commit.
 
 **Purpose:** Extend the gateway from one process to multiple instances and study
 what changes when cache state, coordination, and failures cross process boundaries.

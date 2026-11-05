@@ -1,0 +1,14 @@
+﻿[
+    {
+        "binary":  "gateway.exe",
+        "sha256":  "DDD83ACD8F60CBB089415833AE4C2B710E5C4F096508ADDFB3949575849D1DA4"
+    },
+    {
+        "binary":  "mockbackend.exe",
+        "sha256":  "7085E8B2AF8069628D1030B7F9400E4E186AED4D10ABA31AAA8890A2964EF254"
+    },
+    {
+        "binary":  "loadgen.exe",
+        "sha256":  "AC0E0A274115D10BC67AAD9B2F9B88503A5F263B7759BECCB3259D9EBA7F239B"
+    }
+]

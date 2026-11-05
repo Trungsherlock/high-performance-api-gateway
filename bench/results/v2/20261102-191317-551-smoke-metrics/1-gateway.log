@@ -1,0 +1,2 @@
+2026/11/02 19:13:29 gateway listening on 127.0.0.1:49726 (upstream=http://127.0.0.1:49725, cache=true)
+{"duration_ms":50.3194,"instance":"trial-1","outcome":"response","request_id":"1000","route":"public_item","status":200,"time":"2026-11-03T01:13:32.3489422Z"}

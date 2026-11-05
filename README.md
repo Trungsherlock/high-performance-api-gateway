@@ -3,7 +3,7 @@
 A learning project exploring a single-upstream reverse proxy, bounded caching,
 request coalescing, and overload protection. See the project plan for the full scope.
 
-## Current status: Milestone 5
+## Current status: V1 complete; V2.0-V2.7 complete
 
 The gateway forwards ordinary HTTP requests to one fixed upstream using a shared
 connection pool, bounded LRU/TTL cache, request coalescing, and downstream concurrency
@@ -37,7 +37,7 @@ curl.exe --fail 'http://127.0.0.1:9000/stats'
 ```
 
 Both item responses should be `{"id":"42","name":"demo item"}` and a fresh
-backend should report `{"calls":1}`. Stop both programs with Ctrl+C.
+backend should report a `calls` value of `1` (along with activity statistics). Stop both programs with Ctrl+C.
 
 Linux/WSL2 equivalent (Go must be installed in that environment):
 
@@ -193,7 +193,12 @@ Set `CACHE_ENABLED=true` to enable caching again. Invalid boolean values fail st
 - `-max-concurrent 32` caps active upstream work across cache misses, private/POST
   bypass traffic, and fallback requests. Permits remain held until body EOF/error
   or close. Cache hits and coalesced followers consume no permits.
-- `-permit-wait 50ms` bounds waiting for a permit; exceeding it returns 503.
+- `-max-waiters 32` caps queued permit waiters. `0` rejects immediately when all
+  permits are busy; `-1` selects the historical unbounded-waiter comparison mode.
+- `-permit-wait 50ms` bounds waiting for a permit. Queue-full and wait-timeout
+  failures return 503 with `X-Gateway-Rejection: queue_full` or `wait_timeout`.
+  Cache hits bypass the permit queue. This does not bound per-key followers,
+  incoming connections, or total process memory.
   This limits active work and waiting duration, not the number of inbound clients
   or total process memory. It is not requests-per-second rate limiting.
 - `-coalesce=false` selects cache-only behavior. `-max-concurrent=0` disables the
@@ -241,7 +246,7 @@ native load runner, Linux/WSL2 wrk scenarios, microbenchmarks, and profile comma
 ./bench/summarize.ps1
 ```
 
-The native harness runs the gateway, backend, and load generator together in one
+The original `cmd/bench` harness runs the gateway, backend, and load generator together in one
 process; its CPU and RSS measurements cover the entire experiment. Results are
 workload-specific and are not production capacity guarantees. A reusable proxy
 copy-buffer pool reduces allocation churn; its memory is outside the cache budget.
@@ -257,3 +262,64 @@ copy-buffer pool reduces allocation churn; its memory is outside the cache budge
   when the request is canceled.
 
 System design preparation is in [system_design_reading_guide.md](system_design_reading_guide.md).
+
+
+## V2: separate-process measurements
+
+V2.0-V2.1 add an external load generator, a Windows process harness, loopback JSON
+metrics, and sampled structured request logs. Cache and overload policies remain
+local to one gateway. Shared caching and distributed leases are later milestones.
+
+```powershell
+./bench/run-v2.ps1 -Observe -Mode full -Arrival scheduled -Seconds 30 -Warmup 5 -Trials 3
+```
+
+See [V2 reproduction and telemetry](docs/v2/README.md),
+[V2 results](docs/v2/results.md), and the [V2 plan](high_performance_api_gateway_v2_plan.md).
+The gateway's dedicated admin listener defaults to `127.0.0.1:8081`; override it
+with `-admin-addr` for each instance, or pass an empty value to disable it.
+
+
+V2.2 adds bounded admission queues and slowdown/recovery experiments. See
+[admission policy and results](docs/v2/admission.md). Historical V2.0/V2.1 runs
+used the legacy waiter policy; current gateway CLI defaults to 32 queued waiters.
+
+
+V2.3 adds `cmd/frontproxy`, independent gateway instances, per-target readiness,
+and controlled failover/rejoin experiments. Run `./bench/run-v23-study.ps1` for
+one-command reproduction. See [the multi-instance guide and results](docs/v2/multi-instance.md).
+Gateway caching/coalescing remains local to each process; the front does not
+coordinate fills or retry failed requests through another target.
+
+## V2.4 shared response cache
+
+Optional local, shared-only, and layered modes now support Redis response reuse
+across gateways. See [configuration, safety rules, tests and nine-trial comparison](docs/v2/shared-cache.md).
+Local mode remains the default and requires no Redis. Distributed leases come next.
+
+## V2.5 bounded fill leases
+
+Opt-in Redis leases coordinate cold fills across gateways, with token-checked
+publication/release and bounded polling. See [configuration, guarantees and killed-owner evidence](docs/v2/leases.md).
+
+## V2.6 faults and degraded modes
+
+Choose protection-first or available-local behavior for lease-dependent misses.
+Separate cache-flight/client caps bound shared work and waiting. See
+[policy tradeoffs, isolated fault reproduction, and evidence](docs/v2/faults.md).
+
+## V2.7 final comparison and reproduction
+
+[Final results, architecture and guarantees](docs/v2/final.md) compare one local
+node, two independent nodes, shared responses, and shared responses with leases.
+The study includes trial ranges, per-process CPU/RSS, cold bursts, a five-minute
+soak, retained errors, ten fault reproductions, and a source-only rebuild.
+
+With the documented Go/Python/Redis prerequisites:
+
+```powershell
+python bench/run-v27.py --complete
+```
+
+Use `--quick --complete` for a shorter functional reproduction. See the final
+report for safe resume and the limits of the measurements.
