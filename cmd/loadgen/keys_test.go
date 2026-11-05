@@ -79,6 +79,35 @@ func TestReuseStreamsAreSeededAndShaped(t *testing.T) {
 	}
 }
 
+// At a rate far above timer resolution, the last arrivals' timers fire after the window
+// ends; they are still sent, so only a full in-flight limit drops arrivals.
+func TestLateFinalArrivalsAreSent(t *testing.T) {
+	var mu sync.Mutex
+	received := 0
+	s := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		mu.Lock()
+		received++
+		mu.Unlock()
+	}))
+	defer s.Close()
+	// Pooled connections, as main configures them; requests beyond the pool wait for a
+	// connection while holding their in-flight slot, which the limit below covers.
+	tr := &http.Transport{MaxConnsPerHost: 64, MaxIdleConnsPerHost: 64}
+	defer tr.CloseIdleConnections()
+	client := &http.Client{Transport: tr, Timeout: 5 * time.Second}
+	const rate, window = 20000, 100 * time.Millisecond
+	planned := arrivals(window, rate)
+	for attempt := 0; attempt < 5; attempt++ {
+		mu.Lock()
+		received = 0
+		mu.Unlock()
+		r := run(context.Background(), client, s.URL, "scheduled", "zipf", "measurement", window, rate, planned, 43, defaultKeys)
+		if r.Offered != planned || r.GeneratorDrops != 0 || r.Sent != planned || r.TransportErrors != 0 || received != planned {
+			t.Fatal(attempt, r.Offered, r.Sent, r.GeneratorDrops, r.TransportErrors, received, planned)
+		}
+	}
+}
+
 // A scheduled run sends exactly the planned keys; drops skip keys without shifting later ones.
 func TestScheduledRunFollowsPlan(t *testing.T) {
 	for _, slow := range []bool{false, true} {

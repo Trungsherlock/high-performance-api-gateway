@@ -47,7 +47,18 @@ class Topology(faults.Topology):
         self.mode=mode;self.delay=delay;self.roles={};self.front=faults.port();self.front_admin=faults.port()
         nodes=1 if mode=="local-one" else args.gateways
         self.data=[faults.port() for _ in range(nodes)];self.admin=[faults.port() for _ in range(nodes)]
-        self.restarting=False;self.events=[]
+        self.restarting=False;self.events=[];self.redis_port_retries=0
+    def start_redis(self):
+        """V2.6 start, retried on a fresh port when the port was taken before Redis bound it. The
+        allocator releases a free port, and until Redis binds it inside WSL an outgoing connection
+        can take it as an ephemeral source port; V3.4's capacity runs open enough connections to
+        hit this. Gateways start after Redis, so they only ever see the final port."""
+        for attempt in range(3):
+            try:return super().start_redis()
+            except RuntimeError as error:
+                log=Path(self.logs[-1].name);log_text=log.read_text(errors="replace") if log.exists() else ""
+                if "owned Redis exited" not in str(error) or "Address already in use" not in log_text or attempt==2:raise
+                self.redis_port_retries+=1;self.redis_port=faults.port()
     def views(self):
         out=[]
         for port in self.admin:
@@ -149,7 +160,7 @@ def run_trial(folder,args,mode,kind,rate,trial):
         after={"gateways":topology.views(),"backend":faults.snapshot(topology.backend,"/stats"),"front":faults.snapshot(topology.front_admin)}
         assert all(all(v==0 for v in n["gauges"].values()) for n in after["gateways"])
         assert after["backend"]["active"]==0 and after["backend"]["peak"]<=args.budget["aggregate_permits"]
-        return {"mode":mode,"kind":kind,"rate":rate,"trial":trial,"gateways":len(topology.data),"commands":topology.commands,"before":before,"after":after,"output":output,"resources":resources.name,"redis_info":topology.redis_info,"power":power,"events":topology.events}
+        return {"mode":mode,"kind":kind,"rate":rate,"trial":trial,"gateways":len(topology.data),"commands":topology.commands,"before":before,"after":after,"output":output,"resources":resources.name,"redis_info":topology.redis_info,"redis_port_retries":topology.redis_port_retries,"power":power,"events":topology.events}
     finally:topology.close()
 
 def fault_runs(folder,args):

@@ -4,7 +4,8 @@
 V3.1 implemented: [noise floor and V3 baseline](docs/v3/noise-floor.md).
 V3.2 implemented: [lease protocol v2](docs/v3/lease-protocol.md).
 V3.3 implemented: [reuse workloads, predictions and restart](docs/v3/reuse-workloads.md).
-V3.4–V3.6 planned.
+V3.4 implemented: [capacity at a fixed SLO](docs/v3/capacity.md).
+V3.5–V3.6 planned.
 
 **Baseline:** V2.7 final study [`20261103-224701-v27`](bench/results/v2/20261103-224701-v27/summary.json),
 reported in [docs/v2/final.md](docs/v2/final.md). V1 and V2 results stay unchanged.
@@ -250,6 +251,26 @@ which puts the leased−shared gap that V3.2 targets at about 2.5 ms.
   ceilings as gateway capacity.
 - Keep the aggregate budget equal across modes.
 
+**Outcome:**
+- **Host ceiling:** 1,250 req/s (`hot`, local-two, 1 ms backend). It is set
+  by 100–850 ms host stalls against the generator's 256 in-flight slots, not
+  by CPU (1.3 cores). The first control was confounded: the hot key's 100 ms
+  expiry fill held rate × 100 ms requests in flight.
+- **Backend choice:** 32 permits / 250 ms (128 fills/s), the fastest backend
+  that keeps every predicted ceiling at or below 625 req/s.
+- **mixed:** local-two, shared and leased-v2 are all at 390 req/s; local-one
+  is at 472 (1.21×, from pooled permits, predicted before the run).
+- **zipf:** shared and leased-v2 at 293 against local-two's 242 (1.21×, as
+  predicted; the inverse backend-call ratio is 1.16–1.22). local-one is
+  host-bound: host stalls failed its confirmations.
+- **Ceilings against predictions:** all 7 backend-set ceilings came out one
+  rung (10%) below their predictions, which used the climb seed only.
+  Per-trial seeds agree with 96 of 104 SLO verdicts.
+- **Harness fixes:**
+  - the generator no longer drops the arrivals whose timers fire just after
+    the window ends;
+  - Redis retries on a fresh port when its WSL bind collides.
+
 ### V3.5 — Optional: key-affinity routing as an alternative to leases
 
 **Work**
@@ -344,8 +365,9 @@ Fill these only from measured results:
   matching the shared tier within a 0.7 ms noise floor. Measured in V3.2.
 - Reduced backend calls by 18.7% (Zipf) and 41.8% (hot set) across 2 gateways
   with a shared Redis tier and leases, within 1% of fills predicted from the
-  workload's key stream (V3.3), raising capacity at a p99 SLO from [X] to [Y]
-  req/s under the same backend budget (V3.4).
+  workload's key stream (V3.3). That raised Zipf capacity at a 99.9%-success
+  SLO from 242 to 293 req/s (+21%) under the same backend budget, the ceiling
+  ratio a backend-limit model predicted before the runs (V3.4).
 - Kept backend load at its steady rate after a gateway restart by warming the
   empty local cache from Redis. In the first 2 s back, calls were 241–249
   against a steady 242–246, compared with 345 against 295 without Redis (V3.3,

@@ -12,6 +12,9 @@ V3.2 adds lease protocol v2 and the `leased-v2` mode: see
 V3.3 adds the `zipf` and `hotset` workloads, predicted fills and restart trials:
 see [reuse-workloads.md](reuse-workloads.md).
 
+V3.4 adds capacity ladders at a fixed SLO (`bench/capacity-v3.py`), a backend-limit
+model in the predictor, and a host-ceiling control: see [capacity.md](capacity.md).
+
 The options table below shows current defaults.
 
 ## Baseline

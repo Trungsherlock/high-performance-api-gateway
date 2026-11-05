@@ -19,6 +19,14 @@
 | [20261104-175819-v3](20261104-175819-v3/summary.json) | **V3.3 zipf**: 5 modes × 5 blocks, 3 restart trials per mode, `--complete` | `FAILED` (Modern Standby mid-trial) then resumed to SUCCESS; shared / leased-v2 −18.0% / −18.7% backend calls |
 | [20261104-192932-v3](20261104-192932-v3/summary.json) | **V3.3 hotset**, max-age 1 s | SUCCESS; −35.1% / −41.8% |
 | [20261104-194601-v3](20261104-194601-v3/summary.json) | **V3.3 mixed control** | SUCCESS; equal to predictions, 4 timeout 503s in one stalled block |
+| [20261105-032930-v3](20261105-032930-v3/summary.json) | V3.4 host probe: `hot`, local-two, 3,000–12,000/s for 10 s each, 50 ms backend | SUCCESS; found the end-of-window generator drops (2 at 3,000/s); drops from 5,000/s |
+| [20261105-034409-v34](20261105-034409-v34/summary.json) | V3.4 `--quick` zipf capacity ladder (local-two, shared) | SUCCESS; both fail the lowest rung with 1 s warmups, as predicted |
+| [20261105-034519-v34](20261105-034519-v34/summary.json) | V3.4 `--quick` mixed ladder (3 modes), then a replay-only `--resume` | SUCCESS; top of grid reached and confirmed; resume reproduced the summary |
+| [20261105-034803-v34](20261105-034803-v34/summary.json) | V3.4 host control, 100 ms backend | SUCCESS, no ceiling; **confounded**: the hot key's 100 ms expiry fill filled the 256 in-flight slots at 2,500/s |
+| [20261105-035219-v34](20261105-035219-v34/summary.json) | V3.4 host control, 1 ms backend, from 2,000/s | SUCCESS, no ceiling: host-stall drops in confirmations down to 2,000/s |
+| [20261105-035703-v34](20261105-035703-v34/summary.json) | **V3.4 host ceiling**, 1 ms backend, from 1,000/s | SUCCESS; **1,250 req/s** confirmed; every trial from 3,052/s fails |
+| [20261105-041050-v34](20261105-041050-v34/summary.json) | **V3.4 mixed capacity**, 250 ms backend, 4 modes | SUCCESS; local-one 472, others 390, all backend-bound |
+| [20261105-044743-v34](20261105-044743-v34/summary.json) | **V3.4 zipf capacity**, 250 ms backend, 4 modes, `--complete` | `FAILED` (Redis port collision in WSL), fixed, resumed to SUCCESS; local-two 242, shared and leased-v2 293 (+21%), local-one 293 host-bound |
 
 Each folder holds:
 
@@ -28,6 +36,8 @@ Each folder holds:
 | `trials.jsonl` | One line per trial with its raw data, including the generator's output |
 | `*-resources.jsonl` | One per trial: per-second CPU, RSS, Redis stats and gateway counters |
 | `summary.json` | The reconciled summary |
+| `predictions.json` | V3.3+: predicted fills (`run-v3.py`) or predicted ceilings (`capacity-v3.py`), written before the first trial |
+| `model-check.json` | V3.4 capacity runs: every trial's own seed replayed through the model, written after the run |
 | `tests.txt`, `race.txt`, `vet.txt`, `build.txt`, `faults/`, `clean-source*` | `--complete` checks only |
 | `logs.zip` | From V3.1, every per-process log and Redis config (`*.log`, `*.conf`, including those in `faults/` and `clean-source-results/`) |
 

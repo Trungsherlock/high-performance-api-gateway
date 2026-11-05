@@ -907,6 +907,96 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
   - Work is uncommitted.
 - **Report:** [V3.3 reuse workloads](docs/v3/reuse-workloads.md).
 
+### 2026-11-05 - V3.4 capacity at a fixed SLO
+
+- **Scope:** Fifth V3 milestone from the
+  [V3 plan](high_performance_api_gateway_v3_plan.md). Measure each mode's
+  highest rate meeting an SLO at the same backend budget:
+  - SLO: 99.9% success, scheduled p99 at most 3× the backend delay, no
+    generator drops;
+  - a host-ceiling control runs first;
+  - every ceiling is labelled backend- or host-bound.
+- **Changes:**
+  - `cmd/loadgen`: an arrival due inside the window is sent even when its timer
+    fires after the window ends; only a full in-flight limit drops arrivals.
+    - At 3,000/s the old behavior dropped 2 arrivals on timer jitter alone.
+    - New `TestLateFinalArrivalsAreSent`: the old generator dropped 3–8 of
+      2,000 there; the new one drops none.
+    - Plan-only streams are unchanged.
+  - `bench/predict-v3.py` `--capacity`: per-gateway backend limits:
+    - flight admission (lease followers hold a slot);
+    - FIFO permits with a bounded waiter queue and a 50 ms wait;
+    - rejection of a fill together with its coalesced requests;
+    - a ladder, SLO verdicts and a predicted ceiling per mode;
+    - without `--capacity`, V3.3's model is unchanged, and all five recorded
+      V3.3 predictions recompute identically.
+  - Added `bench/capacity-v3.py`:
+    - one shared geometric grid, modes interleaved in rotating order, one 35 s
+      trial per rung;
+    - a failed rung is retried once; the highest passing rung needs 3
+      confirmations, and a failed confirmation steps down;
+    - climbs start at 0.7× the predicted ceiling;
+    - `predictions.json` is written before the first trial;
+    - `--host-run`, `--slo-p99-ms`, `--resume` (replays recorded trials) and
+      `--complete` (tests, race, vet, build).
+  - Added `bench/summarize-capacity-v3.py`: SLO verdict per trial, ladder
+    replay, ceilings, first failures with causes, bound labels, and ratios.
+    Ratios are marked when a ceiling is not backend-bound.
+  - Added `bench/check-capacity-v3.py`: after a run, replays each trial's own
+    seed through the model (`model-check.json`).
+  - `run-v3.py`: Redis retries on a fresh port only when its log shows
+    "Address already in use" inside WSL. Each trial records
+    `redis_port_retries`.
+  - Docs:
+    - added `docs/v3/capacity.md`, with predictions written before the
+      backend-bound runs;
+    - updated the plan (status, outcome, resume bullet), the README, the V3
+      README, the bench README and the results index.
+- **Evidence:**
+  - **Host control:** `20261105-035703-v34` confirmed **1,250 req/s** (`hot`,
+    local-two, 1 ms backend, p99 ≤ 300 ms). Every trial from 3,052/s failed.
+    Below that, about one trial in three dropped arrivals on 100–480 ms host
+    stalls, at 1.3 cores of CPU. Two earlier controls found no ceiling:
+    - `034803` was confounded: the hot key's 100 ms expiry fill held
+      rate × 100 ms requests in flight, filling 256 slots at 2,500/s;
+    - `035219` started too high.
+  - **Backend chosen by the plan's rule:** 32 permits / 250 ms = 128 fills/s.
+    The highest predicted ceiling is 519 ≤ 625; 200 ms gave 690.
+  - **mixed** `20261105-041050-v34` (54 trials): local-one **472**;
+    local-two, shared and leased-v2 **390** each. All backend-bound, failing
+    on `wait_timeout` at 61–73% backend utilization with zero drops.
+  - **zipf** `20261105-044743-v34` (50 trials):
+    - local-two **242**; shared and leased-v2 **293** (+21%), exactly the
+      predicted ratio. The inverse backend-call ratio is 1.16–1.22, and the
+      shared hit ratio 17.6–17.7%;
+    - local-one 293, **host-bound**: it passed its climb to 390 and failed at
+      429 with permit 503s. Its confirmations then failed on host stalls (an
+      849 ms generator freeze, front 503s, p99 410 ms).
+  - **Predictions:** the pre-run predictions were one rung (10%) high for all
+    7 backend-set ceilings, because they used the climb seed only; the
+    confirmation seeds are harder. Replaying each trial's own seed agrees with
+    52/54 (mixed) and 44/50 (zipf) SLO verdicts. Fills match within 0.16%
+    (mixed) and 1.29% (zipf) per trial.
+- **Verification:**
+  - The zipf run's `--complete` passed: 10/10 ordinary and race packages;
+    empty vet and build logs.
+  - Loadgen tests pass; the new test fails on the old generator.
+  - Functional checks `034409` and `034519`; a replay-only resume reproduced
+    its summary.
+  - Offline ladder-path checks, and a stub test of the Redis retry decisions.
+- **Decisions/limits:**
+  - The zero-drop SLO with the generator's standing 256 in-flight slots was
+    kept, rather than raising the limit to get a higher host ceiling.
+  - The first 8 zipf trials ran before the Redis retry existed. The run stopped
+    at trial 9 on a WSL port collision, was resumed with identical settings
+    and hashes (only `bench/*.py` changed), and keeps its `FAILED` marker and
+    logs.
+  - VS Code used about 1–1.6 cores during the runs. Host stalls grew late in
+    the session.
+  - Leased v1 was not laddered.
+  - Work is uncommitted.
+- **Report:** [V3.4 capacity](docs/v3/capacity.md).
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title

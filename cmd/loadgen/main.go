@@ -178,7 +178,12 @@ func run(ctx context.Context, c *http.Client, target, mode, workload, phase stri
 			if time.Since(due) > time.Second/time.Duration(rate) {
 				r.LateArrivals++
 			}
-			if ctx.Err() != nil || !time.Now().Before(end) {
+			// An arrival due inside the window is sent even when its timer fires after the
+			// window ends, like every other late arrival; its lag counts in scheduled
+			// latency. Before V3.4 these were dropped, which at thousands of arrivals per
+			// second failed a no-drop SLO on timer jitter alone. Only a full in-flight
+			// limit (or cancellation) drops an arrival.
+			if ctx.Err() != nil {
 				r.GeneratorDrops++
 				continue
 			}

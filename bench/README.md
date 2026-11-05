@@ -230,3 +230,31 @@ example, `python bench/predict-v3.py --workload zipf --restart-trials 3`.
 reports backend calls in fixed windows around the restart. `--cache-entries` sets
 L1 size, through the gateway's new `-cache-entries` and `-cache-bytes` flags. See
 [V3.3 reuse workloads](../docs/v3/reuse-workloads.md).
+
+## V3.4 capacity ladders
+
+[`capacity-v3.py`](capacity-v3.py) finds each mode's highest rate that meets the
+SLO: success of at least 99.9%, scheduled p99 of at most 3× the backend delay,
+and no generator drops.
+- **Grid:** every mode climbs one geometric grid (`--start`, `--step`), one
+  trial per rung, interleaved with the other modes.
+- **Climb:** a failed rung is retried once, and a second failure ends the climb.
+  The highest passing rung then needs `--confirm` (3) more passes.
+- **Predictions:** written before the first trial
+  (`predict-v3.py --capacity`); each climb starts below its predicted ceiling.
+- **Labels:** the summary labels each ceiling backend-, coordination- or
+  host-bound.
+
+```powershell
+# Host-ceiling control first: almost no backend work, judged by a fixed p99 bound (V3.4 used 300 ms).
+python bench/capacity-v3.py --workload hot --modes local-two --delay 1 --slo-p99-ms 300 --start 1000 --step 1.25
+# Backend-bound ladders, labelled against that control.
+python bench/capacity-v3.py --workload zipf --delay 250 --start 200 --host-run bench/results/v3/<host run>
+python bench/summarize-capacity-v3.py bench/results/v3/<run>
+python bench/predict-v3.py --capacity --workload zipf --delay 250 --start 200
+```
+
+`--resume <run>` replays recorded trials through the same ladder. After a run,
+`python bench/check-capacity-v3.py bench/results/v3/<run>` replays every trial's
+own seed through the model into `model-check.json`. See
+[V3.4 capacity](../docs/v3/capacity.md).

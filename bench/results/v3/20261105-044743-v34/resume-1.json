@@ -1,0 +1,25 @@
+{
+  "time": "2026-11-05T05:45:10.427052+00:00",
+  "completed_trials_preserved": 8,
+  "kept_awake": true,
+  "note": "Identical settings and application/binary hashes; recorded trials replayed, not rerun. Original FAILED marker/logs retained.",
+  "harness_hashes": {
+    "bench/capacity-v3.py": "2eb2bd055025036eb2875b56284706405f9b4f561728be2951c338f53f1cd423",
+    "bench/check-capacity-v3.py": "8a642e992c56857eadeb491cf0bc3465ecd2087c0e81e47675e628b181c05963",
+    "bench/host.py": "032dde697d238fc1cc6270ee45eedf036dbcd46fa4ad51088dcfd8e62739067c",
+    "bench/pack_logs.py": "bb8ba82bf44287215a5c5788c08b692aa68985eb29e8d4b3a442780973427cd5",
+    "bench/predict-v3.py": "e5e17638257f4b1d58daba636b2135e8814c84a32b530d320feb601af03c3e00",
+    "bench/process_usage.py": "6edc40b72f590d43d72a60ec3f38d09704d364fabc6dc1b98196797756b9364e",
+    "bench/run-v24.py": "5b630be03a3345d5ccfa52689409d04d5e5888fc5d023ab4111242ee5598e168",
+    "bench/run-v25.py": "a1737ebee7d001a85004d83c78c9d929bf5eed6c114752a6ba9ca6373c7cce10",
+    "bench/run-v26.py": "9b1685c609cb13ef088072104a97e36a433b40e82e7673c94206359efab85883",
+    "bench/run-v27.py": "e58db2b00af96efc3720b8f6f90f8ae8657e0e5b1023ef055c333f11aec4678d",
+    "bench/run-v3.py": "fde946f781787eab2d9a66cef9029fa1041022654ace9c65db44bb6cf71c5c36",
+    "bench/summarize-capacity-v3.py": "6f33dca2e9aca5c099e76dd875e806c5cb5c0b5d732ab4d11bf394fc7e8ccb56",
+    "bench/summarize-v2.py": "14e55891691961b73a02ce215c335cb6003d389357bdc3fd39d8d702e83e0b9f",
+    "bench/summarize-v22.py": "137142a9d94f80c07ec2d801717409747e489a38a5bd7849451984e99ad67446",
+    "bench/summarize-v23.py": "778dbb07b29bf6d7c462afcf5e01062823005c6e4a25fc840f5e1ae658d22c9f",
+    "bench/summarize-v27.py": "24dd7302836440297716f11afa93fc87fc4300927728439970a18fccca45f67a",
+    "bench/summarize-v3.py": "99925018154ff3749e86f7f193a0c53c5999c63257db9ab7e61aa96480d1334e"
+  }
+}

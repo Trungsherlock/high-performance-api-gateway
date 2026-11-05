@@ -3,7 +3,7 @@
 A learning project exploring a single-upstream reverse proxy, bounded caching,
 request coalescing, and overload protection. See the project plan for the full scope.
 
-## Current status: V1 complete; V2.0-V2.7 complete; V3.0-V3.3 implemented
+## Current status: V1 complete; V2.0-V2.7 complete; V3.0-V3.4 implemented
 
 The gateway forwards ordinary HTTP requests to one fixed upstream using a shared
 connection pool, bounded LRU/TTL cache, request coalescing, and downstream concurrency
@@ -390,4 +390,27 @@ a run's exact seeded key stream to predict its backend fills before the run.
   rate at steady state.
 
 See [V3.3 reuse workloads](docs/v3/reuse-workloads.md).
+
+## V3.4 capacity at a fixed SLO
+
+`bench/capacity-v3.py` climbs a rate ladder per mode until the SLO breaks:
+99.9% success, scheduled p99 at most 3× the backend delay, no generator drops.
+Each ceiling needs 3 confirmations and gets a backend- or host-bound label.
+
+The host-ceiling control set the bound first: 1,250 req/s, limited by host
+stalls. So the backend was set to 32 permits / 250 ms (128 fills/s), which
+keeps every predicted ceiling at or below half of that.
+
+| Workload | local-one | local-two | shared | leased-v2 |
+|---|---|---|---|---|
+| `mixed` (no reuse) | 472 | 390 | 390 | 390 |
+| `zipf` | 293 (host-bound) | 242 | **293** | **293** |
+
+- **zipf:** the shared tier carries 21% more load before the SLO breaks, as
+  predicted from its backend-call saving.
+- **mixed:** shared and leases neither gain nor lose capacity.
+- **local-one:** one gateway with the whole permit budget beats two with half
+  each, from pooled queueing, which the model predicted.
+
+See [V3.4 capacity](docs/v3/capacity.md).
 
