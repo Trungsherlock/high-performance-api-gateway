@@ -1,0 +1,95 @@
+{
+  "rates": {
+    "500": {
+      "settings": {
+        "workload": "mixed",
+        "keys": 10000,
+        "zipf_s": 1.1,
+        "hot_keys": 100,
+        "rate": 500,
+        "seconds": 30,
+        "warmup": 5,
+        "trials": 5,
+        "restart_trials": 0,
+        "max_age": 10,
+        "delay": 50,
+        "cache_entries": 1000,
+        "gateways": 2
+      },
+      "ttl_seconds": 10,
+      "fill_seconds": 0.05,
+      "blocks": {
+        "1": {
+          "requests": 15000,
+          "distinct_keys": 2971,
+          "fills": {
+            "one": 2973,
+            "local": 2976,
+            "shared": 2976,
+            "leased": 2973,
+            "shared_ideal": 2973
+          },
+          "cross_node_duplicate_fraction": 0.0010080645161290322
+        },
+        "2": {
+          "requests": 15000,
+          "distinct_keys": 3032,
+          "fills": {
+            "one": 3034,
+            "local": 3037,
+            "shared": 3037,
+            "leased": 3034,
+            "shared_ideal": 3034
+          },
+          "cross_node_duplicate_fraction": 0.0009878169245966415
+        },
+        "3": {
+          "requests": 15000,
+          "distinct_keys": 2967,
+          "fills": {
+            "one": 2969,
+            "local": 2972,
+            "shared": 2972,
+            "leased": 2969,
+            "shared_ideal": 2969
+          },
+          "cross_node_duplicate_fraction": 0.001009421265141319
+        },
+        "4": {
+          "requests": 15000,
+          "distinct_keys": 2997,
+          "fills": {
+            "one": 2999,
+            "local": 3002,
+            "shared": 3002,
+            "leased": 2999,
+            "shared_ideal": 2999
+          },
+          "cross_node_duplicate_fraction": 0.000999333777481679
+        },
+        "5": {
+          "requests": 15000,
+          "distinct_keys": 3076,
+          "fills": {
+            "one": 3078,
+            "local": 3081,
+            "shared": 3081,
+            "leased": 3078,
+            "shared_ideal": 3078
+          },
+          "cross_node_duplicate_fraction": 0.0009737098344693282
+        }
+      },
+      "restart": {},
+      "medians": {
+        "one": 2999,
+        "local": 3002,
+        "shared": 3002,
+        "leased": 2999,
+        "shared_ideal": 2999,
+        "cross_node_duplicate_fraction": 0.000999333777481679
+      },
+      "restart_medians": {}
+    }
+  }
+}

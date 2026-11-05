@@ -13,6 +13,12 @@
 | [20261104-070718-v3](20261104-070718-v3/summary.json) | `--quick` check that the harness packs logs into `logs.zip` | SUCCESS; 70 files reduced to 14 |
 | [20261104-153406-v3](20261104-153406-v3/summary.json) | V3.2 `--quick` functional check with `leased-v2` | SUCCESS; 2.00 ops per fill, cold fill 1 |
 | [20261104-153628-v3](20261104-153628-v3/summary.json) | **V3.2 acceptance**: `--complete --trials 6 --soak-mode leased-v2`, 6 modes × 6 blocks, faults under v1, v2 and v2 race | SUCCESS; leased-v2 − leased p95 −2.11 ms, ops per fill 5.00 → 2.00, commands per fill 12.01 → 8.01, 0 503s |
+| [20261104-175035-v3](20261104-175035-v3/) | V3.3 `--quick` zipf with a restart trial | FAILED: the harness read the relaunched gateway's log in place of the generator's; fixed |
+| [20261104-175236-v3](20261104-175236-v3/summary.json) | V3.3 `--quick` zipf with one restart trial per mode | SUCCESS; 2-second blocks matched predictions exactly |
+| [20261104-175603-v3](20261104-175603-v3/summary.json) | V3.3 `--quick` hotset, max-age 1 | SUCCESS |
+| [20261104-175819-v3](20261104-175819-v3/summary.json) | **V3.3 zipf**: 5 modes × 5 blocks, 3 restart trials per mode, `--complete` | `FAILED` (Modern Standby mid-trial) then resumed to SUCCESS; shared / leased-v2 −18.0% / −18.7% backend calls |
+| [20261104-192932-v3](20261104-192932-v3/summary.json) | **V3.3 hotset**, max-age 1 s | SUCCESS; −35.1% / −41.8% |
+| [20261104-194601-v3](20261104-194601-v3/summary.json) | **V3.3 mixed control** | SUCCESS; equal to predictions, 4 timeout 503s in one stalled block |
 
 Each folder holds:
 

@@ -3,7 +3,7 @@
 A learning project exploring a single-upstream reverse proxy, bounded caching,
 request coalescing, and overload protection. See the project plan for the full scope.
 
-## Current status: V1 complete; V2.0-V2.7 complete; V3.0-V3.2 implemented
+## Current status: V1 complete; V2.0-V2.7 complete; V3.0-V3.3 implemented
 
 The gateway forwards ordinary HTTP requests to one fixed upstream using a shared
 connection pool, bounded LRU/TTL cache, request coalescing, and downstream concurrency
@@ -370,4 +370,24 @@ In 6 same-block comparisons:
 
 `-lease-protocol` now defaults to `v2`; `v1` remains selectable. See
 [V3.2 lease protocol v2](docs/v3/lease-protocol.md).
+
+## V3.3 workloads with cross-node reuse
+
+The generator gains `zipf` and `hotset` workloads. `bench/predict-v3.py` replays
+a run's exact seeded key stream to predict its backend fills before the run.
+
+| Workload | Backend calls saved against independent gateways (shared / leases) | Predicted |
+|---|---|---|
+| Zipf (10k keys, s = 1.1) | 18.0% / 18.7% | 18.0% / 18.7% |
+| Hot set (100 keys, 1 s TTL) | 35.1% / 41.8% | 35.7% / 41.9% |
+| `mixed` control | 0 / 0.1% | 0 / 0.1% |
+
+- **Accuracy:** every block was within 1% of prediction.
+- **Leases:** worth the most where gateways often miss the same key together
+  (hot set: 289 fewer fills than shared per block). They cost no p95 beyond
+  the shared tier's 1–1.7 ms.
+- **Restart:** after a gateway restart, Redis kept the empty gateway's backend
+  rate at steady state.
+
+See [V3.3 reuse workloads](docs/v3/reuse-workloads.md).
 

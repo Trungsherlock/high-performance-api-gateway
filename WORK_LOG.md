@@ -812,6 +812,101 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
   - Work is uncommitted.
 - **Report:** [V3.2 lease protocol v2](docs/v3/lease-protocol.md).
 
+### 2026-11-04 - V3.3 workloads with cross-node reuse
+
+- **Scope:** Fourth V3 milestone from the
+  [V3 plan](high_performance_api_gateway_v3_plan.md). Give the shared tier and
+  leases workloads with cross-gateway reuse, predict backend fills from the key
+  stream before running, and test a gateway restart. Keep `mixed` as the control.
+- **Changes:**
+  - `cmd/loadgen`:
+    - `zipf` (`-keys`, `-zipf-s`) and `hotset` (`-hot-keys`) workloads that draw
+      one key per *offered* arrival;
+    - `-plan-only`, which prints the seeded stream;
+    - a `keySource` refactor that leaves `hot`, `mixed` and `unique` streams
+      identical (tested);
+    - new `keys_test.go`.
+  - `cmd/gateway`: `-cache-entries` and `-cache-bytes`, defaulting to 1000 and
+    16 MiB.
+  - Added `bench/predict-v3.py`:
+    - replays the planned warmup and measurement stream through round-robin
+      routing and 1000-entry LRU/TTL L1s;
+    - models `one`, `local`, `shared` (fills visible only on completion),
+      `leased` (global in-flight) and `shared_ideal`, with fills lasting the
+      backend delay;
+    - also models the restart timeline.
+  - `run-v3.py`:
+    - zipf and hotset, with `--keys`, `--zipf-s`, `--hot-keys` and
+      `--cache-entries` (budgeted);
+    - `predictions.json` written before the first trial;
+    - `--restart-trials`: kill gateway 1 at 15 s of a 35 s measurement and
+      relaunch it empty at 20 s, recording backend calls at pre, stop, ready,
+      +2 s and +10 s. Admin snapshots tolerate the down gateway in these trials
+      only;
+    - the generator's log is now read by reference, since a relaunch opens a
+      later log;
+    - Windows is asked to stay awake for the run (`host.keep_awake`, recorded
+      as `kept_awake`).
+  - `summarize-v3.py`: predicted fills and measured/predicted per trial, a
+    shared-hit column, and restart window summaries against predictions.
+  - Docs:
+    - added `docs/v3/reuse-workloads.md`, with predictions written before the
+      measured runs;
+    - updated the plan (status, outcome, resume bullets), the README, the V3
+      README options, the bench README and the results index.
+- **Evidence:** runs `20261104-175819-v3` (zipf, 3 restart trials per mode,
+  `--complete`), `20261104-192932-v3` (hotset, max-age 1) and
+  `20261104-194601-v3` (mixed). All ended `SUCCESS`, with 5 modes × 5 blocks each.
+  - **Backend calls, measured against predicted** (medians):
+
+    | Workload | local-one | local-two | shared | leased-v2 |
+    |---|---|---|---|---|
+    | zipf | 3,755 / 3,756 | 4,382 / 4,381 | 3,594 / 3,593 | 3,564 / 3,561 |
+    | hotset | 2,497 / 2,498 | 4,295 / 4,300 | 2,787 / 2,766 | 2,494 / 2,498 |
+    | mixed | all equal to prediction | | | |
+
+    Every block was within 1% of prediction.
+  - **Savings against local-two:** zipf −18.0% / −18.7%; hotset −35.1% /
+    −41.8%; mixed 0 / −3 calls.
+  - **Shared hit ratio:** zipf 20.6–20.9%, hotset 42.0–44.4%.
+  - **Latency:** the tier cost +0.9 to +1.7 ms at p95. leased-v2 − shared p95
+    was within the floor on every workload.
+  - **Restart:** in its first 2 s back, local-two made 323–358 backend calls
+    against a steady 295 per 2 s. Shared made 209–264 and leased-v2 208–246,
+    against about 245. The 10 s effects were small for all modes, as predicted.
+    There were 7–30 front 502s per restart trial.
+  - **Gaps:**
+    - hotset shared was 0.3–0.9% above prediction (overlap 293 against 268),
+      because a real fill also includes the Redis lookup and proxy time;
+    - the restart early window reads low because about 60 burst fills land
+      before the ready snapshot;
+    - one mixed block (leased-v2, block 5) stalled: 536 late arrivals and 4
+      timeout 503s.
+- **Verification:**
+  - The zipf run's `--complete` passed: 10/10 ordinary and race packages; empty
+    vet, build and race-build logs; the ten fault cases under v1, v2 and v2
+    race; and the clean-source rebuild.
+  - Loadgen tests: legacy streams unchanged, seeded and shaped zipf/hotset
+    streams, and scheduled runs that follow the plan with and without drops.
+  - Before any measured run, the predictor reproduced V3.1 and V3.2's
+    measured `mixed` backend calls exactly.
+  - Functional checks `175236` and `175603` passed. `175035` failed on the
+    log-reference bug and is kept.
+- **Decisions/limits:**
+  - leased-v2 stands for leases.
+  - Relaunch takes 0.6–1.7 s on this host, so gateway 1 was down 5.7–6.7 s,
+    not 5 s.
+  - **Standby incident:** at 12:20:32 the laptop entered Modern Standby (the
+    Balanced plan's 20-minute AC idle timeout) and stayed there until 13:29.
+    That interrupted zipf restart trial local-two 3, and the watchdog marked
+    the run `FAILED`. The keep-awake request was added, and the run was resumed
+    with identical settings and hashes. Its `FAILED` marker, partial resources
+    and logs are kept. hotset and mixed ran after the wake, with no further
+    standby events.
+  - The optional 4-gateway run was not done.
+  - Work is uncommitted.
+- **Report:** [V3.3 reuse workloads](docs/v3/reuse-workloads.md).
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title

@@ -45,6 +45,8 @@ func main() {
 	leaseProtocol := flag.String("lease-protocol", "v2", "v2: one read-or-acquire script, no release after an acknowledged publish; v1: read, SET NX, recheck, publish, release")
 	cacheFlights := flag.Int("max-cache-flights", 64, "maximum registered distinct cache keys with local coalescing")
 	cacheWaiters := flag.Int("max-cache-waiters", 1024, "maximum cache-miss clients including leaders; hits bypass admission")
+	cacheEntries := flag.Int("cache-entries", 1000, "local (L1) cache entry limit")
+	cacheBytes := flag.Int64("cache-bytes", 16<<20, "local (L1) cache body-byte limit")
 	flag.Parse()
 	if *degradation != "protection-first" && *degradation != "available-local" {
 		log.Fatal("invalid degradation policy")
@@ -54,6 +56,9 @@ func main() {
 	}
 	if *cacheFlights < 1 || *cacheWaiters < 1 {
 		log.Fatal("cache admission limits must be positive")
+	}
+	if *cacheEntries < 1 || *cacheBytes < 1 {
+		log.Fatal("cache entry and byte limits must be positive")
 	}
 	if *cacheMode != "local" && *cacheMode != "shared" && *cacheMode != "layered" {
 		log.Fatal("invalid cache-mode")
@@ -88,7 +93,7 @@ func main() {
 	}
 	var storage *cache.Cache
 	if enabled && *cacheMode != "shared" {
-		storage = cache.New(1000, 16<<20, nil)
+		storage = cache.New(*cacheEntries, *cacheBytes, nil)
 	}
 	var shared sharedcache.Store
 	if enabled && *cacheMode != "local" {

@@ -1,10 +1,13 @@
 """V3 separate-process comparison. Modes, workload, offered rates, backend timing and
 gateway count are parameters; --complete adds tests, the V2.6 faults and a clean-source check.
 local-two-aa repeats local-two in every block as an A/A noise control, and --affinity can pin the
-generator, gateways and backend+front to disjoint logical-CPU sets."""
+generator, gateways and backend+front to disjoint logical-CPU sets. Each run first writes
+predictions.json from the generator's planned key stream (predict-v3.py); --restart-trials adds
+runs in which gateway 1 stops mid-measurement and returns with an empty L1."""
 import argparse
 from datetime import datetime, timezone
 import hashlib
+import http.client
 import importlib.util
 import json
 import os
@@ -18,6 +21,8 @@ import time
 # its fault-fixture module keeps one distinct-port allocator for the whole run.
 spec=importlib.util.spec_from_file_location("final",Path(__file__).with_name("run-v27.py"))
 final=importlib.util.module_from_spec(spec);spec.loader.exec_module(final);faults=final.faults
+spec=importlib.util.spec_from_file_location("predict",Path(__file__).with_name("predict-v3.py"))
+predict=importlib.util.module_from_spec(spec);spec.loader.exec_module(predict)
 from process_usage import process_usage
 import host
 import pack_logs
@@ -27,12 +32,14 @@ MODES=("local-one","local-two","shared","leased","leased-v2","local-two-aa")
 REDIS_MODES=("shared","leased","leased-v2")
 # leased keeps V2.7's protocol; leased-v2 runs the V3.2 read-or-acquire protocol in the same blocks.
 LEASE_PROTOCOL={"leased":"v1","leased-v2":"v2"}
-WORKLOADS=("hot","mixed","unique")
+WORKLOADS=("hot","mixed","unique","zipf","hotset")
+# Restart trials need a second gateway and skip the A/A copy.
+RESTART_MODES=("local-two","shared","leased","leased-v2")
 # Aggregate budgets are split evenly across gateways, matching V2.7.
 BUDGET={"aggregate_permits":32,"aggregate_permit_queue":32,"aggregate_cache_flights":64,"aggregate_cache_waiters":1024,
         "cache_entries_per_node":1000,"cache_payload_bytes_per_node":16*2**20,"redis_timeout_ms":50,"redis_maxmemory":64*2**20,"redis_policy":"noeviction"}
 BINARIES=("gateway","mockbackend","frontproxy","loadgen","burst")
-SETTINGS=("seconds","warmup","trials","cold_trials","soak","soak_mode","rates","modes","workload","gateways","delay","cold_delay","max_age","concurrency","redis_server","wsl","complete","affinity")
+SETTINGS=("seconds","warmup","trials","cold_trials","soak","soak_mode","rates","modes","workload","gateways","delay","cold_delay","max_age","concurrency","redis_server","wsl","complete","affinity","keys","zipf_s","hot_keys","cache_entries","restart_trials")
 
 class Topology(faults.Topology):
     def __init__(self,folder,label,args,mode,delay):
@@ -40,6 +47,27 @@ class Topology(faults.Topology):
         self.mode=mode;self.delay=delay;self.roles={};self.front=faults.port();self.front_admin=faults.port()
         nodes=1 if mode=="local-one" else args.gateways
         self.data=[faults.port() for _ in range(nodes)];self.admin=[faults.port() for _ in range(nodes)]
+        self.restarting=False;self.events=[]
+    def views(self):
+        out=[]
+        for port in self.admin:
+            try:out.append(faults.snapshot(port))
+            except (OSError,EOFError,http.client.HTTPException):
+                # Only a restart trial may find a gateway down.
+                if not self.restarting:raise
+                out.append({"error":"unreachable"})
+        return out
+    def restart(self,action):
+        """One step of the restart scenario: gateway 1 stops, then returns with an empty L1."""
+        event={"event":action,"epoch":time.time()}
+        if action=="stop":
+            event["backend_calls"]=faults.snapshot(self.backend,"/stats")["calls"]
+            self.gateways[1].kill();self.gateways[1].wait(timeout=5);event["stopped_epoch"]=time.time()
+        elif action=="start":
+            self.gateways[1]=self.gateway(1);event["epoch"]=time.time()
+            event["backend_calls"]=faults.snapshot(self.backend,"/stats")["calls"];event["cache_entries"]=faults.snapshot(self.admin[1])["cache_entries"]
+        else:event["backend_calls"]=faults.snapshot(self.backend,"/stats")["calls"]
+        return event
     def launch(self,command,name):
         # V2.6 launch plus CPU pinning: Redis runs in the WSL2 VM and cannot be pinned this way.
         group="generator" if name=="generator" else "gateways" if name.startswith("gateway") else "support" if name in ("backend","front") else None
@@ -55,12 +83,13 @@ class Topology(faults.Topology):
             entry.update(group=group,cpus=host.pin(process.pid,cpus),gomaxprocs=len(cpus));assert entry["cpus"]==cpus,(name,entry["cpus"],cpus)
         self.commands.append(entry);return process
     def gateway(self,i):
-        nodes=len(self.data)
+        nodes=len(self.data);budget=self.args.budget
         command=[ROOT/"bin"/("gateway"+SUFFIX),"-addr",f"127.0.0.1:{self.data[i]}","-admin-addr",f"127.0.0.1:{self.admin[i]}",
                  "-upstream",f"http://127.0.0.1:{self.backend}","-cache-mode","layered" if self.mode in REDIS_MODES else "local",
-                 "-redis-addr",f"127.0.0.1:{self.redis_port}","-redis-timeout",f"{BUDGET['redis_timeout_ms']}ms","-instance",f"v3-{i}","-request-log-every","1000",
-                 "-max-concurrent",BUDGET["aggregate_permits"]//nodes,"-max-waiters",BUDGET["aggregate_permit_queue"]//nodes,
-                 "-max-cache-flights",BUDGET["aggregate_cache_flights"]//nodes,"-max-cache-waiters",BUDGET["aggregate_cache_waiters"]//nodes]
+                 "-redis-addr",f"127.0.0.1:{self.redis_port}","-redis-timeout",f"{budget['redis_timeout_ms']}ms","-instance",f"v3-{i}","-request-log-every","1000",
+                 "-max-concurrent",budget["aggregate_permits"]//nodes,"-max-waiters",budget["aggregate_permit_queue"]//nodes,
+                 "-max-cache-flights",budget["aggregate_cache_flights"]//nodes,"-max-cache-waiters",budget["aggregate_cache_waiters"]//nodes,
+                 "-cache-entries",budget["cache_entries_per_node"],"-cache-bytes",budget["cache_payload_bytes_per_node"]]
         if self.mode in LEASE_PROTOCOL:command+=["-leases","-lease-protocol",LEASE_PROTOCOL[self.mode]]
         process=self.launch(command,f"gateway-{i}");self.ready(self.admin[i],process);return process
     def open(self):
@@ -88,30 +117,39 @@ class Topology(faults.Topology):
         else:
             command=[ROOT/"bin"/("loadgen"+SUFFIX),"-target",f"http://127.0.0.1:{self.front}","-admins",",".join(f"http://127.0.0.1:{p}" for p in self.admin),
                      "-front-admin",f"http://127.0.0.1:{self.front_admin}","-backend",f"http://127.0.0.1:{self.backend}","-mode","scheduled","-workload",self.args.workload,
+                     "-keys",self.args.keys,"-zipf-s",self.args.zipf_s,"-hot-keys",self.args.hot_keys,
                      "-duration",f"{seconds}s","-warmup",f"{warmup}s","-rate",rate,"-concurrency",self.args.concurrency,"-seed",seed]
-        process=self.launch(command,"generator");began=time.monotonic();next_sample=0
+        # A restart launches a gateway after the generator, so keep the generator's own log.
+        process=self.launch(command,"generator");log=self.logs[-1];began=time.monotonic();next_sample=0
+        # Offsets from the generator's start; the summary aligns recorded epochs to the measurement start.
+        schedule=[(warmup+5,"pre"),(warmup+predict.RESTART["stop"],"stop"),(warmup+predict.RESTART["start"],"start")] if kind=="restart" else []
         with resources.open("w") as out:
             while process.poll() is None:
                 if time.monotonic()-began>seconds+warmup+20:raise RuntimeError("generator watchdog expired")
+                if schedule and time.monotonic()-began>=schedule[0][0]:
+                    _,action=schedule.pop(0);self.events.append(self.restart(action))
+                    if action=="start":
+                        ready=time.monotonic()-began;schedule+=[(ready+2,"early"),(ready+10,"post")]
                 if time.monotonic()>=next_sample:
                     out.write(json.dumps(self.sample())+"\n");out.flush();next_sample=time.monotonic()+1
                 time.sleep(.05)
         assert process.returncode==0,("generator exit",process.returncode)
-        return [json.loads(line) for line in Path(self.logs[-1].name).read_text().splitlines() if line.strip()]
+        assert not schedule,("restart steps never ran",schedule)
+        return [json.loads(line) for line in Path(log.name).read_text().splitlines() if line.strip()]
 
 def run_trial(folder,args,mode,kind,rate,trial):
     label=f"{mode}-cold-{trial}" if kind=="cold" else f"{mode}-{kind}-r{rate}-{trial}"
     if args.attempt:label+=f"-attempt-{args.attempt}"
-    topology=Topology(folder,label,args,mode,args.cold_delay if kind=="cold" else args.delay)
+    topology=Topology(folder,label,args,mode,args.cold_delay if kind=="cold" else args.delay);topology.restarting=kind=="restart"
     try:
         power=host.power();topology.open();before={"gateways":topology.views(),"backend":faults.snapshot(topology.backend,"/stats"),"front":faults.snapshot(topology.front_admin)}
-        seconds=args.soak if kind=="soak" else args.seconds
+        seconds=args.soak if kind=="soak" else predict.RESTART["seconds"] if kind=="restart" else args.seconds
         resources=folder/f"{topology.label}-resources.jsonl"
         output=topology.generate(kind,seconds,0 if kind=="cold" else args.warmup,42+trial,rate,resources)
         after={"gateways":topology.views(),"backend":faults.snapshot(topology.backend,"/stats"),"front":faults.snapshot(topology.front_admin)}
         assert all(all(v==0 for v in n["gauges"].values()) for n in after["gateways"])
-        assert after["backend"]["active"]==0 and after["backend"]["peak"]<=BUDGET["aggregate_permits"]
-        return {"mode":mode,"kind":kind,"rate":rate,"trial":trial,"gateways":len(topology.data),"commands":topology.commands,"before":before,"after":after,"output":output,"resources":resources.name,"redis_info":topology.redis_info,"power":power}
+        assert after["backend"]["active"]==0 and after["backend"]["peak"]<=args.budget["aggregate_permits"]
+        return {"mode":mode,"kind":kind,"rate":rate,"trial":trial,"gateways":len(topology.data),"commands":topology.commands,"before":before,"after":after,"output":output,"resources":resources.name,"redis_info":topology.redis_info,"power":power,"events":topology.events}
     finally:topology.close()
 
 def fault_runs(folder,args):
@@ -142,7 +180,8 @@ def clean_check(folder,args):
         if os.name=="nt":server="/mnt/"+server[0].lower()+server[2:]
     # Same topology and workload as the parent run, at smoke-test duration.
     command=[sys.executable,str(destination/"bench/run-v3.py"),"--quick","--redis-server",server,"--modes",",".join(args.modes),"--workload",args.workload,
-             "--rates",",".join(map(str,args.rates)),"--gateways",str(args.gateways),"--delay",str(args.delay),"--cold-delay",str(args.cold_delay),"--max-age",str(args.max_age),"--concurrency",str(args.concurrency),"--affinity",args.affinity]
+             "--rates",",".join(map(str,args.rates)),"--gateways",str(args.gateways),"--delay",str(args.delay),"--cold-delay",str(args.cold_delay),"--max-age",str(args.max_age),"--concurrency",str(args.concurrency),"--affinity",args.affinity,
+             "--keys",str(args.keys),"--zipf-s",str(args.zipf_s),"--hot-keys",str(args.hot_keys),"--cache-entries",str(args.cache_entries)]
     if args.wsl:command+=["--wsl",args.wsl]
     with (folder/"clean-source.log").open("w") as out:subprocess.run(command,cwd=destination,stdout=out,stderr=subprocess.STDOUT,check=True)
     runs=sorted((destination/"bench/results/v3").glob("*-v3"));assert len(runs)==1 and (runs[0]/"SUCCESS").exists()
@@ -159,6 +198,9 @@ def main():
     parser.add_argument("--delay",type=int,default=50,help="steady backend delay, ms");parser.add_argument("--cold-delay",type=int,default=500,help="cold-burst backend delay, ms")
     parser.add_argument("--max-age",type=int,default=10,help="backend max-age, seconds; gateways cap cached lifetimes at 10")
     parser.add_argument("--concurrency",type=int,default=256,help="generator in-flight request and connection limit")
+    parser.add_argument("--keys",type=int,default=10000,help="zipf key-space size");parser.add_argument("--zipf-s",type=float,default=1.1,help="zipf exponent, above 1")
+    parser.add_argument("--hot-keys",type=int,default=100,help="hotset size");parser.add_argument("--cache-entries",type=int,default=1000,help="L1 entries per gateway")
+    parser.add_argument("--restart-trials",type=int,default=0,help="restart trials per two-gateway mode: gateway 1 stops at 15s and returns empty at 20s")
     parser.add_argument("--seconds",type=int,default=30);parser.add_argument("--warmup",type=int,default=5);parser.add_argument("--trials",type=int,default=5)
     parser.add_argument("--cold-trials",type=int,default=3);parser.add_argument("--soak",type=int,default=300);parser.add_argument("--soak-mode",default="leased-v2",choices=MODES)
     # V3.1 measured auto pinning as noisier than none on this laptop (docs/v3/noise-floor.md), so it is opt-in.
@@ -166,6 +208,8 @@ def main():
     parser.add_argument("--quick",action="store_true");parser.add_argument("--skip-build",action="store_true");parser.add_argument("--complete",action="store_true")
     parser.add_argument("--resume",type=Path,help="resume an interrupted artifact directory without repeating completed trials")
     args=parser.parse_args();args.race=False;args.attempt=0
+    # V3.3: an idle laptop entered Modern Standby mid-trial, so runs now hold the system awake.
+    awake=host.keep_awake()
     args.modes=[m for m in args.modes.split(",") if m]
     try:args.rates=[int(v) for v in args.rates.split(",") if v]
     except ValueError:parser.error("rates must be integers")
@@ -176,6 +220,8 @@ def main():
     try:args.layout=host.layout(args.affinity)
     except (ValueError,OSError) as error:parser.error(f"affinity: {error}")
     if args.seconds<1 or args.warmup<0 or not 1<=args.trials<=20 or not 0<=args.cold_trials<=20 or args.soak<0 or args.delay<0 or args.cold_delay<0 or args.max_age<0 or args.concurrency<1:parser.error("invalid workload settings")
+    if args.keys<1 or not args.zipf_s>1 or args.hot_keys<1 or args.cache_entries<1 or not 0<=args.restart_trials<=20:parser.error("invalid key-space, cache or restart settings")
+    args.budget={**BUDGET,"cache_entries_per_node":args.cache_entries}
     folder=args.resume.resolve() if args.resume else ROOT/"bench/results/v3"/datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-v3")
     if not folder.is_relative_to(ROOT/"bench/results/v3"):parser.error("artifact directory must be inside this checkout's bench/results/v3")
     if not args.resume:folder.mkdir(parents=True)
@@ -192,16 +238,24 @@ def main():
         completed={(r["mode"],r["kind"],r["rate"],r["trial"]) for r in entries}
         if len(completed)!=len(entries):parser.error("duplicate recorded trial")
         args.attempt=len(list(folder.glob("resume-*.json")))+1
-        (folder/f"resume-{args.attempt}.json").write_text(json.dumps({"time":datetime.now(timezone.utc).isoformat(),"completed_trials_preserved":len(completed),"note":"Identical settings and application/binary hashes; completed trials kept. Original FAILED marker/logs retained.","harness_hashes":{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/"bench").glob("*.py")}},indent=2))
+        (folder/f"resume-{args.attempt}.json").write_text(json.dumps({"time":datetime.now(timezone.utc).isoformat(),"completed_trials_preserved":len(completed),"kept_awake":awake,"note":"Identical settings and application/binary hashes; completed trials kept. Original FAILED marker/logs retained.","harness_hashes":{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/"bench").glob("*.py")}},indent=2))
     try:
         if not args.skip_build:final.build(folder)
         sources=list((ROOT/"cmd").rglob("*.go"))+list((ROOT/"internal").rglob("*.go"))+list((ROOT/"bench").glob("*.py"))+[ROOT/"go.mod",ROOT/"go.sum"]
         binaries=[ROOT/"bin"/(name+SUFFIX) for name in BINARIES]
         manifest={"source":final.identity(),"time":datetime.now(timezone.utc).isoformat(),"platform":sys.platform,"host":__import__("platform").platform(),"python":sys.version,"cpu_count":os.cpu_count(),"go":subprocess.check_output(["go","version"],text=True).strip(),
-                  "settings":{k:str(v) if isinstance(v,Path) else v for k,v in vars(args).items() if k!="layout"},"budget":BUDGET,
-                  "affinity":args.layout and {**args.layout,"unpinned":"Redis (inside the WSL2 VM on Windows), the Python harness and the OS are not pinned."},"power":host.power(),"redis_version":"7.4.2",
+                  "settings":{k:str(v) if isinstance(v,Path) else v for k,v in vars(args).items() if k not in ("layout","budget")},"budget":args.budget,
+                  "affinity":args.layout and {**args.layout,"unpinned":"Redis (inside the WSL2 VM on Windows), the Python harness and the OS are not pinned."},"power":host.power(),"kept_awake":awake,"redis_version":"7.4.2",
                   "hashes":{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sources+binaries}}
         if not args.resume:(folder/"manifest.json").write_text(json.dumps(manifest,indent=2))
+        if not (folder/"predictions.json").exists():
+            # Written before any trial: the same seeded streams the blocks will offer.
+            forecasts={}
+            for rate in args.rates:
+                options=argparse.Namespace(workload=args.workload,keys=args.keys,zipf_s=args.zipf_s,hot_keys=args.hot_keys,rate=rate,seconds=args.seconds,warmup=args.warmup,trials=args.trials,
+                                           restart_trials=args.restart_trials,max_age=args.max_age,delay=args.delay,cache_entries=args.cache_entries,gateways=args.gateways)
+                forecasts[str(rate)]=predict.predict(options)
+            (folder/"predictions.json").write_text(json.dumps({"rates":forecasts},indent=2))
         with (folder/"trials.jsonl").open("a" if args.resume else "w") as out:
             def record(mode,kind,rate,trial):
                 if (mode,kind,rate,trial) in completed:return
@@ -215,6 +269,10 @@ def main():
             for trial in range(1,args.cold_trials+1):
                 for mode in args.modes:record(mode,"cold",None,trial)
             if args.soak:record(args.soak_mode,"soak",args.rates[0],1)
+            restartable=[m for m in args.modes if m in RESTART_MODES]
+            for trial in range(1,args.restart_trials+1):
+                shift=(trial-1)%max(1,len(restartable))
+                for mode in restartable[shift:]+restartable[:shift]:record(mode,"restart",args.rates[0],trial)
         subprocess.run([sys.executable,str(ROOT/"bench/summarize-v3.py"),str(folder)],cwd=ROOT,check=True)
         if args.complete:
             final.verify(folder,args)

@@ -9,6 +9,9 @@ also reruns the four-mode baseline: see [noise-floor.md](noise-floor.md).
 V3.2 adds lease protocol v2 and the `leased-v2` mode: see
 [lease-protocol.md](lease-protocol.md).
 
+V3.3 adds the `zipf` and `hotset` workloads, predicted fills and restart trials:
+see [reuse-workloads.md](reuse-workloads.md).
+
 The options table below shows current defaults.
 
 ## Baseline
@@ -37,7 +40,10 @@ python bench/summarize-v3.py bench/results/v3/<run>
 | Option | Default | Meaning |
 |---|---|---|
 | `--modes` | `local-one,local-two,shared,leased,leased-v2,local-two-aa` | Modes to compare, rotated per trial block. `local-two-aa` is the V3.1 A/A copy; `leased-v2` is the V3.2 lease protocol (`leased` stays on v1) |
-| `--workload` | `mixed` | Generator workload: `hot`, `mixed` or `unique` |
+| `--workload` | `mixed` | Generator workload: `hot`, `mixed`, `unique`, or the V3.3 reuse workloads `zipf` and `hotset` |
+| `--keys` / `--zipf-s` / `--hot-keys` | `10000` / `1.1` / `100` | V3.3 key spaces: zipf size and exponent, hotset size |
+| `--cache-entries` | `1000` | V3.3: L1 entries per gateway (recorded in the budget) |
+| `--restart-trials` | `0` | V3.3: per two-gateway mode, stop gateway 1 at 15 s and relaunch it empty at 20 s of a 35 s measurement |
 | `--rates` | `500` | Scheduled arrivals/sec; every rate gets its own trial blocks |
 | `--gateways` | `2` | Gateways for every mode except `local-one`: 2, 4 or 8 |
 | `--delay` / `--cold-delay` | `50` / `500` | Backend delay in ms for steady and cold-burst trials |

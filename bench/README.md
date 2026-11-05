@@ -213,3 +213,20 @@ blocks as `leased`, which stays on v1. The summary adds:
 `--complete` runs the ten fault cases under v1, v2 and v2 with a race-built
 gateway. `run-v26.py --lease-protocol v2` runs them on their own. See
 [V3.2 lease protocol](../docs/v3/lease-protocol.md).
+
+## V3.3 reuse workloads
+
+`--workload zipf` (with `--keys`, `--zipf-s`) and `--workload hotset` (with
+`--hot-keys`) add keys that repeat across gateways. `loadgen -plan-only` prints
+the seeded key stream without sending anything.
+
+Before its first trial, each run writes `predictions.json` from that stream with
+[`predict-v3.py`](predict-v3.py). The predictor replays the stream through
+one-node, independent, shared and leased models, and its predicted fills appear
+beside the measured ones in the summary. Run the predictor on its own with, for
+example, `python bench/predict-v3.py --workload zipf --restart-trials 3`.
+
+`--restart-trials N` stops gateway 1 mid-measurement and relaunches it empty, then
+reports backend calls in fixed windows around the restart. `--cache-entries` sets
+L1 size, through the gateway's new `-cache-entries` and `-cache-bytes` flags. See
+[V3.3 reuse workloads](../docs/v3/reuse-workloads.md).

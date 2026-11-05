@@ -113,6 +113,15 @@ def pin(pid,cpus):
         return bits(current.value)
     finally:kernel.CloseHandle(handle)
 
+def keep_awake():
+    """Ask Windows not to idle into sleep while this thread runs. Modern Standby starts when
+    the display turns off, so the display is held on too. Nothing is saved to power settings;
+    the request ends with the process. Returns whether the request was accepted."""
+    if os.name!="nt":return False
+    kernel.SetThreadExecutionState.argtypes=[wintypes.DWORD];kernel.SetThreadExecutionState.restype=wintypes.DWORD
+    # ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED
+    return kernel.SetThreadExecutionState(0x80000000|0x1|0x2)!=0
+
 def power():
     """Active power plan, Windows power-mode overlay and AC line state, as far as the OS reports them."""
     if os.name=="nt":

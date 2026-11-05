@@ -1,0 +1,175 @@
+{
+  "rates": {
+    "500": {
+      "settings": {
+        "workload": "zipf",
+        "keys": 10000,
+        "zipf_s": 1.1,
+        "hot_keys": 100,
+        "rate": 500,
+        "seconds": 30,
+        "warmup": 5,
+        "trials": 5,
+        "restart_trials": 3,
+        "max_age": 10,
+        "delay": 50,
+        "cache_entries": 1000,
+        "gateways": 2
+      },
+      "ttl_seconds": 10,
+      "fill_seconds": 0.05,
+      "blocks": {
+        "1": {
+          "requests": 15000,
+          "distinct_keys": 2775,
+          "fills": {
+            "one": 3698,
+            "local": 4346,
+            "shared": 3546,
+            "leased": 3521,
+            "shared_ideal": 3521
+          },
+          "cross_node_duplicate_fraction": 0.1898297284859641
+        },
+        "2": {
+          "requests": 15000,
+          "distinct_keys": 2812,
+          "fills": {
+            "one": 3756,
+            "local": 4381,
+            "shared": 3593,
+            "leased": 3561,
+            "shared_ideal": 3561
+          },
+          "cross_node_duplicate_fraction": 0.18717187856653733
+        },
+        "3": {
+          "requests": 15000,
+          "distinct_keys": 2846,
+          "fills": {
+            "one": 3826,
+            "local": 4420,
+            "shared": 3632,
+            "leased": 3607,
+            "shared_ideal": 3607
+          },
+          "cross_node_duplicate_fraction": 0.18393665158371042
+        },
+        "4": {
+          "requests": 15000,
+          "distinct_keys": 2734,
+          "fills": {
+            "one": 3662,
+            "local": 4311,
+            "shared": 3512,
+            "leased": 3491,
+            "shared_ideal": 3491
+          },
+          "cross_node_duplicate_fraction": 0.19021108791463698
+        },
+        "5": {
+          "requests": 15000,
+          "distinct_keys": 2809,
+          "fills": {
+            "one": 3811,
+            "local": 4398,
+            "shared": 3613,
+            "leased": 3588,
+            "shared_ideal": 3588
+          },
+          "cross_node_duplicate_fraction": 0.18417462482946795
+        }
+      },
+      "restart": {
+        "1": {
+          "local": {
+            "pre": 1480,
+            "down": 668,
+            "post": 1465,
+            "early": 361
+          },
+          "shared": {
+            "pre": 1223,
+            "down": 625,
+            "post": 1143,
+            "early": 222
+          },
+          "leased": {
+            "pre": 1208,
+            "down": 625,
+            "post": 1141,
+            "early": 222
+          }
+        },
+        "2": {
+          "local": {
+            "pre": 1475,
+            "down": 637,
+            "post": 1550,
+            "early": 388
+          },
+          "shared": {
+            "pre": 1193,
+            "down": 602,
+            "post": 1218,
+            "early": 249
+          },
+          "leased": {
+            "pre": 1186,
+            "down": 602,
+            "post": 1212,
+            "early": 248
+          }
+        },
+        "3": {
+          "local": {
+            "pre": 1485,
+            "down": 666,
+            "post": 1580,
+            "early": 388
+          },
+          "shared": {
+            "pre": 1238,
+            "down": 609,
+            "post": 1262,
+            "early": 261
+          },
+          "leased": {
+            "pre": 1227,
+            "down": 609,
+            "post": 1256,
+            "early": 261
+          }
+        }
+      },
+      "medians": {
+        "one": 3756,
+        "local": 4381,
+        "shared": 3593,
+        "leased": 3561,
+        "shared_ideal": 3561,
+        "cross_node_duplicate_fraction": 0.18717187856653733
+      },
+      "restart_medians": {
+        "local": {
+          "pre": 1480,
+          "down": 666,
+          "post": 1550,
+          "early": 388
+        },
+        "shared": {
+          "pre": 1223,
+          "down": 609,
+          "post": 1218,
+          "early": 249
+        },
+        "leased": {
+          "pre": 1208,
+          "down": 609,
+          "post": 1212,
+          "early": 248
+        }
+      }
+    }
+  }
+}

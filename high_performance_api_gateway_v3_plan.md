@@ -3,7 +3,8 @@
 **Status:** V3.0 implemented: [harness, error causes and derived costs](docs/v3/README.md).
 V3.1 implemented: [noise floor and V3 baseline](docs/v3/noise-floor.md).
 V3.2 implemented: [lease protocol v2](docs/v3/lease-protocol.md).
-V3.3–V3.6 planned.
+V3.3 implemented: [reuse workloads, predictions and restart](docs/v3/reuse-workloads.md).
+V3.4–V3.6 planned.
 
 **Baseline:** V2.7 final study [`20261103-224701-v27`](bench/results/v2/20261103-224701-v27/summary.json),
 reported in [docs/v2/final.md](docs/v2/final.md). V1 and V2 results stay unchanged.
@@ -202,6 +203,19 @@ which puts the leased−shared gap that V3.2 targets at about 2.5 ms.
 - Report measured fills against predicted fills, and explain any gap
   (simultaneous misses, L1 eviction).
 
+**Outcome:** `predict-v3.py` predicted every workload's backend calls to within
+1% per block.
+- **zipf:** shared and leased-v2 cut backend calls 18.0% and 18.7% against
+  local-two, exactly as predicted, with shared hit ratios of 20.6–20.9%.
+- **hotset (1 s TTL):** 35.1% and 41.8%, against 35.7% and 41.9% predicted.
+- **mixed:** unchanged.
+- **Latency:** the tier costs 0.9–1.7 ms at p95; leases cost nothing beyond
+  shared at p95.
+- **Restart:** an empty local gateway's first 2 s ran above the steady
+  backend rate (323–358 calls against 295). With Redis, they stayed at it.
+  Over 10 s, with a 10 s TTL, the effect is small for every mode. Leases use
+  the V3.2 protocol (`leased-v2`). The optional 4-gateway run was not done.
+
 ### V3.4 — Capacity at a fixed SLO
 
 **Work**
@@ -328,8 +342,11 @@ Fill these only from measured results:
 - Cut Redis round trips per cache fill from 5 to 2 with an atomic Lua
   read-or-acquire script, removing 2.1 ms from leased p95 (3.8 ms at p99) and
   matching the shared tier within a 0.7 ms noise floor. Measured in V3.2.
-- Reduced backend calls by [measured]% across 2 gateways with a shared Redis
-  tier on a Zipf workload, raising capacity at a p99 SLO from [X] to [Y] req/s
-  under the same backend budget.
-- Removed the backend load spike after a gateway restart ([X] → [Y] backend
-  calls in 10 s) by warming the empty local cache from Redis.
+- Reduced backend calls by 18.7% (Zipf) and 41.8% (hot set) across 2 gateways
+  with a shared Redis tier and leases, within 1% of fills predicted from the
+  workload's key stream (V3.3), raising capacity at a p99 SLO from [X] to [Y]
+  req/s under the same backend budget (V3.4).
+- Kept backend load at its steady rate after a gateway restart by warming the
+  empty local cache from Redis. In the first 2 s back, calls were 241–249
+  against a steady 242–246, compared with 345 against 295 without Redis (V3.3,
+  medians of 3 trials).
