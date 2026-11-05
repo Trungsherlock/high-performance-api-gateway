@@ -3,7 +3,7 @@
 A learning project exploring a single-upstream reverse proxy, bounded caching,
 request coalescing, and overload protection. See the project plan for the full scope.
 
-## Current status: V1 complete; V2.0-V2.7 complete; V3.0-V3.4 implemented
+## Current status: V1 complete; V2.0-V2.7 complete; V3 complete (optional V3.5 not run)
 
 The gateway forwards ordinary HTTP requests to one fixed upstream using a shared
 connection pool, bounded LRU/TTL cache, request coalescing, and downstream concurrency
@@ -361,7 +361,8 @@ publish already deletes the lease, so v2 skips the release after it succeeds.
 
 In 6 same-block comparisons:
 - Redis commands per fill fell from 12.01 to 8.01.
-- Leased p95 fell 2.11 ms and p99 3.77 ms, with leased mode faster in all 6
+- Leased p95 fell 2.11 ms and p99 3.77 ms (V3.6's final run measured 1.31 ms
+  and 1.77 ms, the latter within that run's floor), with leased mode faster in all 6
   blocks.
 - Leased mode now matches the shared tier within the noise floor (+0.07 ms p95
   against a 0.72 ms floor).
@@ -413,4 +414,28 @@ keeps every predicted ceiling at or below half of that.
   each, from pooled queueing, which the model predicted.
 
 See [V3.4 capacity](docs/v3/capacity.md).
+
+## V3 final comparison and reproduction
+
+[The final report](docs/v3/final.md) brings V3 together, including every prediction
+against its measurement and every unfavorable result.
+
+| Result | Measured |
+|---|---|
+| Backend calls saved against independent gateways | Zipf 18.0% (shared), 18.7% (leases); hot set 35.1%, 41.8%; `mixed` none |
+| Zipf capacity at the SLO, same backend budget | 242 → 293 req/s (+21%), as predicted |
+| Redis operations per leased fill | 5 → 2, taking 1.3–2.1 ms off leased p95, to within noise of shared |
+| Cost of the Redis tier | 1–2 ms at p95 |
+| Host ceiling | 1,250 req/s, set by host stalls, so capacity ran behind a slow backend |
+
+All of it was measured on one laptop. With the documented Go, Python and Redis
+prerequisites, one command runs the six-mode `mixed` comparison, cold bursts, a
+five-minute soak, tests, race tests, all ten fault cases under each lease protocol,
+and a source-only rebuild:
+
+```powershell
+python bench/run-v3.py --complete
+```
+
+The final report lists the commands for the reuse and capacity runs.
 

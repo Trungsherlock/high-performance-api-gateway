@@ -15,6 +15,9 @@ see [reuse-workloads.md](reuse-workloads.md).
 V3.4 adds capacity ladders at a fixed SLO (`bench/capacity-v3.py`), a backend-limit
 model in the predictor, and a host-ceiling control: see [capacity.md](capacity.md).
 
+V3.6 brings the results together and reproduces them from a clean tree: see
+[final.md](final.md). V3.5 was optional and was not run.
+
 The options table below shows current defaults.
 
 ## Baseline

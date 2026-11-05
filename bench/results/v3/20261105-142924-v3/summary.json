@@ -1,0 +1,5547 @@
+{
+  "groups": {
+    "500": {
+      "local-one": {
+        "trials": 5,
+        "gateways": 1,
+        "successful_rps": {
+          "median": 499.19132004535294,
+          "min": 499.12736564409715,
+          "max": 499.2412348657391
+        },
+        "send_p50_ms": {
+          "median": 0.5105,
+          "min": 0.3467,
+          "max": 0.5578
+        },
+        "send_p95_ms": {
+          "median": 51.3362,
+          "min": 51.0669,
+          "max": 51.5745
+        },
+        "send_p99_ms": {
+          "median": 51.8999,
+          "min": 51.8403,
+          "max": 52.3139
+        },
+        "scheduled_p99_ms": {
+          "median": 52.4454,
+          "min": 52.4048,
+          "max": 52.9069
+        },
+        "backend_calls": {
+          "median": 2999,
+          "min": 2969,
+          "max": 3078
+        },
+        "dependency_operations": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "l1_hit_ratio": {
+          "median": 0.7958666666666666,
+          "min": 0.7903333333333333,
+          "max": 0.7979333333333334
+        },
+        "shared_lookup_hit_ratio": null,
+        "dependency_ops_per_fill": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "dependency_ops_per_request": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "backend_calls_per_request": {
+          "median": 0.19993333333333332,
+          "min": 0.19793333333333332,
+          "max": 0.2052
+        },
+        "redis_commands_per_fill": null,
+        "predicted_backend_calls": {
+          "median": 2999,
+          "min": 2969,
+          "max": 3078
+        },
+        "measured_over_predicted": {
+          "median": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "generator_drops": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "late_arrivals": [
+          37,
+          29,
+          12,
+          16,
+          55
+        ],
+        "transport_errors": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "rejected": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "dependency_errors": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "front_unavailable": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "dependency_error_causes": {
+          "timeout": 0,
+          "pool_timeout": 0,
+          "connection": 0,
+          "other": 0
+        }
+      },
+      "local-two": {
+        "trials": 5,
+        "gateways": 2,
+        "successful_rps": {
+          "median": 499.1946841596731,
+          "min": 499.1470973717789,
+          "max": 499.24677141855767
+        },
+        "send_p50_ms": {
+          "median": 0.5182,
+          "min": 0,
+          "max": 0.5355
+        },
+        "send_p95_ms": {
+          "median": 51.3114,
+          "min": 50.8735,
+          "max": 51.455
+        },
+        "send_p99_ms": {
+          "median": 51.8633,
+          "min": 51.5781,
+          "max": 51.995
+        },
+        "scheduled_p99_ms": {
+          "median": 52.3703,
+          "min": 52.0717,
+          "max": 52.5254
+        },
+        "backend_calls": {
+          "median": 3002,
+          "min": 2972,
+          "max": 3081
+        },
+        "dependency_operations": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "l1_hit_ratio": {
+          "median": 0.7961333333333334,
+          "min": 0.7904,
+          "max": 0.7979333333333334
+        },
+        "shared_lookup_hit_ratio": null,
+        "dependency_ops_per_fill": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "dependency_ops_per_request": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "backend_calls_per_request": {
+          "median": 0.20013333333333333,
+          "min": 0.19813333333333333,
+          "max": 0.2054
+        },
+        "redis_commands_per_fill": null,
+        "predicted_backend_calls": {
+          "median": 3002,
+          "min": 2972,
+          "max": 3081
+        },
+        "measured_over_predicted": {
+          "median": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "generator_drops": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "late_arrivals": [
+          10,
+          24,
+          21,
+          12,
+          16
+        ],
+        "transport_errors": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "rejected": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "dependency_errors": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "front_unavailable": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "dependency_error_causes": {
+          "timeout": 0,
+          "pool_timeout": 0,
+          "connection": 0,
+          "other": 0
+        }
+      },
+      "shared": {
+        "trials": 5,
+        "gateways": 2,
+        "successful_rps": {
+          "median": 499.1509143456432,
+          "min": 499.13602880986537,
+          "max": 499.17594869645313
+        },
+        "send_p50_ms": {
+          "median": 0.5361,
+          "min": 0,
+          "max": 0.5434
+        },
+        "send_p95_ms": {
+          "median": 52.6267,
+          "min": 52.514,
+          "max": 52.7494
+        },
+        "send_p99_ms": {
+          "median": 53.311,
+          "min": 53.1699,
+          "max": 60.7911
+        },
+        "scheduled_p99_ms": {
+          "median": 53.7912,
+          "min": 53.6295,
+          "max": 63.5292
+        },
+        "backend_calls": {
+          "median": 3002,
+          "min": 2972,
+          "max": 3081
+        },
+        "dependency_operations": {
+          "median": 6004,
+          "min": 5944,
+          "max": 6162
+        },
+        "l1_hit_ratio": {
+          "median": 0.7962666666666667,
+          "min": 0.7904,
+          "max": 0.7978666666666666
+        },
+        "shared_lookup_hit_ratio": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0006581112207963146
+        },
+        "dependency_ops_per_fill": {
+          "median": 2.0,
+          "min": 2.0,
+          "max": 2.000658544616398
+        },
+        "dependency_ops_per_request": {
+          "median": 0.40026666666666666,
+          "min": 0.39626666666666666,
+          "max": 0.4108
+        },
+        "backend_calls_per_request": {
+          "median": 0.20013333333333333,
+          "min": 0.19813333333333333,
+          "max": 0.2054
+        },
+        "redis_commands_per_fill": {
+          "median": 3.000332778702163,
+          "min": 2.99930094372597,
+          "max": 3.006107906345436
+        },
+        "predicted_backend_calls": {
+          "median": 3002,
+          "min": 2972,
+          "max": 3081
+        },
+        "measured_over_predicted": {
+          "median": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "generator_drops": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "late_arrivals": [
+          132,
+          74,
+          12,
+          21,
+          4
+        ],
+        "transport_errors": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "rejected": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "dependency_errors": [
+          4,
+          0,
+          0,
+          0,
+          0
+        ],
+        "front_unavailable": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "dependency_error_causes": {
+          "timeout": 2,
+          "pool_timeout": 0,
+          "connection": 2,
+          "other": 0
+        }
+      },
+      "leased": {
+        "trials": 5,
+        "gateways": 2,
+        "successful_rps": {
+          "median": 499.1362563548905,
+          "min": 499.0767927764184,
+          "max": 499.19362591240366
+        },
+        "send_p50_ms": {
+          "median": 0.539,
+          "min": 0,
+          "max": 0.5537
+        },
+        "send_p95_ms": {
+          "median": 53.9829,
+          "min": 53.7927,
+          "max": 54.126
+        },
+        "send_p99_ms": {
+          "median": 55.1666,
+          "min": 55.0837,
+          "max": 55.6621
+        },
+        "scheduled_p99_ms": {
+          "median": 55.6367,
+          "min": 55.548,
+          "max": 56.2254
+        },
+        "backend_calls": {
+          "median": 2999,
+          "min": 2969,
+          "max": 3078
+        },
+        "dependency_operations": {
+          "median": 15010,
+          "min": 14860,
+          "max": 15405
+        },
+        "l1_hit_ratio": {
+          "median": 0.7952,
+          "min": 0.7888666666666667,
+          "max": 0.7962
+        },
+        "shared_lookup_hit_ratio": {
+          "median": 0.000499417346429166,
+          "min": 0.00048661800486618007,
+          "max": 0.0005044560282495376
+        },
+        "dependency_ops_per_fill": {
+          "median": 5.005001667222407,
+          "min": 5.004873294346979,
+          "max": 5.00505220613001
+        },
+        "dependency_ops_per_request": {
+          "median": 1.0006666666666666,
+          "min": 0.9906666666666667,
+          "max": 1.027
+        },
+        "backend_calls_per_request": {
+          "median": 0.19993333333333332,
+          "min": 0.19793333333333332,
+          "max": 0.2052
+        },
+        "redis_commands_per_fill": {
+          "median": 11.996047430830039,
+          "min": 11.986887508626639,
+          "max": 12.010252904989747
+        },
+        "predicted_backend_calls": {
+          "median": 2999,
+          "min": 2969,
+          "max": 3078
+        },
+        "measured_over_predicted": {
+          "median": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "generator_drops": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "late_arrivals": [
+          19,
+          25,
+          5,
+          22,
+          11
+        ],
+        "transport_errors": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "rejected": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "dependency_errors": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "front_unavailable": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "dependency_error_causes": {
+          "timeout": 0,
+          "pool_timeout": 0,
+          "connection": 0,
+          "other": 0
+        }
+      },
+      "leased-v2": {
+        "trials": 5,
+        "gateways": 2,
+        "successful_rps": {
+          "median": 499.1450311143719,
+          "min": 499.0510792289041,
+          "max": 499.165028354354
+        },
+        "send_p50_ms": {
+          "median": 0.533,
+          "min": 0.5123,
+          "max": 0.6105
+        },
+        "send_p95_ms": {
+          "median": 52.6793,
+          "min": 52.6087,
+          "max": 52.9964
+        },
+        "send_p99_ms": {
+          "median": 53.3954,
+          "min": 53.3593,
+          "max": 55.1433
+        },
+        "scheduled_p99_ms": {
+          "median": 53.912,
+          "min": 53.8569,
+          "max": 55.7239
+        },
+        "backend_calls": {
+          "median": 2999,
+          "min": 2969,
+          "max": 3078
+        },
+        "dependency_operations": {
+          "median": 6007,
+          "min": 5946,
+          "max": 6165
+        },
+        "l1_hit_ratio": {
+          "median": 0.7944666666666667,
+          "min": 0.7889333333333334,
+          "max": 0.7969333333333334
+        },
+        "shared_lookup_hit_ratio": {
+          "median": 0.0009973404255319148,
+          "min": 0.0009718172983479105,
+          "max": 0.001007725898555593
+        },
+        "dependency_ops_per_fill": {
+          "median": 2.0030010003334446,
+          "min": 2.0026945099360054,
+          "max": 2.0036279683377307
+        },
+        "dependency_ops_per_request": {
+          "median": 0.4004666666666667,
+          "min": 0.3964,
+          "max": 0.411
+        },
+        "backend_calls_per_request": {
+          "median": 0.19993333333333332,
+          "min": 0.19793333333333332,
+          "max": 0.2052
+        },
+        "redis_commands_per_fill": {
+          "median": 8.007142857142858,
+          "min": 7.992672714584788,
+          "max": 8.03016485443704
+        },
+        "predicted_backend_calls": {
+          "median": 2999,
+          "min": 2969,
+          "max": 3078
+        },
+        "measured_over_predicted": {
+          "median": 1.0,
+          "min": 0.999340804218853,
+          "max": 1.0
+        },
+        "generator_drops": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "late_arrivals": [
+          12,
+          55,
+          6,
+          14,
+          19
+        ],
+        "transport_errors": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "rejected": [
+          0,
+          2,
+          0,
+          0,
+          0
+        ],
+        "dependency_errors": [
+          0,
+          2,
+          0,
+          0,
+          0
+        ],
+        "front_unavailable": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "dependency_error_causes": {
+          "timeout": 2,
+          "pool_timeout": 0,
+          "connection": 0,
+          "other": 0
+        }
+      },
+      "local-two-aa": {
+        "trials": 5,
+        "gateways": 2,
+        "successful_rps": {
+          "median": 499.2085796782072,
+          "min": 499.07675790555055,
+          "max": 499.23881224709623
+        },
+        "send_p50_ms": {
+          "median": 0.5458,
+          "min": 0.5232,
+          "max": 0.5773
+        },
+        "send_p95_ms": {
+          "median": 51.4875,
+          "min": 51.3699,
+          "max": 51.6363
+        },
+        "send_p99_ms": {
+          "median": 52.0347,
+          "min": 51.8953,
+          "max": 54.7116
+        },
+        "scheduled_p99_ms": {
+          "median": 52.5575,
+          "min": 52.4264,
+          "max": 55.4551
+        },
+        "backend_calls": {
+          "median": 3002,
+          "min": 2972,
+          "max": 3081
+        },
+        "dependency_operations": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "l1_hit_ratio": {
+          "median": 0.7962,
+          "min": 0.7904,
+          "max": 0.798
+        },
+        "shared_lookup_hit_ratio": null,
+        "dependency_ops_per_fill": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "dependency_ops_per_request": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "backend_calls_per_request": {
+          "median": 0.20013333333333333,
+          "min": 0.19813333333333333,
+          "max": 0.2054
+        },
+        "redis_commands_per_fill": null,
+        "predicted_backend_calls": {
+          "median": 3002,
+          "min": 2972,
+          "max": 3081
+        },
+        "measured_over_predicted": {
+          "median": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "generator_drops": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "late_arrivals": [
+          16,
+          101,
+          36,
+          22,
+          19
+        ],
+        "transport_errors": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "rejected": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "dependency_errors": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "front_unavailable": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "dependency_error_causes": {
+          "timeout": 0,
+          "pool_timeout": 0,
+          "connection": 0,
+          "other": 0
+        }
+      }
+    }
+  },
+  "paired_vs_local_two": {
+    "500": {
+      "local-one": {
+        "blocks": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "send_p50_ms": {
+          "per_block": [
+            -0.17149999999999999,
+            0.5105,
+            0.022299999999999986,
+            -0.011499999999999955,
+            0.02299999999999991
+          ],
+          "median": 0.022299999999999986,
+          "min": -0.17149999999999999,
+          "max": 0.5105,
+          "positive_blocks": 3,
+          "beyond_noise": false
+        },
+        "send_p95_ms": {
+          "per_block": [
+            -0.17210000000000036,
+            0.4626999999999981,
+            0.11950000000000216,
+            -0.043300000000002115,
+            0.2255000000000038
+          ],
+          "median": 0.11950000000000216,
+          "min": -0.17210000000000036,
+          "max": 0.4626999999999981,
+          "positive_blocks": 3,
+          "beyond_noise": false
+        },
+        "send_p99_ms": {
+          "per_block": [
+            0.02410000000000423,
+            0.3218000000000032,
+            0.05700000000000216,
+            -0.017899999999997362,
+            0.45059999999999434
+          ],
+          "median": 0.05700000000000216,
+          "min": -0.017899999999997362,
+          "max": 0.45059999999999434,
+          "positive_blocks": 4,
+          "beyond_noise": false
+        },
+        "scheduled_p99_ms": {
+          "per_block": [
+            0.07509999999999906,
+            0.37180000000000035,
+            0.04270000000000351,
+            0.04200000000000159,
+            0.5030000000000001
+          ],
+          "median": 0.07509999999999906,
+          "min": 0.04200000000000159,
+          "max": 0.5030000000000001,
+          "positive_blocks": 5,
+          "beyond_noise": false
+        },
+        "backend_calls": {
+          "per_block": [
+            -3,
+            -3,
+            -3,
+            -3,
+            -3
+          ],
+          "median": -3,
+          "min": -3,
+          "max": -3,
+          "positive_blocks": 0,
+          "beyond_noise": true
+        }
+      },
+      "shared": {
+        "blocks": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "send_p50_ms": {
+          "per_block": [
+            0.0252,
+            0,
+            0.0006000000000000449,
+            0.0024000000000000687,
+            0.024699999999999944
+          ],
+          "median": 0.0024000000000000687,
+          "min": 0,
+          "max": 0.0252,
+          "positive_blocks": 4,
+          "beyond_noise": false
+        },
+        "send_p95_ms": {
+          "per_block": [
+            1.5104000000000042,
+            1.6813000000000002,
+            1.1733000000000047,
+            1.2026000000000039,
+            1.2858000000000018
+          ],
+          "median": 1.2858000000000018,
+          "min": 1.1733000000000047,
+          "max": 1.6813000000000002,
+          "positive_blocks": 5,
+          "beyond_noise": true
+        },
+        "send_p99_ms": {
+          "per_block": [
+            8.924300000000002,
+            2.973399999999998,
+            1.3160000000000025,
+            1.3117000000000019,
+            1.3673999999999964
+          ],
+          "median": 1.3673999999999964,
+          "min": 1.3117000000000019,
+          "max": 8.924300000000002,
+          "positive_blocks": 5,
+          "beyond_noise": false
+        },
+        "scheduled_p99_ms": {
+          "per_block": [
+            11.158900000000003,
+            3.1248999999999967,
+            1.2658000000000058,
+            1.2667000000000002,
+            1.2847000000000008
+          ],
+          "median": 1.2847000000000008,
+          "min": 1.2658000000000058,
+          "max": 11.158900000000003,
+          "positive_blocks": 5,
+          "beyond_noise": false
+        },
+        "backend_calls": {
+          "per_block": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "positive_blocks": 0,
+          "beyond_noise": false
+        }
+      },
+      "leased": {
+        "blocks": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "send_p50_ms": {
+          "per_block": [
+            0.035499999999999976,
+            0,
+            0.0035000000000000586,
+            0.0242,
+            0.008499999999999952
+          ],
+          "median": 0.008499999999999952,
+          "min": 0,
+          "max": 0.035499999999999976,
+          "positive_blocks": 4,
+          "beyond_noise": false
+        },
+        "send_p95_ms": {
+          "per_block": [
+            2.8870000000000005,
+            2.9192000000000036,
+            2.538899999999998,
+            2.6347999999999985,
+            2.642000000000003
+          ],
+          "median": 2.642000000000003,
+          "min": 2.538899999999998,
+          "max": 2.9192000000000036,
+          "positive_blocks": 5,
+          "beyond_noise": true
+        },
+        "send_p99_ms": {
+          "per_block": [
+            3.7953000000000046,
+            3.9938000000000002,
+            3.1341000000000037,
+            3.225500000000004,
+            3.3033
+          ],
+          "median": 3.3033,
+          "min": 3.1341000000000037,
+          "max": 3.9938000000000002,
+          "positive_blocks": 5,
+          "beyond_noise": true
+        },
+        "scheduled_p99_ms": {
+          "per_block": [
+            3.8551,
+            3.9956999999999994,
+            3.1113,
+            3.185200000000002,
+            3.181600000000003
+          ],
+          "median": 3.185200000000002,
+          "min": 3.1113,
+          "max": 3.9956999999999994,
+          "positive_blocks": 5,
+          "beyond_noise": false
+        },
+        "backend_calls": {
+          "per_block": [
+            -3,
+            -3,
+            -3,
+            -3,
+            -3
+          ],
+          "median": -3,
+          "min": -3,
+          "max": -3,
+          "positive_blocks": 0,
+          "beyond_noise": true
+        }
+      },
+      "leased-v2": {
+        "blocks": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "send_p50_ms": {
+          "per_block": [
+            0.09230000000000005,
+            0.5123,
+            0.006500000000000061,
+            0.011700000000000044,
+            0.005599999999999938
+          ],
+          "median": 0.011700000000000044,
+          "min": 0.005599999999999938,
+          "max": 0.5123,
+          "positive_blocks": 5,
+          "beyond_noise": false
+        },
+        "send_p95_ms": {
+          "per_block": [
+            1.4804999999999993,
+            2.1229000000000013,
+            1.2242999999999995,
+            1.3355000000000032,
+            1.2678000000000011
+          ],
+          "median": 1.3355000000000032,
+          "min": 1.2242999999999995,
+          "max": 2.1229000000000013,
+          "positive_blocks": 5,
+          "beyond_noise": true
+        },
+        "send_p99_ms": {
+          "per_block": [
+            1.6818999999999988,
+            3.5652000000000044,
+            1.3643,
+            1.5372000000000057,
+            1.5163999999999973
+          ],
+          "median": 1.5372000000000057,
+          "min": 1.3643,
+          "max": 3.5652000000000044,
+          "positive_blocks": 5,
+          "beyond_noise": false
+        },
+        "scheduled_p99_ms": {
+          "per_block": [
+            1.7618999999999971,
+            3.6522000000000006,
+            1.3315000000000055,
+            1.5249999999999986,
+            1.5080999999999989
+          ],
+          "median": 1.5249999999999986,
+          "min": 1.3315000000000055,
+          "max": 3.6522000000000006,
+          "positive_blocks": 5,
+          "beyond_noise": false
+        },
+        "backend_calls": {
+          "per_block": [
+            -3,
+            -5,
+            -3,
+            -3,
+            -3
+          ],
+          "median": -3,
+          "min": -5,
+          "max": -3,
+          "positive_blocks": 0,
+          "beyond_noise": true
+        }
+      },
+      "local-two-aa": {
+        "blocks": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "send_p50_ms": {
+          "per_block": [
+            0.027599999999999958,
+            0.5773,
+            0.011500000000000066,
+            0.0019000000000000128,
+            0.01859999999999995
+          ],
+          "median": 0.01859999999999995,
+          "min": 0.0019000000000000128,
+          "max": 0.5773,
+          "positive_blocks": 5,
+          "beyond_noise": null
+        },
+        "send_p95_ms": {
+          "per_block": [
+            0.24849999999999994,
+            0.7627999999999986,
+            0.049399999999998556,
+            0.12199999999999989,
+            0.029000000000003467
+          ],
+          "median": 0.12199999999999989,
+          "min": 0.029000000000003467,
+          "max": 0.7627999999999986,
+          "positive_blocks": 5,
+          "beyond_noise": null
+        },
+        "send_p99_ms": {
+          "per_block": [
+            0.1570999999999998,
+            3.133499999999998,
+            0.12700000000000244,
+            0.17650000000000432,
+            0.031999999999996476
+          ],
+          "median": 0.1570999999999998,
+          "min": 0.031999999999996476,
+          "max": 3.133499999999998,
+          "positive_blocks": 5,
+          "beyond_noise": null
+        },
+        "scheduled_p99_ms": {
+          "per_block": [
+            0.18719999999999715,
+            3.3834000000000017,
+            0.08109999999999928,
+            0.15279999999999916,
+            0.022500000000000853
+          ],
+          "median": 0.15279999999999916,
+          "min": 0.022500000000000853,
+          "max": 3.3834000000000017,
+          "positive_blocks": 5,
+          "beyond_noise": null
+        },
+        "backend_calls": {
+          "per_block": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "median": 0,
+          "min": 0,
+          "max": 0,
+          "positive_blocks": 0,
+          "beyond_noise": null
+        }
+      }
+    }
+  },
+  "paired_contrasts": {
+    "500": {
+      "leased-v2 - leased": {
+        "blocks": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "send_p50_ms": {
+          "per_block": [
+            0.05680000000000007,
+            0.5123,
+            0.0030000000000000027,
+            -0.012499999999999956,
+            -0.0029000000000000137
+          ],
+          "median": 0.0030000000000000027,
+          "min": -0.012499999999999956,
+          "max": 0.5123,
+          "positive_blocks": 3,
+          "beyond_noise": false
+        },
+        "send_p95_ms": {
+          "per_block": [
+            -1.4065000000000012,
+            -0.7963000000000022,
+            -1.3145999999999987,
+            -1.2992999999999952,
+            -1.3742000000000019
+          ],
+          "median": -1.3145999999999987,
+          "min": -1.4065000000000012,
+          "max": -0.7963000000000022,
+          "positive_blocks": 0,
+          "beyond_noise": true
+        },
+        "send_p99_ms": {
+          "per_block": [
+            -2.1134000000000057,
+            -0.4285999999999959,
+            -1.7698000000000036,
+            -1.6882999999999981,
+            -1.7869000000000028
+          ],
+          "median": -1.7698000000000036,
+          "min": -2.1134000000000057,
+          "max": -0.4285999999999959,
+          "positive_blocks": 0,
+          "beyond_noise": false
+        },
+        "scheduled_p99_ms": {
+          "per_block": [
+            -2.093200000000003,
+            -0.3434999999999988,
+            -1.7797999999999945,
+            -1.6602000000000032,
+            -1.6735000000000042
+          ],
+          "median": -1.6735000000000042,
+          "min": -2.093200000000003,
+          "max": -0.3434999999999988,
+          "positive_blocks": 0,
+          "beyond_noise": false
+        },
+        "backend_calls": {
+          "per_block": [
+            0,
+            -2,
+            0,
+            0,
+            0
+          ],
+          "median": 0,
+          "min": -2,
+          "max": 0,
+          "positive_blocks": 0,
+          "beyond_noise": false
+        }
+      },
+      "leased-v2 - shared": {
+        "blocks": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "send_p50_ms": {
+          "per_block": [
+            0.06710000000000005,
+            0.5123,
+            0.005900000000000016,
+            0.009299999999999975,
+            -0.019100000000000006
+          ],
+          "median": 0.009299999999999975,
+          "min": -0.019100000000000006,
+          "max": 0.5123,
+          "positive_blocks": 4,
+          "beyond_noise": false
+        },
+        "send_p95_ms": {
+          "per_block": [
+            -0.029900000000004923,
+            0.4416000000000011,
+            0.05099999999999483,
+            0.13289999999999935,
+            -0.018000000000000682
+          ],
+          "median": 0.05099999999999483,
+          "min": -0.029900000000004923,
+          "max": 0.4416000000000011,
+          "positive_blocks": 3,
+          "beyond_noise": false
+        },
+        "send_p99_ms": {
+          "per_block": [
+            -7.2424000000000035,
+            0.5918000000000063,
+            0.04829999999999757,
+            0.2255000000000038,
+            0.1490000000000009
+          ],
+          "median": 0.1490000000000009,
+          "min": -7.2424000000000035,
+          "max": 0.5918000000000063,
+          "positive_blocks": 4,
+          "beyond_noise": false
+        },
+        "scheduled_p99_ms": {
+          "per_block": [
+            -9.397000000000006,
+            0.5273000000000039,
+            0.06569999999999965,
+            0.2582999999999984,
+            0.22339999999999804
+          ],
+          "median": 0.22339999999999804,
+          "min": -9.397000000000006,
+          "max": 0.5273000000000039,
+          "positive_blocks": 4,
+          "beyond_noise": false
+        },
+        "backend_calls": {
+          "per_block": [
+            -3,
+            -5,
+            -3,
+            -3,
+            -3
+          ],
+          "median": -3,
+          "min": -5,
+          "max": -3,
+          "positive_blocks": 0,
+          "beyond_noise": true
+        }
+      },
+      "leased - shared": {
+        "blocks": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "send_p50_ms": {
+          "per_block": [
+            0.010299999999999976,
+            0,
+            0.0029000000000000137,
+            0.02179999999999993,
+            -0.016199999999999992
+          ],
+          "median": 0.0029000000000000137,
+          "min": -0.016199999999999992,
+          "max": 0.02179999999999993,
+          "positive_blocks": 3,
+          "beyond_noise": false
+        },
+        "send_p95_ms": {
+          "per_block": [
+            1.3765999999999963,
+            1.2379000000000033,
+            1.3655999999999935,
+            1.4321999999999946,
+            1.3562000000000012
+          ],
+          "median": 1.3655999999999935,
+          "min": 1.2379000000000033,
+          "max": 1.4321999999999946,
+          "positive_blocks": 5,
+          "beyond_noise": true
+        },
+        "send_p99_ms": {
+          "per_block": [
+            -5.128999999999998,
+            1.0204000000000022,
+            1.8181000000000012,
+            1.913800000000002,
+            1.9359000000000037
+          ],
+          "median": 1.8181000000000012,
+          "min": -5.128999999999998,
+          "max": 1.9359000000000037,
+          "positive_blocks": 4,
+          "beyond_noise": false
+        },
+        "scheduled_p99_ms": {
+          "per_block": [
+            -7.3038000000000025,
+            0.8708000000000027,
+            1.8454999999999941,
+            1.9185000000000016,
+            1.8969000000000023
+          ],
+          "median": 1.8454999999999941,
+          "min": -7.3038000000000025,
+          "max": 1.9185000000000016,
+          "positive_blocks": 4,
+          "beyond_noise": false
+        },
+        "backend_calls": {
+          "per_block": [
+            -3,
+            -3,
+            -3,
+            -3,
+            -3
+          ],
+          "median": -3,
+          "min": -3,
+          "max": -3,
+          "positive_blocks": 0,
+          "beyond_noise": true
+        }
+      }
+    }
+  },
+  "noise_floor": {
+    "500": {
+      "send_p50_ms": {
+        "max_abs": 0.5773,
+        "median_abs": 0.01859999999999995,
+        "blocks": 5
+      },
+      "send_p95_ms": {
+        "max_abs": 0.7627999999999986,
+        "median_abs": 0.12199999999999989,
+        "blocks": 5
+      },
+      "send_p99_ms": {
+        "max_abs": 3.133499999999998,
+        "median_abs": 0.1570999999999998,
+        "blocks": 5
+      },
+      "scheduled_p99_ms": {
+        "max_abs": 3.3834000000000017,
+        "median_abs": 0.15279999999999916,
+        "blocks": 5
+      },
+      "backend_calls": {
+        "max_abs": 0,
+        "median_abs": 0,
+        "blocks": 5
+      }
+    }
+  },
+  "cold_backend_calls": {
+    "local-one": [
+      1,
+      1,
+      1
+    ],
+    "local-two": [
+      2,
+      2,
+      2
+    ],
+    "shared": [
+      2,
+      2,
+      2
+    ],
+    "leased": [
+      1,
+      1,
+      1
+    ],
+    "leased-v2": [
+      1,
+      1,
+      1
+    ],
+    "local-two-aa": [
+      2,
+      2,
+      2
+    ]
+  },
+  "restart": {},
+  "host": {
+    "affinity": null,
+    "power_at_start": {
+      "ac_online": true,
+      "battery_percent": 100,
+      "power_plan": {
+        "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+        "name": "Balanced"
+      },
+      "power_mode_overlay": {
+        "guid": "00000000-0000-0000-0000-000000000000",
+        "name": "balanced"
+      }
+    },
+    "trials_with_power_record": 49,
+    "trials_not_on_ac": 0
+  },
+  "trials": [
+    {
+      "mode": "local-one",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 1,
+      "gateways": 1,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.2011566770353,
+      "generator_drops": 0,
+      "late_arrivals": 37,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 96.3912,
+        "p50": 0.3467,
+        "p95": 51.0669,
+        "p99": 51.8909
+      },
+      "scheduled_latency_ms": {
+        "p100": 100.6228,
+        "p50": 0.7411,
+        "p95": 51.5014,
+        "p99": 52.4454
+      },
+      "scheduling_lag_ms": {
+        "p100": 8.985,
+        "p50": 0.4015,
+        "p95": 0.829,
+        "p99": 1.0669
+      },
+      "backend_calls": 2973,
+      "backend_peak_process_lifetime": 12,
+      "cache_l1_hits": 11969,
+      "cache_misses": 3031,
+      "l1_hit_ratio": 0.7979333333333334,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.1982,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 2973,
+      "measured_over_predicted": 1.0,
+      "local_followers": 58,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 30,
+          "sampled_cpu_seconds": 0.96875,
+          "sampled_span_seconds": 29.892064571380615,
+          "max_sampled_rss_mib": 15.1796875,
+          "early_median_rss_mib": 13.359375,
+          "late_median_rss_mib": 14.88671875
+        },
+        "front": {
+          "samples": 30,
+          "sampled_cpu_seconds": 6.046875,
+          "sampled_span_seconds": 29.892064571380615,
+          "max_sampled_rss_mib": 19.01171875,
+          "early_median_rss_mib": 16.744140625,
+          "late_median_rss_mib": 18.376953125
+        },
+        "gateway-0": {
+          "samples": 30,
+          "sampled_cpu_seconds": 4.765625,
+          "sampled_span_seconds": 29.892064571380615,
+          "max_sampled_rss_mib": 19.98828125,
+          "early_median_rss_mib": 17.412109375,
+          "late_median_rss_mib": 19.484375
+        },
+        "generator": {
+          "samples": 30,
+          "sampled_cpu_seconds": 3.953125,
+          "sampled_span_seconds": 29.892064571380615,
+          "max_sampled_rss_mib": 20.8125,
+          "early_median_rss_mib": 16.56640625,
+          "late_median_rss_mib": 19.810546875
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 1,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.24677141855767,
+      "generator_drops": 0,
+      "late_arrivals": 10,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 56.4316,
+        "p50": 0.5182,
+        "p95": 51.239,
+        "p99": 51.8668
+      },
+      "scheduled_latency_ms": {
+        "p100": 56.7721,
+        "p50": 0.8496,
+        "p95": 51.6374,
+        "p99": 52.3703
+      },
+      "scheduling_lag_ms": {
+        "p100": 5.535,
+        "p50": 0.3777,
+        "p95": 0.8002,
+        "p99": 1.0284
+      },
+      "backend_calls": 2976,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11968,
+      "cache_misses": 3032,
+      "l1_hit_ratio": 0.7978666666666666,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.1984,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 2976,
+      "measured_over_predicted": 1.0,
+      "local_followers": 56,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.03125,
+          "sampled_span_seconds": 28.888163805007935,
+          "max_sampled_rss_mib": 15.2109375,
+          "early_median_rss_mib": 13.041015625,
+          "late_median_rss_mib": 14.72265625
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 6.265625,
+          "sampled_span_seconds": 28.888163805007935,
+          "max_sampled_rss_mib": 18.1171875,
+          "early_median_rss_mib": 17.037109375,
+          "late_median_rss_mib": 17.80078125
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 2.828125,
+          "sampled_span_seconds": 28.888163805007935,
+          "max_sampled_rss_mib": 17.90625,
+          "early_median_rss_mib": 16.193359375,
+          "late_median_rss_mib": 17.46484375
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 2.53125,
+          "sampled_span_seconds": 28.888163805007935,
+          "max_sampled_rss_mib": 17.38671875,
+          "early_median_rss_mib": 16.322265625,
+          "late_median_rss_mib": 17.33203125
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.21875,
+          "sampled_span_seconds": 28.888163805007935,
+          "max_sampled_rss_mib": 21.125,
+          "early_median_rss_mib": 16.4296875,
+          "late_median_rss_mib": 18.60546875
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "shared",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 1,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.149572252443,
+      "generator_drops": 0,
+      "late_arrivals": 132,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 228.257,
+        "p50": 0.5434,
+        "p95": 52.7494,
+        "p99": 60.7911
+      },
+      "scheduled_latency_ms": {
+        "p100": 230.3701,
+        "p50": 0.972,
+        "p95": 53.1863,
+        "p99": 63.5292
+      },
+      "scheduling_lag_ms": {
+        "p100": 39.6223,
+        "p50": 0.394,
+        "p95": 0.8842,
+        "p99": 1.8332
+      },
+      "backend_calls": 2976,
+      "backend_peak_process_lifetime": 24,
+      "cache_l1_hits": 11967,
+      "cache_misses": 3033,
+      "l1_hit_ratio": 0.7978,
+      "shared_hits": 0,
+      "shared_misses": 2973,
+      "shared_lookup_hit_ratio": 0.0,
+      "dependency_operations": 5952,
+      "dependency_errors": 4,
+      "dependency_error_causes": {
+        "timeout": 2,
+        "pool_timeout": 0,
+        "connection": 2,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 2.0,
+      "dependency_ops_per_request": 0.3968,
+      "backend_calls_per_request": 0.1984,
+      "redis_commands": 8859,
+      "redis_commands_per_fill": 3.006107906345436,
+      "predicted_backend_calls": 2976,
+      "measured_over_predicted": 1.0,
+      "local_followers": 57,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.40625,
+          "sampled_span_seconds": 29.79944086074829,
+          "max_sampled_rss_mib": 15.35546875,
+          "early_median_rss_mib": 13.4296875,
+          "late_median_rss_mib": 15.03515625
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 7.21875,
+          "sampled_span_seconds": 29.79944086074829,
+          "max_sampled_rss_mib": 20.80078125,
+          "early_median_rss_mib": 17.16796875,
+          "late_median_rss_mib": 17.72265625
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.40625,
+          "sampled_span_seconds": 29.79944086074829,
+          "max_sampled_rss_mib": 18.65234375,
+          "early_median_rss_mib": 16.59375,
+          "late_median_rss_mib": 17.810546875
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.734375,
+          "sampled_span_seconds": 29.79944086074829,
+          "max_sampled_rss_mib": 17.91796875,
+          "early_median_rss_mib": 16.5,
+          "late_median_rss_mib": 17.6171875
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.640625,
+          "sampled_span_seconds": 29.79944086074829,
+          "max_sampled_rss_mib": 20.890625,
+          "early_median_rss_mib": 16.28125,
+          "late_median_rss_mib": 19.275390625
+        },
+        "redis": {
+          "samples": 29,
+          "sampled_cpu_seconds": 0.749796,
+          "sampled_span_seconds": 29.79944086074829,
+          "max_sampled_rss_mib": 6.359375,
+          "early_median_rss_mib": 6.015625,
+          "late_median_rss_mib": 6.359375
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 1,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.1702941122354,
+      "generator_drops": 0,
+      "late_arrivals": 19,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 95.0794,
+        "p50": 0.5537,
+        "p95": 54.126,
+        "p99": 55.6621
+      },
+      "scheduled_latency_ms": {
+        "p100": 95.229,
+        "p50": 0.9831,
+        "p95": 54.5292,
+        "p99": 56.2254
+      },
+      "scheduling_lag_ms": {
+        "p100": 6.1154,
+        "p50": 0.391,
+        "p95": 0.8308,
+        "p99": 1.0497
+      },
+      "backend_calls": 2973,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11943,
+      "cache_misses": 3057,
+      "l1_hit_ratio": 0.7962,
+      "shared_hits": 3,
+      "shared_misses": 5952,
+      "shared_lookup_hit_ratio": 0.0005037783375314861,
+      "dependency_operations": 14880,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 5.005045408678103,
+      "dependency_ops_per_request": 0.992,
+      "backend_calls_per_request": 0.1982,
+      "redis_commands": 34738,
+      "redis_commands_per_fill": 11.986887508626639,
+      "predicted_backend_calls": 2973,
+      "measured_over_predicted": 1.0,
+      "local_followers": 81,
+      "distributed_followers": 3,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.296875,
+          "sampled_span_seconds": 29.312366247177124,
+          "max_sampled_rss_mib": 15.41796875,
+          "early_median_rss_mib": 13.3671875,
+          "late_median_rss_mib": 14.94140625
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 8.09375,
+          "sampled_span_seconds": 29.312366247177124,
+          "max_sampled_rss_mib": 19.4921875,
+          "early_median_rss_mib": 17.70703125,
+          "late_median_rss_mib": 18.94921875
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.234375,
+          "sampled_span_seconds": 29.312366247177124,
+          "max_sampled_rss_mib": 18.89453125,
+          "early_median_rss_mib": 16.875,
+          "late_median_rss_mib": 18.25390625
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.484375,
+          "sampled_span_seconds": 29.312366247177124,
+          "max_sampled_rss_mib": 18.69921875,
+          "early_median_rss_mib": 16.55078125,
+          "late_median_rss_mib": 18.57421875
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.09375,
+          "sampled_span_seconds": 29.312366247177124,
+          "max_sampled_rss_mib": 21.16796875,
+          "early_median_rss_mib": 16.12890625,
+          "late_median_rss_mib": 19.7734375
+        },
+        "redis": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.4227849999999997,
+          "sampled_span_seconds": 29.312366247177124,
+          "max_sampled_rss_mib": 6.1875,
+          "early_median_rss_mib": 6.015625,
+          "late_median_rss_mib": 6.1875
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased-v2",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 1,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.1524806838389,
+      "generator_drops": 0,
+      "late_arrivals": 12,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 95.0623,
+        "p50": 0.6105,
+        "p95": 52.7195,
+        "p99": 53.5487
+      },
+      "scheduled_latency_ms": {
+        "p100": 95.2033,
+        "p50": 1.0218,
+        "p95": 53.151,
+        "p99": 54.1322
+      },
+      "scheduling_lag_ms": {
+        "p100": 3.9013,
+        "p50": 0.3999,
+        "p95": 0.849,
+        "p99": 1.0559
+      },
+      "backend_calls": 2973,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11948,
+      "cache_misses": 3052,
+      "l1_hit_ratio": 0.7965333333333333,
+      "shared_hits": 3,
+      "shared_misses": 2979,
+      "shared_lookup_hit_ratio": 0.001006036217303823,
+      "dependency_operations": 5955,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 2.003027245206862,
+      "dependency_ops_per_request": 0.397,
+      "backend_calls_per_request": 0.1982,
+      "redis_commands": 22803,
+      "redis_commands_per_fill": 8.003861003861005,
+      "predicted_backend_calls": 2973,
+      "measured_over_predicted": 1.0,
+      "local_followers": 76,
+      "distributed_followers": 3,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 28,
+          "sampled_cpu_seconds": 0.921875,
+          "sampled_span_seconds": 28.726566076278687,
+          "max_sampled_rss_mib": 14.74609375,
+          "early_median_rss_mib": 13.25,
+          "late_median_rss_mib": 14.36328125
+        },
+        "front": {
+          "samples": 28,
+          "sampled_cpu_seconds": 8.109375,
+          "sampled_span_seconds": 28.726566076278687,
+          "max_sampled_rss_mib": 18.69140625,
+          "early_median_rss_mib": 17.5078125,
+          "late_median_rss_mib": 18.0546875
+        },
+        "gateway-0": {
+          "samples": 28,
+          "sampled_cpu_seconds": 3.25,
+          "sampled_span_seconds": 28.726566076278687,
+          "max_sampled_rss_mib": 17.69140625,
+          "early_median_rss_mib": 16.6484375,
+          "late_median_rss_mib": 17.53125
+        },
+        "gateway-1": {
+          "samples": 28,
+          "sampled_cpu_seconds": 3.6875,
+          "sampled_span_seconds": 28.726566076278687,
+          "max_sampled_rss_mib": 18.58984375,
+          "early_median_rss_mib": 16.8828125,
+          "late_median_rss_mib": 18.54296875
+        },
+        "generator": {
+          "samples": 28,
+          "sampled_cpu_seconds": 5.265625,
+          "sampled_span_seconds": 28.726566076278687,
+          "max_sampled_rss_mib": 19.37890625,
+          "early_median_rss_mib": 16.41015625,
+          "late_median_rss_mib": 18.3359375
+        },
+        "redis": {
+          "samples": 28,
+          "sampled_cpu_seconds": 0.8309099999999999,
+          "sampled_span_seconds": 28.726566076278687,
+          "max_sampled_rss_mib": 6.53125,
+          "early_median_rss_mib": 6.1875,
+          "late_median_rss_mib": 6.53125
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two-aa",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 1,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.23881224709623,
+      "generator_drops": 0,
+      "late_arrivals": 16,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 72.5387,
+        "p50": 0.5458,
+        "p95": 51.4875,
+        "p99": 52.0239
+      },
+      "scheduled_latency_ms": {
+        "p100": 72.85,
+        "p50": 0.9696,
+        "p95": 51.9208,
+        "p99": 52.5575
+      },
+      "scheduling_lag_ms": {
+        "p100": 5.3196,
+        "p50": 0.4019,
+        "p95": 0.8385,
+        "p99": 1.0509
+      },
+      "backend_calls": 2976,
+      "backend_peak_process_lifetime": 12,
+      "cache_l1_hits": 11969,
+      "cache_misses": 3031,
+      "l1_hit_ratio": 0.7979333333333334,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.1984,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 2976,
+      "measured_over_predicted": 1.0,
+      "local_followers": 55,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.484375,
+          "sampled_span_seconds": 28.960949182510376,
+          "max_sampled_rss_mib": 15.88671875,
+          "early_median_rss_mib": 13.30859375,
+          "late_median_rss_mib": 15.8125
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 7.921875,
+          "sampled_span_seconds": 28.960949182510376,
+          "max_sampled_rss_mib": 18.07421875,
+          "early_median_rss_mib": 17.021484375,
+          "late_median_rss_mib": 17.7734375
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.40625,
+          "sampled_span_seconds": 28.960949182510376,
+          "max_sampled_rss_mib": 17.53515625,
+          "early_median_rss_mib": 16.36328125,
+          "late_median_rss_mib": 17.26171875
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.0625,
+          "sampled_span_seconds": 28.960949182510376,
+          "max_sampled_rss_mib": 18.1015625,
+          "early_median_rss_mib": 16.41015625,
+          "late_median_rss_mib": 17.8515625
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.515625,
+          "sampled_span_seconds": 28.960949182510376,
+          "max_sampled_rss_mib": 19.53515625,
+          "early_median_rss_mib": 16.0390625,
+          "late_median_rss_mib": 18.390625
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 2,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.1470973717789,
+      "generator_drops": 0,
+      "late_arrivals": 24,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 81.4419,
+        "p50": 0,
+        "p95": 50.8735,
+        "p99": 51.5781
+      },
+      "scheduled_latency_ms": {
+        "p100": 81.5973,
+        "p50": 0.6723,
+        "p95": 51.3707,
+        "p99": 52.0717
+      },
+      "scheduling_lag_ms": {
+        "p100": 33.7388,
+        "p50": 0.4397,
+        "p95": 0.8501,
+        "p99": 1.0063
+      },
+      "backend_calls": 3037,
+      "backend_peak_process_lifetime": 15,
+      "cache_l1_hits": 11905,
+      "cache_misses": 3095,
+      "l1_hit_ratio": 0.7936666666666666,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.20246666666666666,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 3037,
+      "measured_over_predicted": 1.0,
+      "local_followers": 58,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 0.9375,
+          "sampled_span_seconds": 29.061630725860596,
+          "max_sampled_rss_mib": 14.96484375,
+          "early_median_rss_mib": 13.390625,
+          "late_median_rss_mib": 14.6484375
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.890625,
+          "sampled_span_seconds": 29.061630725860596,
+          "max_sampled_rss_mib": 17.94140625,
+          "early_median_rss_mib": 16.951171875,
+          "late_median_rss_mib": 17.84375
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 2.140625,
+          "sampled_span_seconds": 29.061630725860596,
+          "max_sampled_rss_mib": 17.59765625,
+          "early_median_rss_mib": 16.333984375,
+          "late_median_rss_mib": 17.5234375
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 2.203125,
+          "sampled_span_seconds": 29.061630725860596,
+          "max_sampled_rss_mib": 17.1328125,
+          "early_median_rss_mib": 15.921875,
+          "late_median_rss_mib": 16.921875
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.34375,
+          "sampled_span_seconds": 29.061630725860596,
+          "max_sampled_rss_mib": 18.98828125,
+          "early_median_rss_mib": 16.07421875,
+          "late_median_rss_mib": 18.390625
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "shared",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 2,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.1509143456432,
+      "generator_drops": 0,
+      "late_arrivals": 74,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 96.1138,
+        "p50": 0,
+        "p95": 52.5548,
+        "p99": 54.5515
+      },
+      "scheduled_latency_ms": {
+        "p100": 96.3846,
+        "p50": 0.7615,
+        "p95": 52.9791,
+        "p99": 55.1966
+      },
+      "scheduling_lag_ms": {
+        "p100": 18.6286,
+        "p50": 0.427,
+        "p95": 0.8833,
+        "p99": 1.2773
+      },
+      "backend_calls": 3037,
+      "backend_peak_process_lifetime": 15,
+      "cache_l1_hits": 11902,
+      "cache_misses": 3098,
+      "l1_hit_ratio": 0.7934666666666667,
+      "shared_hits": 2,
+      "shared_misses": 3037,
+      "shared_lookup_hit_ratio": 0.0006581112207963146,
+      "dependency_operations": 6076,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 2.000658544616398,
+      "dependency_ops_per_request": 0.4050666666666667,
+      "backend_calls_per_request": 0.20246666666666666,
+      "redis_commands": 9016,
+      "redis_commands_per_fill": 3.000332778702163,
+      "predicted_backend_calls": 3037,
+      "measured_over_predicted": 1.0,
+      "local_followers": 59,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.203125,
+          "sampled_span_seconds": 29.709890604019165,
+          "max_sampled_rss_mib": 15.21484375,
+          "early_median_rss_mib": 13.1953125,
+          "late_median_rss_mib": 15.21484375
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 6.703125,
+          "sampled_span_seconds": 29.709890604019165,
+          "max_sampled_rss_mib": 18.1015625,
+          "early_median_rss_mib": 16.84375,
+          "late_median_rss_mib": 17.7578125
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.203125,
+          "sampled_span_seconds": 29.709890604019165,
+          "max_sampled_rss_mib": 17.91796875,
+          "early_median_rss_mib": 16.41015625,
+          "late_median_rss_mib": 17.59375
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 2.859375,
+          "sampled_span_seconds": 29.709890604019165,
+          "max_sampled_rss_mib": 18.015625,
+          "early_median_rss_mib": 16.42578125,
+          "late_median_rss_mib": 17.9453125
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.3125,
+          "sampled_span_seconds": 29.709890604019165,
+          "max_sampled_rss_mib": 19.66796875,
+          "early_median_rss_mib": 16.19140625,
+          "late_median_rss_mib": 18.33984375
+        },
+        "redis": {
+          "samples": 29,
+          "sampled_cpu_seconds": 0.804858,
+          "sampled_span_seconds": 29.709890604019165,
+          "max_sampled_rss_mib": 6.359375,
+          "early_median_rss_mib": 6.1875,
+          "late_median_rss_mib": 6.359375
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 2,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.1362563548905,
+      "generator_drops": 0,
+      "late_arrivals": 25,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 89.4183,
+        "p50": 0,
+        "p95": 53.7927,
+        "p99": 55.5719
+      },
+      "scheduled_latency_ms": {
+        "p100": 89.5228,
+        "p50": 0.699,
+        "p95": 54.228,
+        "p99": 56.0674
+      },
+      "scheduling_lag_ms": {
+        "p100": 4.4372,
+        "p50": 0.4024,
+        "p95": 0.841,
+        "p99": 1.0554
+      },
+      "backend_calls": 3034,
+      "backend_peak_process_lifetime": 15,
+      "cache_l1_hits": 11889,
+      "cache_misses": 3111,
+      "l1_hit_ratio": 0.7926,
+      "shared_hits": 3,
+      "shared_misses": 6074,
+      "shared_lookup_hit_ratio": 0.0004936646371564917,
+      "dependency_operations": 15185,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 5.004943968358602,
+      "dependency_ops_per_request": 1.0123333333333333,
+      "backend_calls_per_request": 0.20226666666666668,
+      "redis_commands": 34914,
+      "redis_commands_per_fill": 11.99381655788389,
+      "predicted_backend_calls": 3034,
+      "measured_over_predicted": 1.0,
+      "local_followers": 74,
+      "distributed_followers": 3,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 28,
+          "sampled_cpu_seconds": 0.875,
+          "sampled_span_seconds": 28.78023338317871,
+          "max_sampled_rss_mib": 15.1640625,
+          "early_median_rss_mib": 13.23046875,
+          "late_median_rss_mib": 14.7578125
+        },
+        "front": {
+          "samples": 28,
+          "sampled_cpu_seconds": 5.734375,
+          "sampled_span_seconds": 28.78023338317871,
+          "max_sampled_rss_mib": 18.84765625,
+          "early_median_rss_mib": 17.12109375,
+          "late_median_rss_mib": 18.28125
+        },
+        "gateway-0": {
+          "samples": 28,
+          "sampled_cpu_seconds": 2.859375,
+          "sampled_span_seconds": 28.78023338317871,
+          "max_sampled_rss_mib": 18.4375,
+          "early_median_rss_mib": 16.703125,
+          "late_median_rss_mib": 18.109375
+        },
+        "gateway-1": {
+          "samples": 28,
+          "sampled_cpu_seconds": 3.21875,
+          "sampled_span_seconds": 28.78023338317871,
+          "max_sampled_rss_mib": 18.2578125,
+          "early_median_rss_mib": 16.34375,
+          "late_median_rss_mib": 17.73828125
+        },
+        "generator": {
+          "samples": 28,
+          "sampled_cpu_seconds": 3.296875,
+          "sampled_span_seconds": 28.78023338317871,
+          "max_sampled_rss_mib": 19.7109375,
+          "early_median_rss_mib": 16.33203125,
+          "late_median_rss_mib": 18.85546875
+        },
+        "redis": {
+          "samples": 28,
+          "sampled_cpu_seconds": 1.482313,
+          "sampled_span_seconds": 28.78023338317871,
+          "max_sampled_rss_mib": 6.53125,
+          "early_median_rss_mib": 6.359375,
+          "late_median_rss_mib": 6.53125
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased-v2",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 2,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 14998,
+      "successful_rps": 499.0510792289041,
+      "generator_drops": 0,
+      "late_arrivals": 55,
+      "transport_errors": 0,
+      "rejected": 2,
+      "rejection_reasons": {
+        "coordination_error": 2
+      },
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 98.7137,
+        "p50": 0.5123,
+        "p95": 52.9964,
+        "p99": 55.1433
+      },
+      "scheduled_latency_ms": {
+        "p100": 98.9568,
+        "p50": 0.8415,
+        "p95": 53.4026,
+        "p99": 55.7239
+      },
+      "scheduling_lag_ms": {
+        "p100": 21.1725,
+        "p50": 0.407,
+        "p95": 0.8757,
+        "p99": 1.3093
+      },
+      "backend_calls": 3032,
+      "backend_peak_process_lifetime": 15,
+      "cache_l1_hits": 11884,
+      "cache_misses": 3116,
+      "l1_hit_ratio": 0.7922666666666667,
+      "shared_hits": 3,
+      "shared_misses": 3038,
+      "shared_lookup_hit_ratio": 0.0009865175928970734,
+      "dependency_operations": 6075,
+      "dependency_errors": 2,
+      "dependency_error_causes": {
+        "timeout": 2,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 2.0036279683377307,
+      "dependency_ops_per_request": 0.405,
+      "backend_calls_per_request": 0.20213333333333333,
+      "redis_commands": 23851,
+      "redis_commands_per_fill": 8.011756802149815,
+      "predicted_backend_calls": 3034,
+      "measured_over_predicted": 0.999340804218853,
+      "local_followers": 79,
+      "distributed_followers": 3,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.3125,
+          "sampled_span_seconds": 29.518733263015747,
+          "max_sampled_rss_mib": 14.83203125,
+          "early_median_rss_mib": 13.28125,
+          "late_median_rss_mib": 14.6796875
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 6.796875,
+          "sampled_span_seconds": 29.518733263015747,
+          "max_sampled_rss_mib": 19.08203125,
+          "early_median_rss_mib": 16.88671875,
+          "late_median_rss_mib": 18.82421875
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.03125,
+          "sampled_span_seconds": 29.518733263015747,
+          "max_sampled_rss_mib": 18.21875,
+          "early_median_rss_mib": 16.5703125,
+          "late_median_rss_mib": 17.9765625
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 2.765625,
+          "sampled_span_seconds": 29.518733263015747,
+          "max_sampled_rss_mib": 18.6484375,
+          "early_median_rss_mib": 16.509765625,
+          "late_median_rss_mib": 18.34765625
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.5,
+          "sampled_span_seconds": 29.518733263015747,
+          "max_sampled_rss_mib": 20.51953125,
+          "early_median_rss_mib": 16.361328125,
+          "late_median_rss_mib": 19.671875
+        },
+        "redis": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.0831279999999999,
+          "sampled_span_seconds": 29.518733263015747,
+          "max_sampled_rss_mib": 6.359375,
+          "early_median_rss_mib": 6.1875,
+          "late_median_rss_mib": 6.359375
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two-aa",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 2,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.07675790555055,
+      "generator_drops": 0,
+      "late_arrivals": 101,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 157.2838,
+        "p50": 0.5773,
+        "p95": 51.6363,
+        "p99": 54.7116
+      },
+      "scheduled_latency_ms": {
+        "p100": 158.0523,
+        "p50": 1.0231,
+        "p95": 52.113,
+        "p99": 55.4551
+      },
+      "scheduling_lag_ms": {
+        "p100": 11.6241,
+        "p50": 0.4035,
+        "p95": 0.8954,
+        "p99": 1.6749
+      },
+      "backend_calls": 3037,
+      "backend_peak_process_lifetime": 15,
+      "cache_l1_hits": 11903,
+      "cache_misses": 3097,
+      "l1_hit_ratio": 0.7935333333333333,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.20246666666666666,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 3037,
+      "measured_over_predicted": 1.0,
+      "local_followers": 60,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 30,
+          "sampled_cpu_seconds": 1.296875,
+          "sampled_span_seconds": 29.908036947250366,
+          "max_sampled_rss_mib": 15.5,
+          "early_median_rss_mib": 13.3671875,
+          "late_median_rss_mib": 14.998046875
+        },
+        "front": {
+          "samples": 30,
+          "sampled_cpu_seconds": 9.21875,
+          "sampled_span_seconds": 29.908036947250366,
+          "max_sampled_rss_mib": 19.8359375,
+          "early_median_rss_mib": 17.14453125,
+          "late_median_rss_mib": 19.46484375
+        },
+        "gateway-0": {
+          "samples": 30,
+          "sampled_cpu_seconds": 3.21875,
+          "sampled_span_seconds": 29.908036947250366,
+          "max_sampled_rss_mib": 17.34765625,
+          "early_median_rss_mib": 16.248046875,
+          "late_median_rss_mib": 17.203125
+        },
+        "gateway-1": {
+          "samples": 30,
+          "sampled_cpu_seconds": 4.125,
+          "sampled_span_seconds": 29.908036947250366,
+          "max_sampled_rss_mib": 17.42578125,
+          "early_median_rss_mib": 16.345703125,
+          "late_median_rss_mib": 17.349609375
+        },
+        "generator": {
+          "samples": 30,
+          "sampled_cpu_seconds": 5.46875,
+          "sampled_span_seconds": 29.908036947250366,
+          "max_sampled_rss_mib": 21.21484375,
+          "early_median_rss_mib": 16.2109375,
+          "late_median_rss_mib": 20.32421875
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-one",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 2,
+      "gateways": 1,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.12736564409715,
+      "generator_drops": 0,
+      "late_arrivals": 29,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 67.5084,
+        "p50": 0.5105,
+        "p95": 51.3362,
+        "p99": 51.8999
+      },
+      "scheduled_latency_ms": {
+        "p100": 68.8458,
+        "p50": 0.9096,
+        "p95": 51.7647,
+        "p99": 52.4435
+      },
+      "scheduling_lag_ms": {
+        "p100": 14.7125,
+        "p50": 0.4144,
+        "p95": 0.8507,
+        "p99": 1.0458
+      },
+      "backend_calls": 3034,
+      "backend_peak_process_lifetime": 15,
+      "cache_l1_hits": 11905,
+      "cache_misses": 3095,
+      "l1_hit_ratio": 0.7936666666666666,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.20226666666666668,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 3034,
+      "measured_over_predicted": 1.0,
+      "local_followers": 61,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.015625,
+          "sampled_span_seconds": 28.937008142471313,
+          "max_sampled_rss_mib": 15.03515625,
+          "early_median_rss_mib": 12.970703125,
+          "late_median_rss_mib": 14.91015625
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 6.671875,
+          "sampled_span_seconds": 28.937008142471313,
+          "max_sampled_rss_mib": 18.22265625,
+          "early_median_rss_mib": 17.2109375,
+          "late_median_rss_mib": 17.90234375
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.453125,
+          "sampled_span_seconds": 28.937008142471313,
+          "max_sampled_rss_mib": 19.9140625,
+          "early_median_rss_mib": 17.466796875,
+          "late_median_rss_mib": 19.6875
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.5625,
+          "sampled_span_seconds": 28.937008142471313,
+          "max_sampled_rss_mib": 21.1484375,
+          "early_median_rss_mib": 16.205078125,
+          "late_median_rss_mib": 19.9453125
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "shared",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 3,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.13602880986537,
+      "generator_drops": 0,
+      "late_arrivals": 12,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 58.9373,
+        "p50": 0.5361,
+        "p95": 52.6283,
+        "p99": 53.311
+      },
+      "scheduled_latency_ms": {
+        "p100": 59.6219,
+        "p50": 0.985,
+        "p95": 53.0474,
+        "p99": 53.7912
+      },
+      "scheduling_lag_ms": {
+        "p100": 5.5068,
+        "p50": 0.3947,
+        "p95": 0.8235,
+        "p99": 1.0253
+      },
+      "backend_calls": 2972,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11968,
+      "cache_misses": 3032,
+      "l1_hit_ratio": 0.7978666666666666,
+      "shared_hits": 0,
+      "shared_misses": 2972,
+      "shared_lookup_hit_ratio": 0.0,
+      "dependency_operations": 5944,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 2.0,
+      "dependency_ops_per_request": 0.39626666666666666,
+      "backend_calls_per_request": 0.19813333333333333,
+      "redis_commands": 8840,
+      "redis_commands_per_fill": 3.0006788866259333,
+      "predicted_backend_calls": 2972,
+      "measured_over_predicted": 1.0,
+      "local_followers": 60,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.65625,
+          "sampled_span_seconds": 29.637898445129395,
+          "max_sampled_rss_mib": 15.09765625,
+          "early_median_rss_mib": 12.96484375,
+          "late_median_rss_mib": 15.04296875
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 8.8125,
+          "sampled_span_seconds": 29.637898445129395,
+          "max_sampled_rss_mib": 18.52734375,
+          "early_median_rss_mib": 17.20703125,
+          "late_median_rss_mib": 18.3046875
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.171875,
+          "sampled_span_seconds": 29.637898445129395,
+          "max_sampled_rss_mib": 17.640625,
+          "early_median_rss_mib": 16.30859375,
+          "late_median_rss_mib": 17.61328125
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.515625,
+          "sampled_span_seconds": 29.637898445129395,
+          "max_sampled_rss_mib": 18.12890625,
+          "early_median_rss_mib": 16.54296875,
+          "late_median_rss_mib": 18.10546875
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.09375,
+          "sampled_span_seconds": 29.637898445129395,
+          "max_sampled_rss_mib": 21.62109375,
+          "early_median_rss_mib": 16.23828125,
+          "late_median_rss_mib": 18.87890625
+        },
+        "redis": {
+          "samples": 29,
+          "sampled_cpu_seconds": 0.706795,
+          "sampled_span_seconds": 29.637898445129395,
+          "max_sampled_rss_mib": 6.1875,
+          "early_median_rss_mib": 6.015625,
+          "late_median_rss_mib": 6.1875
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 3,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.0767927764184,
+      "generator_drops": 0,
+      "late_arrivals": 5,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 94.4036,
+        "p50": 0.539,
+        "p95": 53.9939,
+        "p99": 55.1291
+      },
+      "scheduled_latency_ms": {
+        "p100": 94.563,
+        "p50": 0.9901,
+        "p95": 54.4168,
+        "p99": 55.6367
+      },
+      "scheduling_lag_ms": {
+        "p100": 4.5676,
+        "p50": 0.3906,
+        "p95": 0.8263,
+        "p99": 1.0303
+      },
+      "backend_calls": 2969,
+      "backend_peak_process_lifetime": 12,
+      "cache_l1_hits": 11941,
+      "cache_misses": 3059,
+      "l1_hit_ratio": 0.7960666666666667,
+      "shared_hits": 3,
+      "shared_misses": 5944,
+      "shared_lookup_hit_ratio": 0.0005044560282495376,
+      "dependency_operations": 14860,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 5.00505220613001,
+      "dependency_ops_per_request": 0.9906666666666667,
+      "backend_calls_per_request": 0.19793333333333332,
+      "redis_commands": 35142,
+      "redis_commands_per_fill": 12.010252904989747,
+      "predicted_backend_calls": 2969,
+      "measured_over_predicted": 1.0,
+      "local_followers": 87,
+      "distributed_followers": 3,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.625,
+          "sampled_span_seconds": 29.45939826965332,
+          "max_sampled_rss_mib": 15.15234375,
+          "early_median_rss_mib": 13.0390625,
+          "late_median_rss_mib": 14.8984375
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 7.6875,
+          "sampled_span_seconds": 29.45939826965332,
+          "max_sampled_rss_mib": 18.66015625,
+          "early_median_rss_mib": 16.85546875,
+          "late_median_rss_mib": 18.36328125
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.34375,
+          "sampled_span_seconds": 29.45939826965332,
+          "max_sampled_rss_mib": 18.65234375,
+          "early_median_rss_mib": 16.6640625,
+          "late_median_rss_mib": 18.46484375
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.46875,
+          "sampled_span_seconds": 29.45939826965332,
+          "max_sampled_rss_mib": 18.23046875,
+          "early_median_rss_mib": 16.62109375,
+          "late_median_rss_mib": 18.12109375
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.5,
+          "sampled_span_seconds": 29.45939826965332,
+          "max_sampled_rss_mib": 20.19921875,
+          "early_median_rss_mib": 16.1796875,
+          "late_median_rss_mib": 18.68359375
+        },
+        "redis": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.3424070000000001,
+          "sampled_span_seconds": 29.45939826965332,
+          "max_sampled_rss_mib": 6.015625,
+          "early_median_rss_mib": 6.015625,
+          "late_median_rss_mib": 6.015625
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased-v2",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 3,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.1450311143719,
+      "generator_drops": 0,
+      "late_arrivals": 6,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 83.4606,
+        "p50": 0.542,
+        "p95": 52.6793,
+        "p99": 53.3593
+      },
+      "scheduled_latency_ms": {
+        "p100": 83.8241,
+        "p50": 0.9942,
+        "p95": 53.1232,
+        "p99": 53.8569
+      },
+      "scheduling_lag_ms": {
+        "p100": 3.8201,
+        "p50": 0.3966,
+        "p95": 0.8243,
+        "p99": 1.0214
+      },
+      "backend_calls": 2969,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11954,
+      "cache_misses": 3046,
+      "l1_hit_ratio": 0.7969333333333334,
+      "shared_hits": 3,
+      "shared_misses": 2974,
+      "shared_lookup_hit_ratio": 0.001007725898555593,
+      "dependency_operations": 5946,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 2.0026945099360054,
+      "dependency_ops_per_request": 0.3964,
+      "backend_calls_per_request": 0.19793333333333332,
+      "redis_commands": 22894,
+      "redis_commands_per_fill": 8.03016485443704,
+      "predicted_backend_calls": 2969,
+      "measured_over_predicted": 1.0,
+      "local_followers": 74,
+      "distributed_followers": 3,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 28,
+          "sampled_cpu_seconds": 1.59375,
+          "sampled_span_seconds": 28.72156572341919,
+          "max_sampled_rss_mib": 15.25,
+          "early_median_rss_mib": 13.30078125,
+          "late_median_rss_mib": 15.0859375
+        },
+        "front": {
+          "samples": 28,
+          "sampled_cpu_seconds": 8.25,
+          "sampled_span_seconds": 28.72156572341919,
+          "max_sampled_rss_mib": 18.796875,
+          "early_median_rss_mib": 17.15234375,
+          "late_median_rss_mib": 18.4921875
+        },
+        "gateway-0": {
+          "samples": 28,
+          "sampled_cpu_seconds": 3.40625,
+          "sampled_span_seconds": 28.72156572341919,
+          "max_sampled_rss_mib": 18.6796875,
+          "early_median_rss_mib": 16.69921875,
+          "late_median_rss_mib": 18.3828125
+        },
+        "gateway-1": {
+          "samples": 28,
+          "sampled_cpu_seconds": 3.78125,
+          "sampled_span_seconds": 28.72156572341919,
+          "max_sampled_rss_mib": 18.4375,
+          "early_median_rss_mib": 16.30078125,
+          "late_median_rss_mib": 18.25
+        },
+        "generator": {
+          "samples": 28,
+          "sampled_cpu_seconds": 5.46875,
+          "sampled_span_seconds": 28.72156572341919,
+          "max_sampled_rss_mib": 20.4609375,
+          "early_median_rss_mib": 15.9921875,
+          "late_median_rss_mib": 18.67578125
+        },
+        "redis": {
+          "samples": 28,
+          "sampled_cpu_seconds": 0.828857,
+          "sampled_span_seconds": 28.72156572341919,
+          "max_sampled_rss_mib": 6.1875,
+          "early_median_rss_mib": 6.015625,
+          "late_median_rss_mib": 6.1875
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two-aa",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 3,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.17741884288665,
+      "generator_drops": 0,
+      "late_arrivals": 36,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 89.737,
+        "p50": 0.547,
+        "p95": 51.5044,
+        "p99": 52.122
+      },
+      "scheduled_latency_ms": {
+        "p100": 90.2946,
+        "p50": 0.996,
+        "p95": 51.9468,
+        "p99": 52.6065
+      },
+      "scheduling_lag_ms": {
+        "p100": 6.6467,
+        "p50": 0.4071,
+        "p95": 0.8454,
+        "p99": 1.0716
+      },
+      "backend_calls": 2972,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11970,
+      "cache_misses": 3030,
+      "l1_hit_ratio": 0.798,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.19813333333333333,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 2972,
+      "measured_over_predicted": 1.0,
+      "local_followers": 58,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.296875,
+          "sampled_span_seconds": 29.113393306732178,
+          "max_sampled_rss_mib": 15.2890625,
+          "early_median_rss_mib": 13.099609375,
+          "late_median_rss_mib": 15.28125
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 8.4375,
+          "sampled_span_seconds": 29.113393306732178,
+          "max_sampled_rss_mib": 18.5,
+          "early_median_rss_mib": 17.521484375,
+          "late_median_rss_mib": 18.1640625
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 2.640625,
+          "sampled_span_seconds": 29.113393306732178,
+          "max_sampled_rss_mib": 17.453125,
+          "early_median_rss_mib": 16.208984375,
+          "late_median_rss_mib": 17.375
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.0,
+          "sampled_span_seconds": 29.113393306732178,
+          "max_sampled_rss_mib": 17.62890625,
+          "early_median_rss_mib": 16.30078125,
+          "late_median_rss_mib": 17.3984375
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.421875,
+          "sampled_span_seconds": 29.113393306732178,
+          "max_sampled_rss_mib": 19.546875,
+          "early_median_rss_mib": 16.041015625,
+          "late_median_rss_mib": 18.765625
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-one",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 3,
+      "gateways": 1,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.137483772874,
+      "generator_drops": 0,
+      "late_arrivals": 12,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 60.1203,
+        "p50": 0.5578,
+        "p95": 51.5745,
+        "p99": 52.052
+      },
+      "scheduled_latency_ms": {
+        "p100": 60.927,
+        "p50": 1.0294,
+        "p95": 52.0127,
+        "p99": 52.5681
+      },
+      "scheduling_lag_ms": {
+        "p100": 3.1881,
+        "p50": 0.3926,
+        "p95": 0.7964,
+        "p99": 1.0038
+      },
+      "backend_calls": 2969,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11969,
+      "cache_misses": 3031,
+      "l1_hit_ratio": 0.7979333333333334,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.19793333333333332,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 2969,
+      "measured_over_predicted": 1.0,
+      "local_followers": 62,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 30,
+          "sampled_cpu_seconds": 1.28125,
+          "sampled_span_seconds": 29.736891508102417,
+          "max_sampled_rss_mib": 14.890625,
+          "early_median_rss_mib": 13.12109375,
+          "late_median_rss_mib": 14.615234375
+        },
+        "front": {
+          "samples": 30,
+          "sampled_cpu_seconds": 8.703125,
+          "sampled_span_seconds": 29.736891508102417,
+          "max_sampled_rss_mib": 18.4609375,
+          "early_median_rss_mib": 17.216796875,
+          "late_median_rss_mib": 18.2578125
+        },
+        "gateway-0": {
+          "samples": 30,
+          "sampled_cpu_seconds": 6.359375,
+          "sampled_span_seconds": 29.736891508102417,
+          "max_sampled_rss_mib": 20.13671875,
+          "early_median_rss_mib": 17.240234375,
+          "late_median_rss_mib": 19.62890625
+        },
+        "generator": {
+          "samples": 30,
+          "sampled_cpu_seconds": 6.28125,
+          "sampled_span_seconds": 29.736891508102417,
+          "max_sampled_rss_mib": 19.1484375,
+          "early_median_rss_mib": 16.384765625,
+          "late_median_rss_mib": 18.595703125
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 3,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.1667326537356,
+      "generator_drops": 0,
+      "late_arrivals": 21,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 72.3488,
+        "p50": 0.5355,
+        "p95": 51.455,
+        "p99": 51.995
+      },
+      "scheduled_latency_ms": {
+        "p100": 72.5116,
+        "p50": 0.9811,
+        "p95": 51.8891,
+        "p99": 52.5254
+      },
+      "scheduling_lag_ms": {
+        "p100": 8.0961,
+        "p50": 0.4058,
+        "p95": 0.8498,
+        "p99": 1.0608
+      },
+      "backend_calls": 2972,
+      "backend_peak_process_lifetime": 12,
+      "cache_l1_hits": 11969,
+      "cache_misses": 3031,
+      "l1_hit_ratio": 0.7979333333333334,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.19813333333333333,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 2972,
+      "measured_over_predicted": 1.0,
+      "local_followers": 59,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.484375,
+          "sampled_span_seconds": 28.990440130233765,
+          "max_sampled_rss_mib": 15.40234375,
+          "early_median_rss_mib": 13.6015625,
+          "late_median_rss_mib": 15.390625
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 8.0625,
+          "sampled_span_seconds": 28.990440130233765,
+          "max_sampled_rss_mib": 18.48828125,
+          "early_median_rss_mib": 17.142578125,
+          "late_median_rss_mib": 18.0859375
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 2.734375,
+          "sampled_span_seconds": 28.990440130233765,
+          "max_sampled_rss_mib": 17.70703125,
+          "early_median_rss_mib": 16.337890625,
+          "late_median_rss_mib": 17.5078125
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.21875,
+          "sampled_span_seconds": 28.990440130233765,
+          "max_sampled_rss_mib": 17.3828125,
+          "early_median_rss_mib": 16.16796875,
+          "late_median_rss_mib": 17.25
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.46875,
+          "sampled_span_seconds": 28.990440130233765,
+          "max_sampled_rss_mib": 19.79296875,
+          "early_median_rss_mib": 16.07421875,
+          "late_median_rss_mib": 18.94921875
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 4,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.19362591240366,
+      "generator_drops": 0,
+      "late_arrivals": 22,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 79.5324,
+        "p50": 0.5455,
+        "p95": 53.9462,
+        "p99": 55.0837
+      },
+      "scheduled_latency_ms": {
+        "p100": 80.2683,
+        "p50": 1.0014,
+        "p95": 54.3802,
+        "p99": 55.548
+      },
+      "scheduling_lag_ms": {
+        "p100": 6.8706,
+        "p50": 0.3961,
+        "p95": 0.8285,
+        "p99": 1.0354
+      },
+      "backend_calls": 2999,
+      "backend_peak_process_lifetime": 12,
+      "cache_l1_hits": 11928,
+      "cache_misses": 3072,
+      "l1_hit_ratio": 0.7952,
+      "shared_hits": 3,
+      "shared_misses": 6004,
+      "shared_lookup_hit_ratio": 0.000499417346429166,
+      "dependency_operations": 15010,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 5.005001667222407,
+      "dependency_ops_per_request": 1.0006666666666666,
+      "backend_calls_per_request": 0.19993333333333332,
+      "redis_commands": 35638,
+      "redis_commands_per_fill": 12.007412398921833,
+      "predicted_backend_calls": 2999,
+      "measured_over_predicted": 1.0,
+      "local_followers": 70,
+      "distributed_followers": 3,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.46875,
+          "sampled_span_seconds": 29.731882095336914,
+          "max_sampled_rss_mib": 15.2578125,
+          "early_median_rss_mib": 13.44140625,
+          "late_median_rss_mib": 15.09375
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 9.5625,
+          "sampled_span_seconds": 29.731882095336914,
+          "max_sampled_rss_mib": 19.0078125,
+          "early_median_rss_mib": 17.4375,
+          "late_median_rss_mib": 18.8125
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.8125,
+          "sampled_span_seconds": 29.731882095336914,
+          "max_sampled_rss_mib": 18.7265625,
+          "early_median_rss_mib": 17.10546875,
+          "late_median_rss_mib": 18.5546875
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.875,
+          "sampled_span_seconds": 29.731882095336914,
+          "max_sampled_rss_mib": 18.60546875,
+          "early_median_rss_mib": 16.4609375,
+          "late_median_rss_mib": 18.45703125
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 6.328125,
+          "sampled_span_seconds": 29.731882095336914,
+          "max_sampled_rss_mib": 22.20703125,
+          "early_median_rss_mib": 16.63671875,
+          "late_median_rss_mib": 19.0234375
+        },
+        "redis": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.34672,
+          "sampled_span_seconds": 29.731882095336914,
+          "max_sampled_rss_mib": 6.359375,
+          "early_median_rss_mib": 6.1875,
+          "late_median_rss_mib": 6.359375
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased-v2",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 4,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.165028354354,
+      "generator_drops": 0,
+      "late_arrivals": 14,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 96.7408,
+        "p50": 0.533,
+        "p95": 52.6469,
+        "p99": 53.3954
+      },
+      "scheduled_latency_ms": {
+        "p100": 97.05,
+        "p50": 0.972,
+        "p95": 53.082,
+        "p99": 53.8878
+      },
+      "scheduling_lag_ms": {
+        "p100": 8.9481,
+        "p50": 0.3961,
+        "p95": 0.8224,
+        "p99": 1.0391
+      },
+      "backend_calls": 2999,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11917,
+      "cache_misses": 3083,
+      "l1_hit_ratio": 0.7944666666666667,
+      "shared_hits": 3,
+      "shared_misses": 3005,
+      "shared_lookup_hit_ratio": 0.0009973404255319148,
+      "dependency_operations": 6007,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 2.0030010003334446,
+      "dependency_ops_per_request": 0.4004666666666667,
+      "backend_calls_per_request": 0.19993333333333332,
+      "redis_commands": 22907,
+      "redis_commands_per_fill": 7.992672714584788,
+      "predicted_backend_calls": 2999,
+      "measured_over_predicted": 1.0,
+      "local_followers": 81,
+      "distributed_followers": 3,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 28,
+          "sampled_cpu_seconds": 1.40625,
+          "sampled_span_seconds": 28.749996185302734,
+          "max_sampled_rss_mib": 15.43359375,
+          "early_median_rss_mib": 13.46875,
+          "late_median_rss_mib": 15.23046875
+        },
+        "front": {
+          "samples": 28,
+          "sampled_cpu_seconds": 7.59375,
+          "sampled_span_seconds": 28.749996185302734,
+          "max_sampled_rss_mib": 18.87109375,
+          "early_median_rss_mib": 17.484375,
+          "late_median_rss_mib": 18.6875
+        },
+        "gateway-0": {
+          "samples": 28,
+          "sampled_cpu_seconds": 3.8125,
+          "sampled_span_seconds": 28.749996185302734,
+          "max_sampled_rss_mib": 18.078125,
+          "early_median_rss_mib": 16.484375,
+          "late_median_rss_mib": 17.9140625
+        },
+        "gateway-1": {
+          "samples": 28,
+          "sampled_cpu_seconds": 3.328125,
+          "sampled_span_seconds": 28.749996185302734,
+          "max_sampled_rss_mib": 18.46484375,
+          "early_median_rss_mib": 16.40234375,
+          "late_median_rss_mib": 18.0390625
+        },
+        "generator": {
+          "samples": 28,
+          "sampled_cpu_seconds": 5.046875,
+          "sampled_span_seconds": 28.749996185302734,
+          "max_sampled_rss_mib": 21.05859375,
+          "early_median_rss_mib": 16.5859375,
+          "late_median_rss_mib": 19.15234375
+        },
+        "redis": {
+          "samples": 28,
+          "sampled_cpu_seconds": 0.78418,
+          "sampled_span_seconds": 28.749996185302734,
+          "max_sampled_rss_mib": 6.53125,
+          "early_median_rss_mib": 6.359375,
+          "late_median_rss_mib": 6.53125
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two-aa",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 4,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.2361370919606,
+      "generator_drops": 0,
+      "late_arrivals": 22,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 58.5501,
+        "p50": 0.5232,
+        "p95": 51.4334,
+        "p99": 52.0347
+      },
+      "scheduled_latency_ms": {
+        "p100": 61.2386,
+        "p50": 0.9747,
+        "p95": 51.8714,
+        "p99": 52.5156
+      },
+      "scheduling_lag_ms": {
+        "p100": 6.7371,
+        "p50": 0.3945,
+        "p95": 0.8396,
+        "p99": 1.0536
+      },
+      "backend_calls": 3002,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11943,
+      "cache_misses": 3057,
+      "l1_hit_ratio": 0.7962,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.20013333333333333,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 3002,
+      "measured_over_predicted": 1.0,
+      "local_followers": 55,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.125,
+          "sampled_span_seconds": 29.199358224868774,
+          "max_sampled_rss_mib": 15.16796875,
+          "early_median_rss_mib": 13.19140625,
+          "late_median_rss_mib": 15.07421875
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 7.734375,
+          "sampled_span_seconds": 29.199358224868774,
+          "max_sampled_rss_mib": 18.45703125,
+          "early_median_rss_mib": 17.232421875,
+          "late_median_rss_mib": 18.3125
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.109375,
+          "sampled_span_seconds": 29.199358224868774,
+          "max_sampled_rss_mib": 17.765625,
+          "early_median_rss_mib": 16.4375,
+          "late_median_rss_mib": 17.5703125
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 2.8125,
+          "sampled_span_seconds": 29.199358224868774,
+          "max_sampled_rss_mib": 17.6640625,
+          "early_median_rss_mib": 16.3671875,
+          "late_median_rss_mib": 17.390625
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.359375,
+          "sampled_span_seconds": 29.199358224868774,
+          "max_sampled_rss_mib": 20.046875,
+          "early_median_rss_mib": 16.619140625,
+          "late_median_rss_mib": 19.046875
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-one",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 4,
+      "gateways": 1,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.2412348657391,
+      "generator_drops": 0,
+      "late_arrivals": 16,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 58.1658,
+        "p50": 0.5098,
+        "p95": 51.2681,
+        "p99": 51.8403
+      },
+      "scheduled_latency_ms": {
+        "p100": 58.2064,
+        "p50": 0.9056,
+        "p95": 51.6806,
+        "p99": 52.4048
+      },
+      "scheduling_lag_ms": {
+        "p100": 4.8493,
+        "p50": 0.3995,
+        "p95": 0.8382,
+        "p99": 1.0265
+      },
+      "backend_calls": 2999,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11938,
+      "cache_misses": 3062,
+      "l1_hit_ratio": 0.7958666666666666,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.19993333333333332,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 2999,
+      "measured_over_predicted": 1.0,
+      "local_followers": 63,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.0625,
+          "sampled_span_seconds": 28.94097924232483,
+          "max_sampled_rss_mib": 15.10546875,
+          "early_median_rss_mib": 13.248046875,
+          "late_median_rss_mib": 15.08984375
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 6.5,
+          "sampled_span_seconds": 28.94097924232483,
+          "max_sampled_rss_mib": 18.9140625,
+          "early_median_rss_mib": 16.96484375,
+          "late_median_rss_mib": 18.71484375
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.578125,
+          "sampled_span_seconds": 28.94097924232483,
+          "max_sampled_rss_mib": 19.6484375,
+          "early_median_rss_mib": 18.0,
+          "late_median_rss_mib": 19.4453125
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.609375,
+          "sampled_span_seconds": 28.94097924232483,
+          "max_sampled_rss_mib": 20.1640625,
+          "early_median_rss_mib": 16.46484375,
+          "late_median_rss_mib": 19.16015625
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 94,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 4,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.22813672143985,
+      "generator_drops": 0,
+      "late_arrivals": 12,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 69.3963,
+        "p50": 0.5213,
+        "p95": 51.3114,
+        "p99": 51.8582
+      },
+      "scheduled_latency_ms": {
+        "p100": 70.1635,
+        "p50": 0.9329,
+        "p95": 51.7225,
+        "p99": 52.3628
+      },
+      "scheduling_lag_ms": {
+        "p100": 12.4791,
+        "p50": 0.3978,
+        "p95": 0.8365,
+        "p99": 1.0197
+      },
+      "backend_calls": 3002,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11942,
+      "cache_misses": 3058,
+      "l1_hit_ratio": 0.7961333333333334,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.20013333333333333,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 3002,
+      "measured_over_predicted": 1.0,
+      "local_followers": 56,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.34375,
+          "sampled_span_seconds": 29.220133781433105,
+          "max_sampled_rss_mib": 15.4296875,
+          "early_median_rss_mib": 13.19140625,
+          "late_median_rss_mib": 14.91796875
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 7.375,
+          "sampled_span_seconds": 29.220133781433105,
+          "max_sampled_rss_mib": 18.18359375,
+          "early_median_rss_mib": 16.81640625,
+          "late_median_rss_mib": 17.9921875
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 2.828125,
+          "sampled_span_seconds": 29.220133781433105,
+          "max_sampled_rss_mib": 17.7578125,
+          "early_median_rss_mib": 16.19140625,
+          "late_median_rss_mib": 17.35546875
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.015625,
+          "sampled_span_seconds": 29.220133781433105,
+          "max_sampled_rss_mib": 17.51171875,
+          "early_median_rss_mib": 16.08984375,
+          "late_median_rss_mib": 17.44921875
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.390625,
+          "sampled_span_seconds": 29.220133781433105,
+          "max_sampled_rss_mib": 19.99609375,
+          "early_median_rss_mib": 16.5,
+          "late_median_rss_mib": 19.02734375
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 94,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "shared",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 4,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.17594869645313,
+      "generator_drops": 0,
+      "late_arrivals": 21,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 63.6689,
+        "p50": 0.5237,
+        "p95": 52.514,
+        "p99": 53.1699
+      },
+      "scheduled_latency_ms": {
+        "p100": 65.5599,
+        "p50": 0.9269,
+        "p95": 52.9434,
+        "p99": 53.6295
+      },
+      "scheduling_lag_ms": {
+        "p100": 9.3653,
+        "p50": 0.387,
+        "p95": 0.8186,
+        "p99": 1.0324
+      },
+      "backend_calls": 3002,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11944,
+      "cache_misses": 3056,
+      "l1_hit_ratio": 0.7962666666666667,
+      "shared_hits": 0,
+      "shared_misses": 3002,
+      "shared_lookup_hit_ratio": 0.0,
+      "dependency_operations": 6004,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 2.0,
+      "dependency_ops_per_request": 0.40026666666666666,
+      "backend_calls_per_request": 0.20013333333333333,
+      "redis_commands": 8581,
+      "redis_commands_per_fill": 2.99930094372597,
+      "predicted_backend_calls": 3002,
+      "measured_over_predicted": 1.0,
+      "local_followers": 54,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 28,
+          "sampled_cpu_seconds": 1.078125,
+          "sampled_span_seconds": 28.70752263069153,
+          "max_sampled_rss_mib": 15.30859375,
+          "early_median_rss_mib": 13.3671875,
+          "late_median_rss_mib": 15.03515625
+        },
+        "front": {
+          "samples": 28,
+          "sampled_cpu_seconds": 7.125,
+          "sampled_span_seconds": 28.70752263069153,
+          "max_sampled_rss_mib": 18.76171875,
+          "early_median_rss_mib": 17.34765625,
+          "late_median_rss_mib": 18.375
+        },
+        "gateway-0": {
+          "samples": 28,
+          "sampled_cpu_seconds": 3.296875,
+          "sampled_span_seconds": 28.70752263069153,
+          "max_sampled_rss_mib": 17.67578125,
+          "early_median_rss_mib": 16.60546875,
+          "late_median_rss_mib": 17.5703125
+        },
+        "gateway-1": {
+          "samples": 28,
+          "sampled_cpu_seconds": 3.75,
+          "sampled_span_seconds": 28.70752263069153,
+          "max_sampled_rss_mib": 17.8203125,
+          "early_median_rss_mib": 16.46484375,
+          "late_median_rss_mib": 17.6796875
+        },
+        "generator": {
+          "samples": 28,
+          "sampled_cpu_seconds": 5.359375,
+          "sampled_span_seconds": 28.70752263069153,
+          "max_sampled_rss_mib": 19.43359375,
+          "early_median_rss_mib": 16.19140625,
+          "late_median_rss_mib": 18.87890625
+        },
+        "redis": {
+          "samples": 28,
+          "sampled_cpu_seconds": 0.6312139999999999,
+          "sampled_span_seconds": 28.70752263069153,
+          "max_sampled_rss_mib": 6.359375,
+          "early_median_rss_mib": 6.1875,
+          "late_median_rss_mib": 6.359375
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 94,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased-v2",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 5,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.1438318956516,
+      "generator_drops": 0,
+      "late_arrivals": 19,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 95.1673,
+        "p50": 0.5213,
+        "p95": 52.6087,
+        "p99": 53.3797
+      },
+      "scheduled_latency_ms": {
+        "p100": 95.505,
+        "p50": 0.9533,
+        "p95": 53.0655,
+        "p99": 53.912
+      },
+      "scheduling_lag_ms": {
+        "p100": 12.0276,
+        "p50": 0.396,
+        "p95": 0.8322,
+        "p99": 1.0467
+      },
+      "backend_calls": 3078,
+      "backend_peak_process_lifetime": 14,
+      "cache_l1_hits": 11834,
+      "cache_misses": 3166,
+      "l1_hit_ratio": 0.7889333333333334,
+      "shared_hits": 3,
+      "shared_misses": 3084,
+      "shared_lookup_hit_ratio": 0.0009718172983479105,
+      "dependency_operations": 6165,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 2.002923976608187,
+      "dependency_ops_per_request": 0.411,
+      "backend_calls_per_request": 0.2052,
+      "redis_commands": 23541,
+      "redis_commands_per_fill": 8.007142857142858,
+      "predicted_backend_calls": 3078,
+      "measured_over_predicted": 1.0,
+      "local_followers": 85,
+      "distributed_followers": 3,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 28,
+          "sampled_cpu_seconds": 1.40625,
+          "sampled_span_seconds": 28.680606842041016,
+          "max_sampled_rss_mib": 15.26171875,
+          "early_median_rss_mib": 13.1875,
+          "late_median_rss_mib": 15.25
+        },
+        "front": {
+          "samples": 28,
+          "sampled_cpu_seconds": 7.578125,
+          "sampled_span_seconds": 28.680606842041016,
+          "max_sampled_rss_mib": 19.515625,
+          "early_median_rss_mib": 17.41796875,
+          "late_median_rss_mib": 18.76171875
+        },
+        "gateway-0": {
+          "samples": 28,
+          "sampled_cpu_seconds": 3.734375,
+          "sampled_span_seconds": 28.680606842041016,
+          "max_sampled_rss_mib": 18.1015625,
+          "early_median_rss_mib": 16.43359375,
+          "late_median_rss_mib": 17.91796875
+        },
+        "gateway-1": {
+          "samples": 28,
+          "sampled_cpu_seconds": 3.859375,
+          "sampled_span_seconds": 28.680606842041016,
+          "max_sampled_rss_mib": 18.37890625,
+          "early_median_rss_mib": 16.578125,
+          "late_median_rss_mib": 18.1953125
+        },
+        "generator": {
+          "samples": 28,
+          "sampled_cpu_seconds": 4.546875,
+          "sampled_span_seconds": 28.680606842041016,
+          "max_sampled_rss_mib": 19.80078125,
+          "early_median_rss_mib": 16.15625,
+          "late_median_rss_mib": 18.9140625
+        },
+        "redis": {
+          "samples": 28,
+          "sampled_cpu_seconds": 0.794705,
+          "sampled_span_seconds": 28.680606842041016,
+          "max_sampled_rss_mib": 6.1875,
+          "early_median_rss_mib": 6.015625,
+          "late_median_rss_mib": 6.1875
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 94,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two-aa",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 5,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.2085796782072,
+      "generator_drops": 0,
+      "late_arrivals": 19,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 63.8692,
+        "p50": 0.5343,
+        "p95": 51.3699,
+        "p99": 51.8953
+      },
+      "scheduled_latency_ms": {
+        "p100": 64.5228,
+        "p50": 0.9651,
+        "p95": 51.8205,
+        "p99": 52.4264
+      },
+      "scheduling_lag_ms": {
+        "p100": 5.4629,
+        "p50": 0.4092,
+        "p95": 0.8526,
+        "p99": 1.0515
+      },
+      "backend_calls": 3081,
+      "backend_peak_process_lifetime": 14,
+      "cache_l1_hits": 11856,
+      "cache_misses": 3144,
+      "l1_hit_ratio": 0.7904,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.2054,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 3081,
+      "measured_over_predicted": 1.0,
+      "local_followers": 63,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.4375,
+          "sampled_span_seconds": 29.052236795425415,
+          "max_sampled_rss_mib": 14.81640625,
+          "early_median_rss_mib": 13.345703125,
+          "late_median_rss_mib": 14.6875
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 7.296875,
+          "sampled_span_seconds": 29.052236795425415,
+          "max_sampled_rss_mib": 18.5546875,
+          "early_median_rss_mib": 17.7890625,
+          "late_median_rss_mib": 18.19140625
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 2.890625,
+          "sampled_span_seconds": 29.052236795425415,
+          "max_sampled_rss_mib": 18.3203125,
+          "early_median_rss_mib": 16.26953125,
+          "late_median_rss_mib": 17.87890625
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 2.921875,
+          "sampled_span_seconds": 29.052236795425415,
+          "max_sampled_rss_mib": 17.90234375,
+          "early_median_rss_mib": 16.70703125,
+          "late_median_rss_mib": 17.6484375
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.109375,
+          "sampled_span_seconds": 29.052236795425415,
+          "max_sampled_rss_mib": 20.87890625,
+          "early_median_rss_mib": 16.33984375,
+          "late_median_rss_mib": 19.3125
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 94,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-one",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 5,
+      "gateways": 1,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.19132004535294,
+      "generator_drops": 0,
+      "late_arrivals": 55,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 94.9655,
+        "p50": 0.5387,
+        "p95": 51.5664,
+        "p99": 52.3139
+      },
+      "scheduled_latency_ms": {
+        "p100": 95.3196,
+        "p50": 1.0062,
+        "p95": 52.002,
+        "p99": 52.9069
+      },
+      "scheduling_lag_ms": {
+        "p100": 13.4862,
+        "p50": 0.3935,
+        "p95": 0.8408,
+        "p99": 1.1155
+      },
+      "backend_calls": 3078,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11855,
+      "cache_misses": 3145,
+      "l1_hit_ratio": 0.7903333333333333,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.2052,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 3078,
+      "measured_over_predicted": 1.0,
+      "local_followers": 67,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 30,
+          "sampled_cpu_seconds": 1.546875,
+          "sampled_span_seconds": 29.826203107833862,
+          "max_sampled_rss_mib": 15.19140625,
+          "early_median_rss_mib": 13.345703125,
+          "late_median_rss_mib": 15.00390625
+        },
+        "front": {
+          "samples": 30,
+          "sampled_cpu_seconds": 7.875,
+          "sampled_span_seconds": 29.826203107833862,
+          "max_sampled_rss_mib": 18.1875,
+          "early_median_rss_mib": 16.9921875,
+          "late_median_rss_mib": 18.00390625
+        },
+        "gateway-0": {
+          "samples": 30,
+          "sampled_cpu_seconds": 5.375,
+          "sampled_span_seconds": 29.826203107833862,
+          "max_sampled_rss_mib": 19.75,
+          "early_median_rss_mib": 17.599609375,
+          "late_median_rss_mib": 19.31640625
+        },
+        "generator": {
+          "samples": 30,
+          "sampled_cpu_seconds": 5.734375,
+          "sampled_span_seconds": 29.826203107833862,
+          "max_sampled_rss_mib": 20.76171875,
+          "early_median_rss_mib": 16.125,
+          "late_median_rss_mib": 19.517578125
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 94,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 5,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.1946841596731,
+      "generator_drops": 0,
+      "late_arrivals": 16,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 58.8083,
+        "p50": 0.5157,
+        "p95": 51.3409,
+        "p99": 51.8633
+      },
+      "scheduled_latency_ms": {
+        "p100": 59.111,
+        "p50": 0.9272,
+        "p95": 51.7722,
+        "p99": 52.4039
+      },
+      "scheduling_lag_ms": {
+        "p100": 10.2775,
+        "p50": 0.403,
+        "p95": 0.8518,
+        "p99": 1.0458
+      },
+      "backend_calls": 3081,
+      "backend_peak_process_lifetime": 14,
+      "cache_l1_hits": 11856,
+      "cache_misses": 3144,
+      "l1_hit_ratio": 0.7904,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.2054,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": 3081,
+      "measured_over_predicted": 1.0,
+      "local_followers": 63,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.234375,
+          "sampled_span_seconds": 29.0109703540802,
+          "max_sampled_rss_mib": 14.90234375,
+          "early_median_rss_mib": 13.48046875,
+          "late_median_rss_mib": 14.77734375
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 9.046875,
+          "sampled_span_seconds": 29.0109703540802,
+          "max_sampled_rss_mib": 18.4453125,
+          "early_median_rss_mib": 17.375,
+          "late_median_rss_mib": 18.07421875
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.09375,
+          "sampled_span_seconds": 29.0109703540802,
+          "max_sampled_rss_mib": 17.3984375,
+          "early_median_rss_mib": 16.158203125,
+          "late_median_rss_mib": 17.2421875
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 2.84375,
+          "sampled_span_seconds": 29.0109703540802,
+          "max_sampled_rss_mib": 17.34375,
+          "early_median_rss_mib": 16.220703125,
+          "late_median_rss_mib": 17.203125
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.234375,
+          "sampled_span_seconds": 29.0109703540802,
+          "max_sampled_rss_mib": 20.73046875,
+          "early_median_rss_mib": 16.3359375,
+          "late_median_rss_mib": 19.015625
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "shared",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 5,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.16793696587155,
+      "generator_drops": 0,
+      "late_arrivals": 4,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 55.8537,
+        "p50": 0.5404,
+        "p95": 52.6267,
+        "p99": 53.2307
+      },
+      "scheduled_latency_ms": {
+        "p100": 56.7759,
+        "p50": 0.9987,
+        "p95": 53.0504,
+        "p99": 53.6886
+      },
+      "scheduling_lag_ms": {
+        "p100": 4.3411,
+        "p50": 0.3958,
+        "p95": 0.8113,
+        "p99": 1.0076
+      },
+      "backend_calls": 3081,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11856,
+      "cache_misses": 3144,
+      "l1_hit_ratio": 0.7904,
+      "shared_hits": 0,
+      "shared_misses": 3081,
+      "shared_lookup_hit_ratio": 0.0,
+      "dependency_operations": 6162,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 2.0,
+      "dependency_ops_per_request": 0.4108,
+      "backend_calls_per_request": 0.2054,
+      "redis_commands": 9134,
+      "redis_commands_per_fill": 2.9996715927750413,
+      "predicted_backend_calls": 3081,
+      "measured_over_predicted": 1.0,
+      "local_followers": 63,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.390625,
+          "sampled_span_seconds": 29.640061378479004,
+          "max_sampled_rss_mib": 15.73046875,
+          "early_median_rss_mib": 13.1484375,
+          "late_median_rss_mib": 15.07421875
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 8.015625,
+          "sampled_span_seconds": 29.640061378479004,
+          "max_sampled_rss_mib": 18.3671875,
+          "early_median_rss_mib": 17.28515625,
+          "late_median_rss_mib": 18.134765625
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.4375,
+          "sampled_span_seconds": 29.640061378479004,
+          "max_sampled_rss_mib": 18.0625,
+          "early_median_rss_mib": 16.40234375,
+          "late_median_rss_mib": 17.947265625
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 3.765625,
+          "sampled_span_seconds": 29.640061378479004,
+          "max_sampled_rss_mib": 18.265625,
+          "early_median_rss_mib": 16.5234375,
+          "late_median_rss_mib": 18.05078125
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.6875,
+          "sampled_span_seconds": 29.640061378479004,
+          "max_sampled_rss_mib": 19.56640625,
+          "early_median_rss_mib": 15.88671875,
+          "late_median_rss_mib": 18.927734375
+        },
+        "redis": {
+          "samples": 29,
+          "sampled_cpu_seconds": 0.6928559999999999,
+          "sampled_span_seconds": 29.640061378479004,
+          "max_sampled_rss_mib": 6.1875,
+          "early_median_rss_mib": 6.015625,
+          "late_median_rss_mib": 6.1875
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased",
+      "kind": "steady",
+      "rate": 500,
+      "trial": 5,
+      "gateways": 2,
+      "offered": 15000,
+      "sent": 15000,
+      "success": 15000,
+      "successful_rps": 499.10178149689347,
+      "generator_drops": 0,
+      "late_arrivals": 11,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 90.4387,
+        "p50": 0.5242,
+        "p95": 53.9829,
+        "p99": 55.1666
+      },
+      "scheduled_latency_ms": {
+        "p100": 90.9225,
+        "p50": 0.9599,
+        "p95": 54.4098,
+        "p99": 55.5855
+      },
+      "scheduling_lag_ms": {
+        "p100": 3.9422,
+        "p50": 0.3911,
+        "p95": 0.8307,
+        "p99": 1.0606
+      },
+      "backend_calls": 3078,
+      "backend_peak_process_lifetime": 13,
+      "cache_l1_hits": 11833,
+      "cache_misses": 3167,
+      "l1_hit_ratio": 0.7888666666666667,
+      "shared_hits": 3,
+      "shared_misses": 6162,
+      "shared_lookup_hit_ratio": 0.00048661800486618007,
+      "dependency_operations": 15405,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 5.004873294346979,
+      "dependency_ops_per_request": 1.027,
+      "backend_calls_per_request": 0.2052,
+      "redis_commands": 36420,
+      "redis_commands_per_fill": 11.996047430830039,
+      "predicted_backend_calls": 3078,
+      "measured_over_predicted": 1.0,
+      "local_followers": 86,
+      "distributed_followers": 3,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.5625,
+          "sampled_span_seconds": 29.568793058395386,
+          "max_sampled_rss_mib": 14.94140625,
+          "early_median_rss_mib": 13.328125,
+          "late_median_rss_mib": 14.75
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 8.546875,
+          "sampled_span_seconds": 29.568793058395386,
+          "max_sampled_rss_mib": 19.0,
+          "early_median_rss_mib": 17.3359375,
+          "late_median_rss_mib": 18.734375
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.453125,
+          "sampled_span_seconds": 29.568793058395386,
+          "max_sampled_rss_mib": 18.34765625,
+          "early_median_rss_mib": 16.5078125,
+          "late_median_rss_mib": 18.1875
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 4.125,
+          "sampled_span_seconds": 29.568793058395386,
+          "max_sampled_rss_mib": 18.87890625,
+          "early_median_rss_mib": 16.67578125,
+          "late_median_rss_mib": 18.62109375
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 5.3125,
+          "sampled_span_seconds": 29.568793058395386,
+          "max_sampled_rss_mib": 19.92578125,
+          "early_median_rss_mib": 15.9765625,
+          "late_median_rss_mib": 19.30078125
+        },
+        "redis": {
+          "samples": 29,
+          "sampled_cpu_seconds": 1.394438,
+          "sampled_span_seconds": 29.568793058395386,
+          "max_sampled_rss_mib": 6.1875,
+          "early_median_rss_mib": 6.1875,
+          "late_median_rss_mib": 6.1875
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-one",
+      "kind": "cold",
+      "trial": 1,
+      "gateways": 1,
+      "backend_calls": 1,
+      "duration_seconds": 0.5113863,
+      "local_followers": 99,
+      "distributed_followers": 0,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "cold",
+      "trial": 1,
+      "gateways": 2,
+      "backend_calls": 2,
+      "duration_seconds": 0.5148013,
+      "local_followers": 98,
+      "distributed_followers": 0,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "shared",
+      "kind": "cold",
+      "trial": 1,
+      "gateways": 2,
+      "backend_calls": 2,
+      "duration_seconds": 0.5203672,
+      "local_followers": 98,
+      "distributed_followers": 0,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased",
+      "kind": "cold",
+      "trial": 1,
+      "gateways": 2,
+      "backend_calls": 1,
+      "duration_seconds": 0.5248845,
+      "local_followers": 98,
+      "distributed_followers": 1,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased-v2",
+      "kind": "cold",
+      "trial": 1,
+      "gateways": 2,
+      "backend_calls": 1,
+      "duration_seconds": 0.5463609,
+      "local_followers": 98,
+      "distributed_followers": 1,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two-aa",
+      "kind": "cold",
+      "trial": 1,
+      "gateways": 2,
+      "backend_calls": 2,
+      "duration_seconds": 0.5135778,
+      "local_followers": 98,
+      "distributed_followers": 0,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-one",
+      "kind": "cold",
+      "trial": 2,
+      "gateways": 1,
+      "backend_calls": 1,
+      "duration_seconds": 0.5141216,
+      "local_followers": 99,
+      "distributed_followers": 0,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "cold",
+      "trial": 2,
+      "gateways": 2,
+      "backend_calls": 2,
+      "duration_seconds": 0.5191178,
+      "local_followers": 98,
+      "distributed_followers": 0,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "shared",
+      "kind": "cold",
+      "trial": 2,
+      "gateways": 2,
+      "backend_calls": 2,
+      "duration_seconds": 0.5243406,
+      "local_followers": 98,
+      "distributed_followers": 0,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased",
+      "kind": "cold",
+      "trial": 2,
+      "gateways": 2,
+      "backend_calls": 1,
+      "duration_seconds": 0.5386113,
+      "local_followers": 98,
+      "distributed_followers": 1,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased-v2",
+      "kind": "cold",
+      "trial": 2,
+      "gateways": 2,
+      "backend_calls": 1,
+      "duration_seconds": 0.5522461,
+      "local_followers": 98,
+      "distributed_followers": 1,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 95,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two-aa",
+      "kind": "cold",
+      "trial": 2,
+      "gateways": 2,
+      "backend_calls": 2,
+      "duration_seconds": 0.5168397,
+      "local_followers": 98,
+      "distributed_followers": 0,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 96,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-one",
+      "kind": "cold",
+      "trial": 3,
+      "gateways": 1,
+      "backend_calls": 1,
+      "duration_seconds": 0.5201248,
+      "local_followers": 99,
+      "distributed_followers": 0,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 96,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "cold",
+      "trial": 3,
+      "gateways": 2,
+      "backend_calls": 2,
+      "duration_seconds": 0.5194361,
+      "local_followers": 98,
+      "distributed_followers": 0,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 96,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "shared",
+      "kind": "cold",
+      "trial": 3,
+      "gateways": 2,
+      "backend_calls": 2,
+      "duration_seconds": 0.5574974,
+      "local_followers": 98,
+      "distributed_followers": 0,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 96,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased",
+      "kind": "cold",
+      "trial": 3,
+      "gateways": 2,
+      "backend_calls": 1,
+      "duration_seconds": 0.5378199,
+      "local_followers": 98,
+      "distributed_followers": 1,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 96,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased-v2",
+      "kind": "cold",
+      "trial": 3,
+      "gateways": 2,
+      "backend_calls": 1,
+      "duration_seconds": 0.5372941,
+      "local_followers": 98,
+      "distributed_followers": 1,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 96,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "local-two-aa",
+      "kind": "cold",
+      "trial": 3,
+      "gateways": 2,
+      "backend_calls": 2,
+      "duration_seconds": 0.5222207,
+      "local_followers": 98,
+      "distributed_followers": 0,
+      "power": {
+        "ac_online": true,
+        "battery_percent": 96,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    },
+    {
+      "mode": "leased-v2",
+      "kind": "soak",
+      "rate": 500,
+      "trial": 1,
+      "gateways": 2,
+      "offered": 150000,
+      "sent": 150000,
+      "success": 150000,
+      "successful_rps": 499.8523739331175,
+      "generator_drops": 0,
+      "late_arrivals": 217,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 118.2081,
+        "p50": 0.5988,
+        "p95": 52.7731,
+        "p99": 53.7754
+      },
+      "scheduled_latency_ms": {
+        "p100": 118.4393,
+        "p50": 1.002,
+        "p95": 53.2032,
+        "p99": 54.3108
+      },
+      "scheduling_lag_ms": {
+        "p100": 10.9475,
+        "p50": 0.3941,
+        "p95": 0.8454,
+        "p99": 1.0705
+      },
+      "backend_calls": 30031,
+      "backend_peak_process_lifetime": 15,
+      "cache_l1_hits": 119227,
+      "cache_misses": 30773,
+      "l1_hit_ratio": 0.7948466666666667,
+      "shared_hits": 30,
+      "shared_misses": 30088,
+      "shared_lookup_hit_ratio": 0.0009960820771631582,
+      "dependency_operations": 60149,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 2.0028970064266924,
+      "dependency_ops_per_request": 0.4009933333333333,
+      "backend_calls_per_request": 0.20020666666666667,
+      "redis_commands": 239806,
+      "redis_commands_per_fill": 8.008749958254016,
+      "predicted_backend_calls": null,
+      "measured_over_predicted": null,
+      "local_followers": 712,
+      "distributed_followers": 30,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 283,
+          "sampled_cpu_seconds": 12.703125,
+          "sampled_span_seconds": 299.2275319099426,
+          "max_sampled_rss_mib": 17.31640625,
+          "early_median_rss_mib": 15.9296875,
+          "late_median_rss_mib": 16.875
+        },
+        "front": {
+          "samples": 283,
+          "sampled_cpu_seconds": 82.3125,
+          "sampled_span_seconds": 299.2275319099426,
+          "max_sampled_rss_mib": 21.875,
+          "early_median_rss_mib": 18.55078125,
+          "late_median_rss_mib": 20.919921875
+        },
+        "gateway-0": {
+          "samples": 283,
+          "sampled_cpu_seconds": 37.390625,
+          "sampled_span_seconds": 299.2275319099426,
+          "max_sampled_rss_mib": 21.04296875,
+          "early_median_rss_mib": 18.17578125,
+          "late_median_rss_mib": 20.57421875
+        },
+        "gateway-1": {
+          "samples": 283,
+          "sampled_cpu_seconds": 36.15625,
+          "sampled_span_seconds": 299.2275319099426,
+          "max_sampled_rss_mib": 20.1796875,
+          "early_median_rss_mib": 18.12890625,
+          "late_median_rss_mib": 19.677734375
+        },
+        "generator": {
+          "samples": 283,
+          "sampled_cpu_seconds": 56.421875,
+          "sampled_span_seconds": 299.2275319099426,
+          "max_sampled_rss_mib": 78.7109375,
+          "early_median_rss_mib": 19.6875,
+          "late_median_rss_mib": 54.63671875
+        },
+        "redis": {
+          "samples": 283,
+          "sampled_cpu_seconds": 9.019511999999999,
+          "sampled_span_seconds": 299.2275319099426,
+          "max_sampled_rss_mib": 6.53125,
+          "early_median_rss_mib": 6.53125,
+          "late_median_rss_mib": 6.53125
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 96,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      }
+    }
+  ]
+}

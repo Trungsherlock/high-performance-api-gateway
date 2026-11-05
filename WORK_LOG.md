@@ -997,6 +997,72 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
   - Work is uncommitted.
 - **Report:** [V3.4 capacity](docs/v3/capacity.md).
 
+### 2026-11-05 - V3.6 final comparison and write-up
+
+- **Scope:** Last V3 milestone from the
+  [V3 plan](high_performance_api_gateway_v3_plan.md): report everything in one
+  place, update the README and resume bullets from measured numbers, and prove the
+  one-command reproduction. V3.5 was optional and was not run.
+- **Changes:**
+  - Added `docs/v3/final.md`:
+    - a three-line summary, then the tables;
+    - workload × mode × protocol, latency, v1 against v2, capacity, restart and
+      noise floor;
+    - predictions against measurements, every unfavorable result, reproduction
+      commands and an artifact index;
+    - tables generated from each run's `summary.json`, not hand-copied.
+  - Plan: status, V3.5 marked not run, V3.6 outcome, and the protocol resume bullet
+    rewritten to the range both runs support.
+  - README: status, a final-comparison section, and a note on V3.2's numbers.
+  - `docs/v3/lease-protocol.md`: a forward note on the smaller final-run gain.
+  - V3 README and results index updated.
+  - Corrected `docs/v3/capacity.md`: 2,441/s passed 3 of 4 trials, not 4 of 5.
+  - No Go or harness code changed.
+- **Evidence:** `python bench/run-v3.py --complete` from a clean tree at `7957e01`
+  (`20261105-142924-v3`, SUCCESS, 49 trials):
+  - **Reproduced exactly:** every mode's median backend calls equalled its
+    prediction; operations per fill 5.01 → 2.00; commands per fill 12.00 → 8.01;
+    cold fills 1 for local-one and leases, 2 for local-two and shared.
+  - **Reproduced smaller:** v2 − v1 was −1.31 ms at p95 against V3.2's −2.11 ms,
+    faster in all 5 blocks. p99 was −1.77 ms, inside this run's 3.13 ms floor.
+    leased-v2 − shared stayed within noise (+0.05 ms p95).
+  - **Noise floor:** 0.76 / 3.13 ms, the p99 set by one stalled A/A block.
+  - **Soak (leased-v2, 5 minutes):** 150,000 of 150,000 succeeded, 0 drops,
+    p99 53.8 ms.
+  - **New errors:** 2 leased-v2 coordination 503s (block 2, Redis timeouts).
+    shared saw 4 dependency errors in block 1 with no client failures, because a
+    failed lookup counts as a miss.
+- **Verification:**
+  - 10/10 ordinary and race packages; empty vet, build and race-build logs.
+  - All ten fault cases under v1, v2 and v2 race (30 runs).
+  - Source-only rebuild passed.
+  - Manifest hashes show gateway, front and backend source identical across the
+    V3.3, V3.4 and final runs. Binary hashes differ across commits because Go embeds
+    the commit in each build.
+- **Decisions/limits:**
+  - The headline protocol gain is a range (1.3–2.1 ms), because the first measured
+    value did not fully reproduce.
+  - zipf and hotset numbers come from V3.3 and capacity from V3.4, combined with the
+    final `mixed` run on that source identity. They were not rerun.
+  - The clean-rebuild record shows `dirty: true` only because the run's own results
+    folder exists by then; the run's manifest recorded a clean tree.
+  - `resume_bullets.md` was left unedited here and updated afterwards (see the next
+    entry).
+  - Work is uncommitted.
+- **Report:** [V3 final comparison](docs/v3/final.md).
+
+### 2026-11-05 - Resume bullets updated to V3.6
+
+- **Scope:** Bring the git-ignored `resume_bullets.md` up to date, on request.
+- **Changes:**
+  - Rewrote candidate 13 as the measured result, and updated candidates 8, 9, 10
+    and 12 to the V3.6 final run.
+  - Added candidates 16–18 (backend calls, capacity, restart).
+  - Updated the interview notes for 6, 13 and 16–18.
+  - The three chosen final bullets are unchanged; only the note on which soak they
+    cite moved to V3.6.
+- **Verification:** every link and `final.md` anchor in the file resolves.
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title

@@ -27,6 +27,7 @@
 | [20261105-035703-v34](20261105-035703-v34/summary.json) | **V3.4 host ceiling**, 1 ms backend, from 1,000/s | SUCCESS; **1,250 req/s** confirmed; every trial from 3,052/s fails |
 | [20261105-041050-v34](20261105-041050-v34/summary.json) | **V3.4 mixed capacity**, 250 ms backend, 4 modes | SUCCESS; local-one 472, others 390, all backend-bound |
 | [20261105-044743-v34](20261105-044743-v34/summary.json) | **V3.4 zipf capacity**, 250 ms backend, 4 modes, `--complete` | `FAILED` (Redis port collision in WSL), fixed, resumed to SUCCESS; local-two 242, shared and leased-v2 293 (+21%), local-one 293 host-bound |
+| [20261105-142924-v3](20261105-142924-v3/summary.json) | **V3.6 final run**: `run-v3.py --complete` from a clean tree at `7957e01`: 6 modes × 5 blocks, cold bursts, soak, tests, faults under v1, v2 and v2 race, clean rebuild | SUCCESS; backend calls equal predictions; v2 − v1 p95 −1.31 ms; floor 0.76 / 3.13 ms; 2 coordination 503s |
 
 Each folder holds:
 
@@ -52,5 +53,6 @@ with the same script. That took them from 1,092 files to 198, and re-summarizing
 each from its remaining files reproduced its `summary.json` exactly. The
 committed V3.0 folders keep their loose logs.
 
-See [the V3.0 report](../../../docs/v3/README.md) and [the V3.1
-report](../../../docs/v3/noise-floor.md).
+See [the V3.0 report](../../../docs/v3/README.md), [the V3.1
+report](../../../docs/v3/noise-floor.md) and [the final
+comparison](../../../docs/v3/final.md).

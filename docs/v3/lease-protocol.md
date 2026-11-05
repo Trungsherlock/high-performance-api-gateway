@@ -124,6 +124,10 @@ uses the new protocol.
 
 ## Results
 
+**Later result:** V3.6's final run measured a smaller gain over v1: 1.31 ms at p95,
+with the p99 gain inside that run's floor. See
+[the final comparison](final.md#lease-protocol-v1-against-v2).
+
 Run [`20261104-153628-v3`](../../bench/results/v3/20261104-153628-v3/summary.json)
 passed all its checks (`SUCCESS`). It ran on the working tree above `af500af`,
 unpinned, on AC power. The functional check before it,

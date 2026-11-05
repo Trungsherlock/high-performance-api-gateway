@@ -5,7 +5,8 @@ V3.1 implemented: [noise floor and V3 baseline](docs/v3/noise-floor.md).
 V3.2 implemented: [lease protocol v2](docs/v3/lease-protocol.md).
 V3.3 implemented: [reuse workloads, predictions and restart](docs/v3/reuse-workloads.md).
 V3.4 implemented: [capacity at a fixed SLO](docs/v3/capacity.md).
-V3.5–V3.6 planned.
+V3.5 optional and not run.
+V3.6 implemented: [final comparison](docs/v3/final.md).
 
 **Baseline:** V2.7 final study [`20261103-224701-v27`](bench/results/v2/20261103-224701-v27/summary.json),
 reported in [docs/v2/final.md](docs/v2/final.md). V1 and V2 results stay unchanged.
@@ -273,6 +274,8 @@ which puts the leased−shared gap that V3.2 targets at about 2.5 ms.
 
 ### V3.5 — Optional: key-affinity routing as an alternative to leases
 
+**Status:** not run. The final report lists it under "not done".
+
 **Work**
 
 - Add front `-routing hash`. A rendezvous hash over the cache-key inputs (path,
@@ -306,6 +309,18 @@ load balance and failover behavior.
   numbers remain historical and are not recalculated.
 - One-command reproduction, matching V2.7: `python bench/run-v3.py --complete`
   runs tests, race tests, fault cases and a clean-source rebuild.
+
+**Outcome:** [docs/v3/final.md](docs/v3/final.md) reports every item above.
+- **Reproduction:** `python bench/run-v3.py --complete` ended `SUCCESS` from a
+  clean tree at `7957e01` (run `20261105-142924-v3`), with 49 trials, 10/10
+  ordinary and race packages, all 30 fault runs and the clean rebuild.
+- **Reproduced exactly:** backend calls equalled predictions, and operations
+  per fill went 5.01 → 2.00.
+- **Reproduced smaller:** protocol v2's p95 gain over v1 was 1.31 ms, against
+  V3.2's 2.11 ms. Its p99 gain (1.77 ms) was inside that run's 3.13 ms floor.
+- **New:** 2 leased-v2 coordination 503s from Redis timeouts, where V3.2 had
+  none. Shared mode absorbed 4 dependency errors with no client failures.
+- **Resume bullets:** updated below from these numbers.
 
 ## 5. Experiment matrix
 
@@ -361,8 +376,8 @@ V3.3 is the next most valuable, because it gives the shared tier something to do
 Fill these only from measured results:
 
 - Cut Redis round trips per cache fill from 5 to 2 with an atomic Lua
-  read-or-acquire script, removing 2.1 ms from leased p95 (3.8 ms at p99) and
-  matching the shared tier within a 0.7 ms noise floor. Measured in V3.2.
+  read-or-acquire script, taking 1.3–2.1 ms off leased p95 across two runs and
+  matching the shared tier within noise (V3.2, V3.6).
 - Reduced backend calls by 18.7% (Zipf) and 41.8% (hot set) across 2 gateways
   with a shared Redis tier and leases, within 1% of fills predicted from the
   workload's key stream (V3.3). That raised Zipf capacity at a 99.9%-success

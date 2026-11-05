@@ -110,7 +110,7 @@ so its ceiling is what this laptop's generator, front and gateways can drive.
   in three failed on drops, with little dependence on rate. From 3,052/s,
   every trial failed, with hundreds of drops.
 - **The strict ceiling is conservative.** The ladder's confirmation rule needs
-  four passes at one rung, which only 1,250/s achieved. 2,441/s passed 4 of 5
+  four passes at one rung, which only 1,250/s achieved. 2,441/s passed 3 of 4
   trials.
 - **At 500/s the stalls are rarer.** No V3.2 or V3.3 trial at 500/s (111
   trials) dropped an arrival.
