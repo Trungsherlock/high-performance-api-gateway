@@ -1,0 +1,176 @@
+{
+  "rates": {
+    "3000": {
+      "settings": {
+        "workload": "hot",
+        "keys": 10000,
+        "zipf_s": 1.1,
+        "hot_keys": 100,
+        "rate": 3000,
+        "seconds": 10,
+        "warmup": 2,
+        "trials": 1,
+        "restart_trials": 0,
+        "max_age": 10,
+        "delay": 50,
+        "cache_entries": 1000,
+        "gateways": 2
+      },
+      "ttl_seconds": 10,
+      "fill_seconds": 0.05,
+      "blocks": {
+        "1": {
+          "requests": 30000,
+          "distinct_keys": 1,
+          "fills": {
+            "one": 1,
+            "local": 2,
+            "shared": 2,
+            "leased": 1,
+            "shared_ideal": 1
+          },
+          "cross_node_duplicate_fraction": 0.5
+        }
+      },
+      "restart": {},
+      "medians": {
+        "one": 1,
+        "local": 2,
+        "shared": 2,
+        "leased": 1,
+        "shared_ideal": 1,
+        "cross_node_duplicate_fraction": 0.5
+      },
+      "restart_medians": {}
+    },
+    "5000": {
+      "settings": {
+        "workload": "hot",
+        "keys": 10000,
+        "zipf_s": 1.1,
+        "hot_keys": 100,
+        "rate": 5000,
+        "seconds": 10,
+        "warmup": 2,
+        "trials": 1,
+        "restart_trials": 0,
+        "max_age": 10,
+        "delay": 50,
+        "cache_entries": 1000,
+        "gateways": 2
+      },
+      "ttl_seconds": 10,
+      "fill_seconds": 0.05,
+      "blocks": {
+        "1": {
+          "requests": 50000,
+          "distinct_keys": 1,
+          "fills": {
+            "one": 1,
+            "local": 2,
+            "shared": 2,
+            "leased": 1,
+            "shared_ideal": 1
+          },
+          "cross_node_duplicate_fraction": 0.5
+        }
+      },
+      "restart": {},
+      "medians": {
+        "one": 1,
+        "local": 2,
+        "shared": 2,
+        "leased": 1,
+        "shared_ideal": 1,
+        "cross_node_duplicate_fraction": 0.5
+      },
+      "restart_medians": {}
+    },
+    "8000": {
+      "settings": {
+        "workload": "hot",
+        "keys": 10000,
+        "zipf_s": 1.1,
+        "hot_keys": 100,
+        "rate": 8000,
+        "seconds": 10,
+        "warmup": 2,
+        "trials": 1,
+        "restart_trials": 0,
+        "max_age": 10,
+        "delay": 50,
+        "cache_entries": 1000,
+        "gateways": 2
+      },
+      "ttl_seconds": 10,
+      "fill_seconds": 0.05,
+      "blocks": {
+        "1": {
+          "requests": 80000,
+          "distinct_keys": 1,
+          "fills": {
+            "one": 1,
+            "local": 2,
+            "shared": 2,
+            "leased": 1,
+            "shared_ideal": 1
+          },
+          "cross_node_duplicate_fraction": 0.5
+        }
+      },
+      "restart": {},
+      "medians": {
+        "one": 1,
+        "local": 2,
+        "shared": 2,
+        "leased": 1,
+        "shared_ideal": 1,
+        "cross_node_duplicate_fraction": 0.5
+      },
+      "restart_medians": {}
+    },
+    "12000": {
+      "settings": {
+        "workload": "hot",
+        "keys": 10000,
+        "zipf_s": 1.1,
+        "hot_keys": 100,
+        "rate": 12000,
+        "seconds": 10,
+        "warmup": 2,
+        "trials": 1,
+        "restart_trials": 0,
+        "max_age": 10,
+        "delay": 50,
+        "cache_entries": 1000,
+        "gateways": 2
+      },
+      "ttl_seconds": 10,
+      "fill_seconds": 0.05,
+      "blocks": {
+        "1": {
+          "requests": 120000,
+          "distinct_keys": 1,
+          "fills": {
+            "one": 1,
+            "local": 2,
+            "shared": 2,
+            "leased": 1,
+            "shared_ideal": 1
+          },
+          "cross_node_duplicate_fraction": 0.5
+        }
+      },
+      "restart": {},
+      "medians": {
+        "one": 1,
+        "local": 2,
+        "shared": 2,
+        "leased": 1,
+        "shared_ideal": 1,
+        "cross_node_duplicate_fraction": 0.5
+      },
+      "restart_medians": {}
+    }
+  }
+}

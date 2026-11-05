@@ -167,3 +167,94 @@ completed trials when settings/application hashes match. See [final methods,
 results, retained failures and process resources](../docs/v2/final.md).
 The final 25-trial study is `20261103-224701-v27`; its SUCCESS follows a recorded
 startup interruption, with original FAILED/logs and resume-1.json preserved.
+
+## V3.0 configurable comparison
+
+`python bench/run-v3.py` uses V2.7's workload and budget and writes to
+`bench/results/v3/`. `--modes`, `--workload`, `--rates`, `--gateways`, `--delay`,
+`--cold-delay`, `--max-age` and `--concurrency` select the experiment;
+`--complete` adds ordinary/race/vet/build checks, the ten V2.6 fault cases (kept
+under the run's `faults/` folder) and a source-only rebuild. `summarize-v3.py`
+reconciles counters, checks error causes and prints ops/fill and ops/request.
+See [V3.0 harness and counters](../docs/v3/README.md).
+
+## V3.1 noise floor
+
+V3.1 changes two defaults and adds an option:
+- every block also runs `local-two-aa`, a second copy of `local-two`;
+- `--trials` is 5;
+- `--affinity auto` (opt-in) pins the generator, gateways and backend plus
+  front proxy to disjoint sets of whole physical cores, using `bench/host.py`,
+  and sets `GOMAXPROCS` to match. On this laptop it made the A/A noise floor
+  larger, so the default is `off`.
+
+`summarize-v3.py` prints paired differences against `local-two` in the same
+block, and the A/A noise floor beside the latency table. Each manifest records
+the CPU sets, power plan, power-mode overlay and AC state. Explicit sets, such
+as `generator=0-3;gateways=4-9;support=10-11`, select other layouts. See
+[V3.1 noise floor](../docs/v3/noise-floor.md).
+
+At the end of every run, `run-v3.py` moves process logs and Redis configs into
+the run's `logs.zip` with `pack_logs.py`. That cuts the file count about
+fivefold. Summaries read only `manifest.json`, `trials.jsonl` and
+`*-resources.jsonl`. To pack an existing folder, run
+`python bench/pack_logs.py <run>`.
+
+## V3.2 lease protocol v2
+
+The `leased-v2` mode runs the gateway with `-lease-protocol v2` in the same
+blocks as `leased`, which stays on v1. The summary adds:
+- `cmd/fill`: Redis `total_commands_processed` per backend fill, net of the
+  sampler's `INFO` calls;
+- same-block contrasts (`leased-v2 − leased`, `leased-v2 − shared`,
+  `leased − shared`) against the A/A floor;
+- a total-rejections column.
+
+`--complete` runs the ten fault cases under v1, v2 and v2 with a race-built
+gateway. `run-v26.py --lease-protocol v2` runs them on their own. See
+[V3.2 lease protocol](../docs/v3/lease-protocol.md).
+
+## V3.3 reuse workloads
+
+`--workload zipf` (with `--keys`, `--zipf-s`) and `--workload hotset` (with
+`--hot-keys`) add keys that repeat across gateways. `loadgen -plan-only` prints
+the seeded key stream without sending anything.
+
+Before its first trial, each run writes `predictions.json` from that stream with
+[`predict-v3.py`](predict-v3.py). The predictor replays the stream through
+one-node, independent, shared and leased models, and its predicted fills appear
+beside the measured ones in the summary. Run the predictor on its own with, for
+example, `python bench/predict-v3.py --workload zipf --restart-trials 3`.
+
+`--restart-trials N` stops gateway 1 mid-measurement and relaunches it empty, then
+reports backend calls in fixed windows around the restart. `--cache-entries` sets
+L1 size, through the gateway's new `-cache-entries` and `-cache-bytes` flags. See
+[V3.3 reuse workloads](../docs/v3/reuse-workloads.md).
+
+## V3.4 capacity ladders
+
+[`capacity-v3.py`](capacity-v3.py) finds each mode's highest rate that meets the
+SLO: success of at least 99.9%, scheduled p99 of at most 3× the backend delay,
+and no generator drops.
+- **Grid:** every mode climbs one geometric grid (`--start`, `--step`), one
+  trial per rung, interleaved with the other modes.
+- **Climb:** a failed rung is retried once, and a second failure ends the climb.
+  The highest passing rung then needs `--confirm` (3) more passes.
+- **Predictions:** written before the first trial
+  (`predict-v3.py --capacity`); each climb starts below its predicted ceiling.
+- **Labels:** the summary labels each ceiling backend-, coordination- or
+  host-bound.
+
+```powershell
+# Host-ceiling control first: almost no backend work, judged by a fixed p99 bound (V3.4 used 300 ms).
+python bench/capacity-v3.py --workload hot --modes local-two --delay 1 --slo-p99-ms 300 --start 1000 --step 1.25
+# Backend-bound ladders, labelled against that control.
+python bench/capacity-v3.py --workload zipf --delay 250 --start 200 --host-run bench/results/v3/<host run>
+python bench/summarize-capacity-v3.py bench/results/v3/<run>
+python bench/predict-v3.py --capacity --workload zipf --delay 250 --start 200
+```
+
+`--resume <run>` replays recorded trials through the same ladder. After a run,
+`python bench/check-capacity-v3.py bench/results/v3/<run>` replays every trial's
+own seed through the model into `model-check.json`. See
+[V3.4 capacity](../docs/v3/capacity.md).

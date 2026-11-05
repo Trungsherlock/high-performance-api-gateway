@@ -27,6 +27,7 @@ type cacheTransport struct {
 	cache      *cache.Cache
 	shared     sharedcache.Store
 	leases     sharedcache.Coordinator
+	atomic     sharedcache.AtomicCoordinator // set only for lease protocol v2
 	lease      LeaseOptions
 	group      *coalesce.Group[sharedResult]
 	timeout    time.Duration
@@ -198,7 +199,7 @@ func (t *cacheTransport) lookup(ctx context.Context, key string) (cache.Response
 	value, ok, err := t.shared.Get(ctx, key)
 	t.metrics.Observe("cache_dependency", time.Since(start))
 	if err != nil {
-		t.metrics.Add("dependency_errors", 1)
+		t.dependencyError(err)
 		t.metrics.Add("shared_read_errors", 1)
 		return cache.Response{}, false
 	}
@@ -220,9 +221,15 @@ func (t *cacheTransport) publish(ctx context.Context, key string, value cache.Re
 	err := t.shared.Put(ctx, key, value)
 	t.metrics.Observe("cache_dependency", time.Since(start))
 	if err != nil {
-		t.metrics.Add("dependency_errors", 1)
+		t.dependencyError(err)
 		t.metrics.Add("shared_write_errors", 1)
 	} else {
 		t.metrics.Add("shared_write_completed", 1)
 	}
+}
+
+// dependencyError counts one failed shared-cache operation under a fixed cause.
+func (t *cacheTransport) dependencyError(err error) {
+	t.metrics.Add("dependency_errors", 1)
+	t.metrics.Add("dependency_error_"+sharedcache.ErrorKind(err), 1)
 }

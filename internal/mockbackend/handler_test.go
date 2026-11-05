@@ -33,6 +33,16 @@ func TestDeterministicItemAndCounter(t *testing.T) {
 	}
 }
 
+func TestConfiguredMaxAge(t *testing.T) {
+	b := New(0)
+	b.SetMaxAge(2)
+	w := httptest.NewRecorder()
+	b.ServeHTTP(w, httptest.NewRequest("GET", "/api/public/item?id=42", nil))
+	if w.Code != 200 || w.Header().Get("Cache-Control") != "public, max-age=2" {
+		t.Fatal(w.Code, w.Header())
+	}
+}
+
 func TestConcurrentCount(t *testing.T) {
 	b := New(0)
 	var wg sync.WaitGroup

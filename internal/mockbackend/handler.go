@@ -3,6 +3,7 @@ package mockbackend
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"sync/atomic"
 	"time"
 )
@@ -14,9 +15,16 @@ type Backend struct {
 	active, peak                  atomic.Int64
 	started                       time.Time
 	slowAfter, slowFor, slowDelay time.Duration
+	maxAge                        int
 }
 
-func New(delay time.Duration) *Backend { return &Backend{delay: delay, started: time.Now()} }
+func New(delay time.Duration) *Backend {
+	return &Backend{delay: delay, started: time.Now(), maxAge: 10}
+}
+
+// SetMaxAge changes the public item lifetime in seconds before serving begins.
+// Gateways still cap cached lifetimes at their own 10-second limit.
+func (b *Backend) SetMaxAge(seconds int) { b.maxAge = seconds }
 
 // NewWithSlowdown injects one deterministic time window; requests keep their
 // selected delay even if the window ends while they are in flight.
@@ -73,7 +81,7 @@ func (b *Backend) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	w.Header().Set("Cache-Control", "public, max-age=10")
+	w.Header().Set("Cache-Control", "public, max-age="+strconv.Itoa(b.maxAge))
 	_ = json.NewEncoder(w).Encode(struct {
 		ID   string `json:"id"`
 		Name string `json:"name"`

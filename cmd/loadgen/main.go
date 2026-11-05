@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -41,6 +42,62 @@ type result struct {
 	SendLatencyMS, ScheduledLatencyMS, SchedulingLagMS                                         map[string]float64
 }
 
+// keyOptions sizes the V3.3 key spaces; the V1/V2 workloads ignore them.
+type keyOptions struct {
+	Keys    int     // zipf key-space size
+	ZipfS   float64 // zipf exponent; math/rand requires s > 1
+	HotKeys int     // hotset size
+}
+
+// keySource yields one phase's deterministic key stream from its seed.
+type keySource struct {
+	workload, phase string
+	seed            int64
+	seq             int
+	rng             *rand.Rand
+	zipf            *rand.Zipf
+	hotKeys         int
+}
+
+func newKeySource(workload, phase string, seed int64, o keyOptions) *keySource {
+	k := &keySource{workload: workload, phase: phase, seed: seed, rng: rand.New(rand.NewSource(seed)), hotKeys: o.HotKeys}
+	if workload == "zipf" {
+		k.zipf = rand.NewZipf(k.rng, o.ZipfS, 1, uint64(o.Keys-1))
+	}
+	return k
+}
+
+// perArrival reports whether keys are drawn for every offered arrival, dropped or
+// not, so the stream is independent of timing. V1/V2 workloads keep drawing per
+// issued request, which leaves their streams unchanged.
+func (k *keySource) perArrival() bool { return k.workload == "zipf" || k.workload == "hotset" }
+
+func (k *keySource) next() string {
+	k.seq++
+	switch k.workload {
+	case "zipf":
+		return "z" + strconv.FormatUint(k.zipf.Uint64(), 10)
+	case "hotset":
+		return "h" + strconv.Itoa(k.rng.Intn(k.hotKeys))
+	case "unique":
+		return fmt.Sprintf("%s-%d-%d", k.phase, k.seed, k.seq)
+	case "mixed":
+		if k.rng.Intn(5) == 0 {
+			return fmt.Sprintf("%s-%d-%d", k.phase, k.seed, k.seq)
+		}
+	}
+	return "42"
+}
+
+// arrivals is the number of scheduled arrivals run() offers in d at rate.
+func arrivals(d time.Duration, rate int) int {
+	n := 0
+	for time.Duration(int64(n)*int64(time.Second)/int64(rate)) < d {
+		n++
+	}
+	return n
+}
+
 func percentiles(v []float64) map[string]float64 {
 	sort.Float64s(v)
 	out := map[string]float64{}
@@ -51,7 +108,7 @@ func percentiles(v []float64) map[string]float64 {
 	}
 	return out
 }
-func run(ctx context.Context, c *http.Client, target, mode, workload, phase string, d time.Duration, rate, limit int, seed int64) result {
+func run(ctx context.Context, c *http.Client, target, mode, workload, phase string, d time.Duration, rate, limit int, seed int64, o keyOptions) result {
 	start := time.Now()
 	end := start.Add(d)
 	r := result{Phase: phase, StartUTC: start, StatusCounts: map[int]int{}, RejectionReasons: map[string]int{}, DegradedReasons: map[string]int{}, Windows: map[int]*windowResult{}}
@@ -66,13 +123,10 @@ func run(ctx context.Context, c *http.Client, target, mode, workload, phase stri
 		}
 		collected <- all
 	}()
-	rng := rand.New(rand.NewSource(seed))
-	seq := 0
-	issue := func(due time.Time) {
-		id := "42"
-		seq++
-		if workload == "unique" || (workload == "mixed" && rng.Intn(5) == 0) {
-			id = fmt.Sprintf("%s-%d-%d", phase, seed, seq)
+	keys := newKeySource(workload, phase, seed, o)
+	issue := func(due time.Time, id string) {
+		if id == "" {
+			id = keys.next()
 		}
 		wg.Add(1)
 		go func() {
@@ -117,16 +171,25 @@ func run(ctx context.Context, c *http.Client, target, mode, workload, phase stri
 			}
 			timer.Stop()
 			r.Offered++
+			id := ""
+			if keys.perArrival() {
+				id = keys.next()
+			}
 			if time.Since(due) > time.Second/time.Duration(rate) {
 				r.LateArrivals++
 			}
-			if ctx.Err() != nil || !time.Now().Before(end) {
+			// An arrival due inside the window is sent even when its timer fires after the
+			// window ends, like every other late arrival; its lag counts in scheduled
+			// latency. Before V3.4 these were dropped, which at thousands of arrivals per
+			// second failed a no-drop SLO on timer jitter alone. Only a full in-flight
+			// limit (or cancellation) drops an arrival.
+			if ctx.Err() != nil {
 				r.GeneratorDrops++
 				continue
 			}
 			select {
 			case slots <- struct{}{}:
-				issue(due)
+				issue(due, id)
 			default:
 				r.GeneratorDrops++
 			}
@@ -143,7 +206,7 @@ func run(ctx context.Context, c *http.Client, target, mode, workload, phase stri
 				break
 			}
 			r.Offered++
-			issue(time.Now())
+			issue(time.Now(), "")
 		}
 	}
 	wg.Wait()
@@ -203,7 +266,11 @@ func run(ctx context.Context, c *http.Client, target, mode, workload, phase stri
 func main() {
 	target := flag.String("target", "http://127.0.0.1:8080", "external gateway")
 	mode := flag.String("mode", "scheduled", "scheduled or closed")
-	work := flag.String("workload", "mixed", "hot, mixed, or unique")
+	work := flag.String("workload", "mixed", "hot, mixed, unique, zipf or hotset")
+	keyCount := flag.Int("keys", 10000, "zipf key-space size")
+	zipfS := flag.Float64("zipf-s", 1.1, "zipf exponent, greater than 1")
+	hotKeys := flag.Int("hot-keys", 100, "hotset size; keys are equally likely")
+	planOnly := flag.Bool("plan-only", false, "print each phase's seeded key stream as JSON and send nothing")
 	d := flag.Duration("duration", 30*time.Second, "measurement duration")
 	warm := flag.Duration("warmup", 5*time.Second, "warmup duration")
 	deadline := flag.Duration("timeout", 3*time.Second, "request deadline")
@@ -220,14 +287,35 @@ func main() {
 		fmt.Fprintln(os.Stderr, "invalid target")
 		os.Exit(2)
 	}
-	if (*mode != "scheduled" && *mode != "closed") || (*work != "hot" && *work != "mixed" && *work != "unique") || *d <= 0 || *warm < 0 || *deadline <= 0 || *rate <= 0 || *limit <= 0 {
+	workloads := map[string]bool{"hot": true, "mixed": true, "unique": true, "zipf": true, "hotset": true}
+	if (*mode != "scheduled" && *mode != "closed") || !workloads[*work] || *d <= 0 || *warm < 0 || *deadline <= 0 || *rate <= 0 || *limit <= 0 || *keyCount < 1 || !(*zipfS > 1) || *hotKeys < 1 {
 		fmt.Fprintln(os.Stderr, "invalid settings")
 		os.Exit(2)
+	}
+	options := keyOptions{Keys: *keyCount, ZipfS: *zipfS, HotKeys: *hotKeys}
+	enc := json.NewEncoder(os.Stdout)
+	if *planOnly {
+		// The stream a scheduled run offers when no arrival is dropped.
+		for _, p := range []struct {
+			name string
+			d    time.Duration
+			seed int64
+		}{{"warmup", *warm, *seed}, {"measurement", *d, *seed + 1}} {
+			if p.d <= 0 {
+				continue
+			}
+			keys := newKeySource(*work, p.name, p.seed, options)
+			stream := make([]string, arrivals(p.d, *rate))
+			for i := range stream {
+				stream[i] = keys.next()
+			}
+			_ = enc.Encode(map[string]any{"Phase": p.name, "Seed": p.seed, "Workload": *work, "Rate": *rate, "DurationSeconds": p.d.Seconds(), "Keys": stream})
+		}
+		return
 	}
 	tr := &http.Transport{MaxConnsPerHost: *limit, MaxIdleConnsPerHost: *limit, DisableCompression: true}
 	defer tr.CloseIdleConnections()
 	c := &http.Client{Transport: tr, Timeout: *deadline}
-	enc := json.NewEncoder(os.Stdout)
 	snapshot := func() map[string]any {
 		out := map[string]any{}
 		endpoints := map[string]string{}
@@ -264,7 +352,7 @@ func main() {
 	}
 	phase := func(name string, duration time.Duration, seed int64) {
 		before := snapshot()
-		r := run(context.Background(), c, *target, *mode, *work, name, duration, *rate, *limit, seed)
+		r := run(context.Background(), c, *target, *mode, *work, name, duration, *rate, *limit, seed, options)
 		r.Before = before
 		r.After = snapshot()
 		_ = enc.Encode(r)

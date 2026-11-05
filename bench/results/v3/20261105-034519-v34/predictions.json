@@ -1,0 +1,270 @@
+{
+  "slo": {
+    "success_ratio": 0.999,
+    "p99_delay_multiple": 3,
+    "generator_drops": 0
+  },
+  "limits": {
+    "permits": 32,
+    "permit_queue": 32,
+    "permit_wait_ms": 50,
+    "flights": 64
+  },
+  "rates": {
+    "300": {
+      "one": {
+        "requests": 600,
+        "fills": 114,
+        "fills_per_second": 57.0,
+        "backend_calls_per_request": 0.19,
+        "backend_utilization": 0.178125,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      },
+      "local": {
+        "requests": 600,
+        "fills": 114,
+        "fills_per_second": 57.0,
+        "backend_calls_per_request": 0.19,
+        "backend_utilization": 0.178125,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      },
+      "leased": {
+        "requests": 600,
+        "fills": 114,
+        "fills_per_second": 57.0,
+        "backend_calls_per_request": 0.19,
+        "backend_utilization": 0.178125,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      }
+    },
+    "375": {
+      "one": {
+        "requests": 750,
+        "fills": 150,
+        "fills_per_second": 75.0,
+        "backend_calls_per_request": 0.2,
+        "backend_utilization": 0.234375,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      },
+      "local": {
+        "requests": 750,
+        "fills": 150,
+        "fills_per_second": 75.0,
+        "backend_calls_per_request": 0.2,
+        "backend_utilization": 0.234375,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      },
+      "leased": {
+        "requests": 750,
+        "fills": 150,
+        "fills_per_second": 75.0,
+        "backend_calls_per_request": 0.2,
+        "backend_utilization": 0.234375,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      }
+    },
+    "469": {
+      "one": {
+        "requests": 938,
+        "fills": 178,
+        "fills_per_second": 89.0,
+        "backend_calls_per_request": 0.18976545842217485,
+        "backend_utilization": 0.278125,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      },
+      "local": {
+        "requests": 938,
+        "fills": 178,
+        "fills_per_second": 89.0,
+        "backend_calls_per_request": 0.18976545842217485,
+        "backend_utilization": 0.278125,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      },
+      "leased": {
+        "requests": 938,
+        "fills": 178,
+        "fills_per_second": 89.0,
+        "backend_calls_per_request": 0.18976545842217485,
+        "backend_utilization": 0.278125,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      }
+    },
+    "586": {
+      "one": {
+        "requests": 1172,
+        "fills": 220,
+        "fills_per_second": 110.0,
+        "backend_calls_per_request": 0.18771331058020477,
+        "backend_utilization": 0.34375,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      },
+      "local": {
+        "requests": 1172,
+        "fills": 220,
+        "fills_per_second": 110.0,
+        "backend_calls_per_request": 0.18771331058020477,
+        "backend_utilization": 0.34375,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      },
+      "leased": {
+        "requests": 1172,
+        "fills": 220,
+        "fills_per_second": 110.0,
+        "backend_calls_per_request": 0.18771331058020477,
+        "backend_utilization": 0.34375,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      }
+    },
+    "732": {
+      "one": {
+        "requests": 1464,
+        "fills": 281,
+        "fills_per_second": 140.5,
+        "backend_calls_per_request": 0.1919398907103825,
+        "backend_utilization": 0.4390625,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      },
+      "local": {
+        "requests": 1464,
+        "fills": 281,
+        "fills_per_second": 140.5,
+        "backend_calls_per_request": 0.1919398907103825,
+        "backend_utilization": 0.4390625,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      },
+      "leased": {
+        "requests": 1464,
+        "fills": 281,
+        "fills_per_second": 140.5,
+        "backend_calls_per_request": 0.1919398907103825,
+        "backend_utilization": 0.4390625,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      }
+    },
+    "916": {
+      "one": {
+        "requests": 1832,
+        "fills": 355,
+        "fills_per_second": 177.5,
+        "backend_calls_per_request": 0.1937772925764192,
+        "backend_utilization": 0.5546875,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      },
+      "local": {
+        "requests": 1832,
+        "fills": 355,
+        "fills_per_second": 177.5,
+        "backend_calls_per_request": 0.1937772925764192,
+        "backend_utilization": 0.5546875,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      },
+      "leased": {
+        "requests": 1832,
+        "fills": 355,
+        "fills_per_second": 177.5,
+        "backend_calls_per_request": 0.1937772925764192,
+        "backend_utilization": 0.5546875,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      }
+    },
+    "1144": {
+      "one": {
+        "requests": 2288,
+        "fills": 449,
+        "fills_per_second": 224.5,
+        "backend_calls_per_request": 0.19624125874125875,
+        "backend_utilization": 0.7015625000000001,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 100.00000000000009,
+        "passes": true
+      },
+      "local": {
+        "requests": 2288,
+        "fills": 449,
+        "fills_per_second": 224.5,
+        "backend_calls_per_request": 0.19624125874125875,
+        "backend_utilization": 0.7015625000000001,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 103.84615384615437,
+        "passes": true
+      },
+      "leased": {
+        "requests": 2288,
+        "fills": 449,
+        "fills_per_second": 224.5,
+        "backend_calls_per_request": 0.19624125874125875,
+        "backend_utilization": 0.7015625000000001,
+        "rejected": {},
+        "success_ratio": 1.0,
+        "p99_ms": 103.84615384615437,
+        "passes": true
+      }
+    }
+  },
+  "ceilings": {
+    "one": 1144,
+    "local": 1144,
+    "leased": 1144
+  },
+  "first_failures": {
+    "one": null,
+    "local": null,
+    "leased": null
+  }
+}

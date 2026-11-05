@@ -1,0 +1,92 @@
+[
+  {
+    "policy": "protection-first",
+    "scenario": "outage",
+    "trial": 1,
+    "backend_calls": 3,
+    "fault_status": {
+      "503": 100
+    },
+    "fault_seconds": 0.0140656,
+    "fault_backend_calls": 0
+  },
+  {
+    "policy": "protection-first",
+    "scenario": "slow",
+    "trial": 1,
+    "backend_calls": 3,
+    "fault_status": {
+      "503": 100
+    },
+    "fault_seconds": 0.0648518,
+    "fault_backend_calls": 0
+  },
+  {
+    "policy": "protection-first",
+    "scenario": "memory",
+    "trial": 1,
+    "backend_calls": 3,
+    "fault_status": {
+      "503": 100
+    },
+    "fault_seconds": 0.0274634,
+    "fault_backend_calls": 0
+  },
+  {
+    "policy": "protection-first",
+    "scenario": "restart",
+    "trial": 1,
+    "backend_calls": 4
+  },
+  {
+    "policy": "protection-first",
+    "scenario": "corrupt",
+    "trial": 1,
+    "backend_calls": 3
+  },
+  {
+    "policy": "available-local",
+    "scenario": "outage",
+    "trial": 1,
+    "backend_calls": 5,
+    "fault_status": {
+      "200": 100
+    },
+    "fault_seconds": 0.0651322,
+    "fault_backend_calls": 2
+  },
+  {
+    "policy": "available-local",
+    "scenario": "slow",
+    "trial": 1,
+    "backend_calls": 5,
+    "fault_status": {
+      "200": 100
+    },
+    "fault_seconds": 0.1149505,
+    "fault_backend_calls": 2
+  },
+  {
+    "policy": "available-local",
+    "scenario": "memory",
+    "trial": 1,
+    "backend_calls": 5,
+    "fault_status": {
+      "200": 100
+    },
+    "fault_seconds": 0.0610786,
+    "fault_backend_calls": 2
+  },
+  {
+    "policy": "available-local",
+    "scenario": "restart",
+    "trial": 1,
+    "backend_calls": 5
+  },
+  {
+    "policy": "available-local",
+    "scenario": "corrupt",
+    "trial": 1,
+    "backend_calls": 3
+  }
+]

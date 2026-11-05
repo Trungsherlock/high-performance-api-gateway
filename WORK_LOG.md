@@ -496,6 +496,573 @@ The observed environment has Go 1.25.7 and an MSYS2 GCC installation. At this st
 - **Report:** [Final comparison and reproduction](docs/v2/final.md),
   [process resources](docs/v2/final-resources.md), and [tradeoffs](docs/tradeoffs.md).
 
+### 2026-11-03 - V3.0 frozen baseline and configurable harness
+
+- **Scope:** First V3 milestone from the
+  [V3 plan](high_performance_api_gateway_v3_plan.md). Freeze V2, generalize the
+  runner, attribute dependency errors, and add cost-per-fill columns. No caching,
+  coalescing, admission or lease behavior changed.
+- **Changes:**
+  - Tagged `66c9ccd` as `v2-final`.
+  - Added `bench/run-v3.py`. Its defaults reproduce V2.7. It parameterizes
+    modes, workload, a rate list, gateway count (2/4/8), steady and cold backend
+    delay, backend max-age and generator concurrency. It reuses the frozen V2.7
+    build, verification and identity code, plus its resume and clean-source flow.
+  - Added `bench/summarize-v3.py`, which keeps every V2.7 reconciliation check
+    and adds ops per fill, ops per request, backend calls per request and
+    per-trial error causes.
+  - `run-v26.py` gained `--results`, with an unchanged default, so V3 fault
+    runs stay inside V3 artifacts.
+  - The backend gained `-max-age` (default 10).
+  - Four fixed counters split `dependency_errors` into timeout, pool_timeout,
+    connection and other.
+  - The Redis adapter now reserves one slot per pool connection inside the
+    existing operation deadline, so a saturated pool reports `ErrPoolWait`.
+- **Evidence:**
+  - `bench/results/v3/20261104-021358-v3` ran one 30-second V2.7-settings block
+    per mode. Backend calls were 2,973/2,976/2,976/2,973. Dependency operations
+    were 5,952 and 14,880, which is 2.00 and 5.01 per fill. Cold fills were 1/2/2/1.
+    Every count was inside V2.7's trial ranges. There were no drops, 503s,
+    transport errors or dependency errors.
+  - Latency did not reproduce. local-one ran first after the build, at p95/p99
+    65.66/153.80 ms with 939 late arrivals; the cause was not established.
+    The other modes were below their V2.7 ranges. With a single trial, neither
+    is an effect.
+- **Verification:**
+  - `20261104-020914-v3` (`--quick --complete`) passed: real-Redis ordinary and
+    race suites, empty vet/build logs, all ten fault cases, and a source-only
+    rebuild with eight smoke trials.
+  - In those fault runs, causes matched each fault and summed to the totals:
+    outage 12/2 connection, `CLIENT PAUSE` 2/2 timeout, OOM 16/2 other,
+    restart 1/1 connection, corrupt value 0.
+  - Before the harness runs, local `gofmt`, `go build ./...`, `go vet ./...` and
+    `go test ./...` passed.
+- **Decisions/limits:**
+  - go-redis v9.7.3 keeps its pool-timeout sentinel internal, and its 50 ms pool
+    wait equals the operation deadline, which starts first. Hence the adapter
+    slots rather than matching error text. The plan's claim that go-redis exports
+    `ErrPoolTimeout` was corrected.
+  - The lease-protocol option waits for V3.2. `local-two` keeps its V2.7 name
+    for any gateway count.
+  - `92a0ad7` keeps its `\` message; rewording it would rewrite the commit both
+    branches share.
+  - V3.0 work is uncommitted. V1/V2 artifacts are unchanged.
+- **Report:** [V3.0 harness, counters and acceptance evidence](docs/v3/README.md).
+
+### 2026-11-03 - V3.1 noise floor and V3 baseline
+
+- **Scope:** Second V3 milestone from the
+  [V3 plan](high_performance_api_gateway_v3_plan.md): measure the noise floor,
+  reduce host noise, and rerun the four-mode comparison as the V3 baseline. No
+  Go code changed. Caching, coalescing, admission and lease behavior are the
+  same as in V3.0.
+- **Changes:**
+  - Added `bench/host.py`, with no dependencies:
+    - reads physical cores and efficiency classes
+      (`GetLogicalProcessorInformationEx` on Windows, sysfs on Linux);
+    - resolves `--affinity off|auto|explicit sets`;
+    - pins processes (`SetProcessAffinityMask` after start on Windows,
+      `sched_setaffinity` before `exec` on Linux);
+    - records the power plan, the Windows 11 power-mode overlay and AC state.
+  - `run-v3.py`:
+    - New `local-two-aa` mode: a second copy of `local-two` in every block,
+      included by default. It is refused without `local-two`.
+    - `--trials` now defaults to 5. With five modes, the rotation puts every
+      mode once in every position.
+    - New `--affinity` option. Its default became `off` after the pinned runs
+      below. When pinning, the V3 topology launches its own processes: the
+      gateways, the generator, and backend plus front proxy each get a CPU set
+      and `GOMAXPROCS` equal to its size, and every mask is read back and
+      asserted.
+    - The manifest records the CPU sets and power state, and so does every
+      trial.
+    - Resume requires the same resolved CPU sets.
+    - The clean-source check passes `--affinity` through.
+  - `summarize-v3.py`:
+    - Paired per-block differences against `local-two` for send p50/p95/p99,
+      scheduled p99 and backend calls, with positive-block counts.
+    - The A/A noise floor: the largest |`local-two-aa` − `local-two`| per metric
+      and rate. A median difference beyond it is marked `*`.
+    - Reports the CPU sets and counts trials not on AC power. V3.0 artifacts
+      still summarize, printing a no-floor warning.
+  - Docs:
+    - Added `docs/v3/noise-floor.md`. Its predictions were written before any
+      measured run.
+    - Updated the V3 README options, the bench README, the results index, the
+      plan status and outcome, and the project README.
+- **Evidence:** six runs, all `SUCCESS`, all on AC with the Balanced plan and
+  the balanced overlay.
+  - `20261104-043055-v3` (`--quick`) was a functional check. Every process
+    recorded its read-back CPU set and `GOMAXPROCS`.
+  - Pinning made noise worse. These are unfavorable results, and they are kept:
+
+    | Run | Affinity | p95 / p99 floor | Late arrivals per trial | Median p50 |
+    |---|---|---|---|---|
+    | `043318`, 5-mode baseline, `--complete` | auto | 61.75 / 373.24 ms | 409–1,875 | 1.45 ms |
+    | `045906`, A/A only | off | 1.02 / 11.81 ms | 46–351 | 0.66 ms |
+    | `050522`, A/A only | auto | 6.73 / 87.69 ms | 340–1,056 | 1.19 ms |
+    | `053815`, A/A only | backend and front off CPU 0's core | 1.14 / 53.01 ms | 499–724 | 1.26 ms |
+
+    - The first pinned baseline had front-proxy 503s in 3 trials (45, 23, 82)
+      as 250 ms readiness probes timed out. Its leased soak had 27 503s from 8
+      Redis errors, all classified `timeout`.
+    - Moving backend and front off CPU 0's core removed the 503s and the p95
+      spread. Late arrivals, p50 and the p99 floor stayed high, so the cause is
+      only partly isolated.
+  - The **V3 baseline** is `20261104-051315-v3`: `--complete`, unpinned, 5
+    modes × 5 blocks.
+    - The noise floor was p50 0.14, p95 0.40 and p99 2.63 ms; scheduled p99
+      4.02 ms; backend calls 0.
+    - Paired against local-two: shared p95 **+1.93\*** ms (5/5 blocks) and
+      p99 +3.37\*; leased p95 **+4.39\*** ms (5/5) and p99 +5.86\*; local-one
+      p95 −0.06 ms, within noise.
+    - Backend calls: leased and local-one −3\* per block, shared 0.
+    - Ops per fill were 2.00 / 5.01. Blocks 1–3, which share V2.7's seeds,
+      match V2.7's backend calls exactly (leased block 3 is off by 1).
+    - Cold fills were 1/2/2/1/2 in each of 3 trials.
+    - Leased block 4 had one host spike: p99 161 ms, 495 late arrivals, and 2
+      coordination 503s from 2 Redis `timeout` errors.
+    - The soak: 150,000/150,000 successes, 0 dependency errors, p99 59.66 ms,
+      5.005 ops per fill. V2.7's soak had 3 coordination 503s.
+  - Predictions:
+    - Held: the floor range, in the A/A-only run; the paired p95 ranges for
+      leased and shared; counts unaffected.
+    - Partly failed: shared also exceeded the p99 floor, by 0.7 ms.
+    - **Failed:** the prediction that pinning would lower noise.
+- **Verification:**
+  - The baseline's `--complete` passed:
+    - 10/10 ordinary and 10/10 race test packages against harness-owned Redis;
+    - empty vet and build logs;
+    - all ten fault cases (`faults/20261104-053621-v26`);
+    - the source-only rebuild.
+  - Locally, `go build ./...` and `go vet ./...` passed, and `gofmt -l` was
+    empty.
+  - Argument checks reject overlapping CPU sets and an A/A copy without
+    `local-two`.
+- **Decisions/limits:**
+  - `--affinity` defaults to `off`; `auto` and explicit sets remain for other
+    hosts.
+  - The floor is the largest of five A/A differences. It is a conservative,
+    crude bound, not a confidence interval.
+  - The floor differs between runs (0.40 against 1.02 ms at p95 unpinned), so
+    every run carries its own A/A copy.
+  - The A/A copy was slightly slower in all 5 blocks (0.03–0.40 ms), even with
+    rotation. There may be a small systematic offset; its cause is unknown.
+  - The pinned-against-unpinned comparison ran sequentially, but the unpinned
+    run sat between two pinned ones.
+  - Redis inside WSL2 and the harness are never pinned.
+  - V3.0 is committed as `ac24ab8`. A test re-summary of its artifact
+    `20261104-021358-v3` rewrote that `summary.json`, so it was restored from
+    git.
+  - The V3.1 work is uncommitted.
+- **Report:** [V3.1 noise floor and baseline](docs/v3/noise-floor.md).
+
+### 2026-11-04 - Pack V3 run logs into one archive per run
+
+- **Scope:** The six V3.1 run folders held 1,092 files, mostly per-process
+  logs: 6–8 per trial, plus fault and clean-source copies. Reduce the count
+  without losing anything the summaries or a later investigation need.
+- **Changes:**
+  - Added `bench/pack_logs.py`. It moves every `*.log` and `*.conf` under a
+    run folder, including `faults/` and `clean-source-results/`, into that
+    folder's `logs.zip`.
+    - It appends on repeat packing, as after a resume, and renames clashing
+      names `~N`.
+    - It CRC-checks the archive and compares sizes before deleting the
+      originals.
+    - It also runs standalone: `python bench/pack_logs.py <run>`.
+  - `run-v3.py` packs at the end of every run. On success it packs before
+    writing `SUCCESS`. On failure it packs after `FAILED`, and a packing
+    error leaves the logs in place without hiding the original error.
+  - `manifest.json`, `trials.jsonl`, `*-resources.jsonl`, `summary.json` and
+    the check outputs stay as files.
+  - Documented the folder layout in `bench/results/v3/README.md` and the
+    bench README.
+- **Evidence:**
+  - Scratch test: a nested `faults/` log was archived with its relative path;
+    a second pack appended a clashing name as `~2`; a third pack was a no-op;
+    data files were left alone.
+  - `bench/results/v3/20261104-070718-v3` (`--quick --skip-build`) passed and
+    packed its own logs: 70 files became 14, with 56 in `logs.zip`.
+  - The six V3.1 folders were packed afterwards: 1,092 files became 198, and
+    about 23 MB became 20 MB.
+  - Each folder was re-summarized from a copy of its remaining files, and every
+    `summary.json` matched exactly.
+- **Decisions/limits:**
+  - Resource samples stay unpacked. The summarizer reads them, and they are
+    most of the bytes.
+  - The committed V3.0 folders and the V2 folders keep their loose logs as
+    recorded.
+  - No docs linked to individual logs, so no links changed.
+  - This work is uncommitted, along with V3.1.
+- **Report:** [V3 experiment records](bench/results/v3/README.md).
+
+### 2026-11-04 - Resume bullet candidates
+
+- **Scope:** Draft resume bullets for the whole project, V1 through V3.1, for
+  choosing the top three.
+- **Changes:** Added `resume_bullets.md`. It has 15 bullets in three groups:
+  core gateway, distributed caching and reliability, and measurement. It also
+  suggests a top three and lists what to be ready to explain in an interview.
+- **Evidence:** Every number links to its recorded source: `docs/results.md`,
+  `docs/v2/`, `docs/v3/` or the V3.1 baseline logs. All link anchors were
+  checked to exist.
+- **Decisions/limits:**
+  - Only measured results are used. The V3.2 lease fix is described as
+    designed, not built.
+  - V1 numbers carry their single-process, single-laptop caveat.
+  - Update the file when V3.2 and later results are measured.
+- **Report:** `resume_bullets.md` (local only; ignored by git).
+
+### 2026-11-04 - Resume evidence review
+
+- Reviewed candidate claims against V1 results and V2/V3.1 reports.
+- Selected three final bullets covering performance, distributed coordination,
+  and reliability tooling in `resume_bullets.md`.
+- Removed unsupported steady-memory wording and brittle test counts; separated
+  historical V1 measurements from later admission changes and proposed work.
+- Qualified latency comparisons and limited timeout attribution to V3.1.
+- Documentation-only review; no application changes or benchmark reruns.
+
+### 2026-11-04 - V3.2 lease protocol v2
+
+- **Scope:** Third V3 milestone from the
+  [V3 plan](high_performance_api_gateway_v3_plan.md): cut leased mode's
+  coordination round trips, keep v1 selectable in the same binary, and compare
+  both protocols in the same blocks.
+- **Changes:**
+  - `internal/sharedcache/lease.go` adds `ReadOrAcquire`, a single Lua script
+    that keeps the lookup script's size and PTTL checks. It returns hit (value
+    and PTTL), owner (`SET NX PX` with a fresh 256-bit token) or wait.
+    - The script sits behind a new `AtomicCoordinator` interface, so v1 code and
+      fakes are unchanged.
+    - An undecodable value is reported unusable. The caller then claims again
+      with the read skipped, so an owner overwrites it.
+    - `newToken` is shared with v1's `Acquire`.
+  - `internal/gateway/lease.go`:
+    - One `claim` step per loop iteration: v1 reads then acquires, v2 runs the
+      script.
+    - v2 has no post-acquire recheck and skips the release only after an
+      acknowledged publish. Every other exit still releases by token.
+    - Followers poll with the same script.
+    - The lease start time is taken at the acquiring operation, so v1's
+      deadline is exactly as before.
+  - `-lease-protocol v1|v2` gateway flag and `LeaseOptions.Protocol`. v2
+    requires an `AtomicCoordinator`. After acceptance, the CLI default became
+    `v2`; the library zero value still means v1.
+  - Tests:
+    - 12 existing lease, degradation and publication tests now run under both
+      protocols (`forProtocols`).
+    - New: `claim_test.go` (atomic hit-or-acquire, unusable and oversize values,
+      stale v2 owner) and `lease_v2_test.go` (5 against 2 operations per fill,
+      corrupt value refilled without stall, recovery after an abandoned lease,
+      protocol validation).
+  - Harness:
+    - `run-v3.py` adds a `leased-v2` mode; `leased` passes v1 explicitly.
+    - `--complete` builds `bin/gateway-race` and runs the ten fault cases under
+      v1, v2 and v2 race. `--soak-mode` now defaults to `leased-v2`.
+    - `run-v26.py` gains `--lease-protocol`, defaulting to v1.
+    - `summarize-v3.py` adds Redis commands per fill (`total_commands_processed`
+      in the sampled window, net of the sampler's `INFO` calls), same-block
+      protocol contrasts and a rejection total.
+  - Docs: added `docs/v3/lease-protocol.md`, with predictions written before
+    the run. Updated the plan status, outcome and resume bullet, the README,
+    the V2 lease flag table, the V3 README, the bench README and the results
+    index.
+- **Evidence:** acceptance run `bench/results/v3/20261104-153628-v3` (`--complete
+  --trials 6 --soak-mode leased-v2`, 6 modes × 6 blocks), `SUCCESS`.
+  - Ops per fill: shared 2.00, leased 5.00, leased-v2 2.00.
+  - Redis commands per fill: shared 3.00, leased 12.01, leased-v2 8.01 (−33%).
+  - Same-block contrasts, against a floor of 0.72 ms p95 and 2.03 ms p99:
+    - leased-v2 − leased p95 **−2.11\*** ms [−2.95, −1.25], 0 of 6 blocks
+      slower; p99 **−3.77\*** ms;
+    - leased-v2 − shared p95 +0.07 ms, within the floor;
+    - leased − shared p95 +1.96\* ms.
+  - Backend work was identical to leased in every block (3 fewer than
+    local-two), with 3 distributed followers per block and 1 fill per cold
+    burst.
+  - All 36 steady trials had 0 503s and 0 dependency errors.
+  - leased-v2 soak: 150,000/150,000 successes, 0 errors, p99 55.44 ms, 2.003
+    ops per fill, gateway RSS 18.2 → 19.6–19.8 MiB.
+  - Predictions: 6 held. The p95 gain (−2.11 ms) fell below the predicted −2.5
+    to −3.5 ms, but closed the whole v1 gap to shared in this run (1.96 ms).
+    The plan's original "−60% Redis commands" was replaced by −33% before the
+    run, because V3.1's data showed Redis counts commands inside scripts. The
+    measured drop was −33.3%.
+- **Verification:**
+  - Before the run: `go build`, `go vet` and `gofmt -l` were clean. Ordinary
+    and race suites passed against a temporary Redis 7.4.2, with no skipped
+    real-Redis tests.
+  - The acceptance run's own checks: 10/10 ordinary and race packages; empty
+    vet, build and race-build logs; all ten fault cases in `faults/v1`,
+    `faults/v2` and `faults/v2-race`, with the same error causes per fault
+    under both protocols; and the source-only rebuild.
+  - Functional check `20261104-153406-v3` (`--quick`) passed.
+  - After the default switch, `go test ./cmd/gateway` passed.
+- **Decisions/limits:**
+  - The default switched to v2 after the acceptance run. That run's binaries
+    had the v1 default, but every mode passed its protocol explicitly.
+  - Like v1, v2 is one Redis authority with expiring tokens, not fencing. The
+    script touches two keys, so Redis Cluster would need a shared hash slot;
+    Cluster is out of scope.
+  - `mixed` still has no cross-node reuse, so V3.2 removed lease cost without
+    adding benefit; that is V3.3's job.
+  - Go files must stay LF (`.gitattributes`). Two files briefly became CRLF
+    through a Python edit and were restored before testing.
+  - Work is uncommitted.
+- **Report:** [V3.2 lease protocol v2](docs/v3/lease-protocol.md).
+
+### 2026-11-04 - V3.3 workloads with cross-node reuse
+
+- **Scope:** Fourth V3 milestone from the
+  [V3 plan](high_performance_api_gateway_v3_plan.md). Give the shared tier and
+  leases workloads with cross-gateway reuse, predict backend fills from the key
+  stream before running, and test a gateway restart. Keep `mixed` as the control.
+- **Changes:**
+  - `cmd/loadgen`:
+    - `zipf` (`-keys`, `-zipf-s`) and `hotset` (`-hot-keys`) workloads that draw
+      one key per *offered* arrival;
+    - `-plan-only`, which prints the seeded stream;
+    - a `keySource` refactor that leaves `hot`, `mixed` and `unique` streams
+      identical (tested);
+    - new `keys_test.go`.
+  - `cmd/gateway`: `-cache-entries` and `-cache-bytes`, defaulting to 1000 and
+    16 MiB.
+  - Added `bench/predict-v3.py`:
+    - replays the planned warmup and measurement stream through round-robin
+      routing and 1000-entry LRU/TTL L1s;
+    - models `one`, `local`, `shared` (fills visible only on completion),
+      `leased` (global in-flight) and `shared_ideal`, with fills lasting the
+      backend delay;
+    - also models the restart timeline.
+  - `run-v3.py`:
+    - zipf and hotset, with `--keys`, `--zipf-s`, `--hot-keys` and
+      `--cache-entries` (budgeted);
+    - `predictions.json` written before the first trial;
+    - `--restart-trials`: kill gateway 1 at 15 s of a 35 s measurement and
+      relaunch it empty at 20 s, recording backend calls at pre, stop, ready,
+      +2 s and +10 s. Admin snapshots tolerate the down gateway in these trials
+      only;
+    - the generator's log is now read by reference, since a relaunch opens a
+      later log;
+    - Windows is asked to stay awake for the run (`host.keep_awake`, recorded
+      as `kept_awake`).
+  - `summarize-v3.py`: predicted fills and measured/predicted per trial, a
+    shared-hit column, and restart window summaries against predictions.
+  - Docs:
+    - added `docs/v3/reuse-workloads.md`, with predictions written before the
+      measured runs;
+    - updated the plan (status, outcome, resume bullets), the README, the V3
+      README options, the bench README and the results index.
+- **Evidence:** runs `20261104-175819-v3` (zipf, 3 restart trials per mode,
+  `--complete`), `20261104-192932-v3` (hotset, max-age 1) and
+  `20261104-194601-v3` (mixed). All ended `SUCCESS`, with 5 modes × 5 blocks each.
+  - **Backend calls, measured against predicted** (medians):
+
+    | Workload | local-one | local-two | shared | leased-v2 |
+    |---|---|---|---|---|
+    | zipf | 3,755 / 3,756 | 4,382 / 4,381 | 3,594 / 3,593 | 3,564 / 3,561 |
+    | hotset | 2,497 / 2,498 | 4,295 / 4,300 | 2,787 / 2,766 | 2,494 / 2,498 |
+    | mixed | all equal to prediction | | | |
+
+    Every block was within 1% of prediction.
+  - **Savings against local-two:** zipf −18.0% / −18.7%; hotset −35.1% /
+    −41.8%; mixed 0 / −3 calls.
+  - **Shared hit ratio:** zipf 20.6–20.9%, hotset 42.0–44.4%.
+  - **Latency:** the tier cost +0.9 to +1.7 ms at p95. leased-v2 − shared p95
+    was within the floor on every workload.
+  - **Restart:** in its first 2 s back, local-two made 323–358 backend calls
+    against a steady 295 per 2 s. Shared made 209–264 and leased-v2 208–246,
+    against about 245. The 10 s effects were small for all modes, as predicted.
+    There were 7–30 front 502s per restart trial.
+  - **Gaps:**
+    - hotset shared was 0.3–0.9% above prediction (overlap 293 against 268),
+      because a real fill also includes the Redis lookup and proxy time;
+    - the restart early window reads low because about 60 burst fills land
+      before the ready snapshot;
+    - one mixed block (leased-v2, block 5) stalled: 536 late arrivals and 4
+      timeout 503s.
+- **Verification:**
+  - The zipf run's `--complete` passed: 10/10 ordinary and race packages; empty
+    vet, build and race-build logs; the ten fault cases under v1, v2 and v2
+    race; and the clean-source rebuild.
+  - Loadgen tests: legacy streams unchanged, seeded and shaped zipf/hotset
+    streams, and scheduled runs that follow the plan with and without drops.
+  - Before any measured run, the predictor reproduced V3.1 and V3.2's
+    measured `mixed` backend calls exactly.
+  - Functional checks `175236` and `175603` passed. `175035` failed on the
+    log-reference bug and is kept.
+- **Decisions/limits:**
+  - leased-v2 stands for leases.
+  - Relaunch takes 0.6–1.7 s on this host, so gateway 1 was down 5.7–6.7 s,
+    not 5 s.
+  - **Standby incident:** at 12:20:32 the laptop entered Modern Standby (the
+    Balanced plan's 20-minute AC idle timeout) and stayed there until 13:29.
+    That interrupted zipf restart trial local-two 3, and the watchdog marked
+    the run `FAILED`. The keep-awake request was added, and the run was resumed
+    with identical settings and hashes. Its `FAILED` marker, partial resources
+    and logs are kept. hotset and mixed ran after the wake, with no further
+    standby events.
+  - The optional 4-gateway run was not done.
+  - Work is uncommitted.
+- **Report:** [V3.3 reuse workloads](docs/v3/reuse-workloads.md).
+
+### 2026-11-05 - V3.4 capacity at a fixed SLO
+
+- **Scope:** Fifth V3 milestone from the
+  [V3 plan](high_performance_api_gateway_v3_plan.md). Measure each mode's
+  highest rate meeting an SLO at the same backend budget:
+  - SLO: 99.9% success, scheduled p99 at most 3× the backend delay, no
+    generator drops;
+  - a host-ceiling control runs first;
+  - every ceiling is labelled backend- or host-bound.
+- **Changes:**
+  - `cmd/loadgen`: an arrival due inside the window is sent even when its timer
+    fires after the window ends; only a full in-flight limit drops arrivals.
+    - At 3,000/s the old behavior dropped 2 arrivals on timer jitter alone.
+    - New `TestLateFinalArrivalsAreSent`: the old generator dropped 3–8 of
+      2,000 there; the new one drops none.
+    - Plan-only streams are unchanged.
+  - `bench/predict-v3.py` `--capacity`: per-gateway backend limits:
+    - flight admission (lease followers hold a slot);
+    - FIFO permits with a bounded waiter queue and a 50 ms wait;
+    - rejection of a fill together with its coalesced requests;
+    - a ladder, SLO verdicts and a predicted ceiling per mode;
+    - without `--capacity`, V3.3's model is unchanged, and all five recorded
+      V3.3 predictions recompute identically.
+  - Added `bench/capacity-v3.py`:
+    - one shared geometric grid, modes interleaved in rotating order, one 35 s
+      trial per rung;
+    - a failed rung is retried once; the highest passing rung needs 3
+      confirmations, and a failed confirmation steps down;
+    - climbs start at 0.7× the predicted ceiling;
+    - `predictions.json` is written before the first trial;
+    - `--host-run`, `--slo-p99-ms`, `--resume` (replays recorded trials) and
+      `--complete` (tests, race, vet, build).
+  - Added `bench/summarize-capacity-v3.py`: SLO verdict per trial, ladder
+    replay, ceilings, first failures with causes, bound labels, and ratios.
+    Ratios are marked when a ceiling is not backend-bound.
+  - Added `bench/check-capacity-v3.py`: after a run, replays each trial's own
+    seed through the model (`model-check.json`).
+  - `run-v3.py`: Redis retries on a fresh port only when its log shows
+    "Address already in use" inside WSL. Each trial records
+    `redis_port_retries`.
+  - Docs:
+    - added `docs/v3/capacity.md`, with predictions written before the
+      backend-bound runs;
+    - updated the plan (status, outcome, resume bullet), the README, the V3
+      README, the bench README and the results index.
+- **Evidence:**
+  - **Host control:** `20261105-035703-v34` confirmed **1,250 req/s** (`hot`,
+    local-two, 1 ms backend, p99 ≤ 300 ms). Every trial from 3,052/s failed.
+    Below that, about one trial in three dropped arrivals on 100–480 ms host
+    stalls, at 1.3 cores of CPU. Two earlier controls found no ceiling:
+    - `034803` was confounded: the hot key's 100 ms expiry fill held
+      rate × 100 ms requests in flight, filling 256 slots at 2,500/s;
+    - `035219` started too high.
+  - **Backend chosen by the plan's rule:** 32 permits / 250 ms = 128 fills/s.
+    The highest predicted ceiling is 519 ≤ 625; 200 ms gave 690.
+  - **mixed** `20261105-041050-v34` (54 trials): local-one **472**;
+    local-two, shared and leased-v2 **390** each. All backend-bound, failing
+    on `wait_timeout` at 61–73% backend utilization with zero drops.
+  - **zipf** `20261105-044743-v34` (50 trials):
+    - local-two **242**; shared and leased-v2 **293** (+21%), exactly the
+      predicted ratio. The inverse backend-call ratio is 1.16–1.22, and the
+      shared hit ratio 17.6–17.7%;
+    - local-one 293, **host-bound**: it passed its climb to 390 and failed at
+      429 with permit 503s. Its confirmations then failed on host stalls (an
+      849 ms generator freeze, front 503s, p99 410 ms).
+  - **Predictions:** the pre-run predictions were one rung (10%) high for all
+    7 backend-set ceilings, because they used the climb seed only; the
+    confirmation seeds are harder. Replaying each trial's own seed agrees with
+    52/54 (mixed) and 44/50 (zipf) SLO verdicts. Fills match within 0.16%
+    (mixed) and 1.29% (zipf) per trial.
+- **Verification:**
+  - The zipf run's `--complete` passed: 10/10 ordinary and race packages;
+    empty vet and build logs.
+  - Loadgen tests pass; the new test fails on the old generator.
+  - Functional checks `034409` and `034519`; a replay-only resume reproduced
+    its summary.
+  - Offline ladder-path checks, and a stub test of the Redis retry decisions.
+- **Decisions/limits:**
+  - The zero-drop SLO with the generator's standing 256 in-flight slots was
+    kept, rather than raising the limit to get a higher host ceiling.
+  - The first 8 zipf trials ran before the Redis retry existed. The run stopped
+    at trial 9 on a WSL port collision, was resumed with identical settings
+    and hashes (only `bench/*.py` changed), and keeps its `FAILED` marker and
+    logs.
+  - VS Code used about 1–1.6 cores during the runs. Host stalls grew late in
+    the session.
+  - Leased v1 was not laddered.
+  - Work is uncommitted.
+- **Report:** [V3.4 capacity](docs/v3/capacity.md).
+
+### 2026-11-05 - V3.6 final comparison and write-up
+
+- **Scope:** Last V3 milestone from the
+  [V3 plan](high_performance_api_gateway_v3_plan.md): report everything in one
+  place, update the README and resume bullets from measured numbers, and prove the
+  one-command reproduction. V3.5 was optional and was not run.
+- **Changes:**
+  - Added `docs/v3/final.md`:
+    - a three-line summary, then the tables;
+    - workload × mode × protocol, latency, v1 against v2, capacity, restart and
+      noise floor;
+    - predictions against measurements, every unfavorable result, reproduction
+      commands and an artifact index;
+    - tables generated from each run's `summary.json`, not hand-copied.
+  - Plan: status, V3.5 marked not run, V3.6 outcome, and the protocol resume bullet
+    rewritten to the range both runs support.
+  - README: status, a final-comparison section, and a note on V3.2's numbers.
+  - `docs/v3/lease-protocol.md`: a forward note on the smaller final-run gain.
+  - V3 README and results index updated.
+  - Corrected `docs/v3/capacity.md`: 2,441/s passed 3 of 4 trials, not 4 of 5.
+  - No Go or harness code changed.
+- **Evidence:** `python bench/run-v3.py --complete` from a clean tree at `7957e01`
+  (`20261105-142924-v3`, SUCCESS, 49 trials):
+  - **Reproduced exactly:** every mode's median backend calls equalled its
+    prediction; operations per fill 5.01 → 2.00; commands per fill 12.00 → 8.01;
+    cold fills 1 for local-one and leases, 2 for local-two and shared.
+  - **Reproduced smaller:** v2 − v1 was −1.31 ms at p95 against V3.2's −2.11 ms,
+    faster in all 5 blocks. p99 was −1.77 ms, inside this run's 3.13 ms floor.
+    leased-v2 − shared stayed within noise (+0.05 ms p95).
+  - **Noise floor:** 0.76 / 3.13 ms, the p99 set by one stalled A/A block.
+  - **Soak (leased-v2, 5 minutes):** 150,000 of 150,000 succeeded, 0 drops,
+    p99 53.8 ms.
+  - **New errors:** 2 leased-v2 coordination 503s (block 2, Redis timeouts).
+    shared saw 4 dependency errors in block 1 with no client failures, because a
+    failed lookup counts as a miss.
+- **Verification:**
+  - 10/10 ordinary and race packages; empty vet, build and race-build logs.
+  - All ten fault cases under v1, v2 and v2 race (30 runs).
+  - Source-only rebuild passed.
+  - Manifest hashes show gateway, front and backend source identical across the
+    V3.3, V3.4 and final runs. Binary hashes differ across commits because Go embeds
+    the commit in each build.
+- **Decisions/limits:**
+  - The headline protocol gain is a range (1.3–2.1 ms), because the first measured
+    value did not fully reproduce.
+  - zipf and hotset numbers come from V3.3 and capacity from V3.4, combined with the
+    final `mixed` run on that source identity. They were not rerun.
+  - The clean-rebuild record shows `dirty: true` only because the run's own results
+    folder exists by then; the run's manifest recorded a clean tree.
+  - `resume_bullets.md` was left unedited here and updated afterwards (see the next
+    entry).
+  - Work is uncommitted.
+- **Report:** [V3 final comparison](docs/v3/final.md).
+
+### 2026-11-05 - Resume bullets updated to V3.6
+
+- **Scope:** Bring the git-ignored `resume_bullets.md` up to date, on request.
+- **Changes:**
+  - Rewrote candidate 13 as the measured result, and updated candidates 8, 9, 10
+    and 12 to the V3.6 final run.
+  - Added candidates 16–18 (backend calls, capacity, restart).
+  - Updated the interview notes for 6, 13 and 16–18.
+  - The three chosen final bullets are unchanged; only the note on which soak they
+    cite moved to V3.6.
+- **Verification:** every link and `final.md` anchor in the file resolves.
+
 ## Future entry template
 
 ### YYYY-MM-DD — Change title

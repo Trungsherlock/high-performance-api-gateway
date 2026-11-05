@@ -1,0 +1,278 @@
+{
+  "source": {
+    "kind": "working_tree",
+    "commit": "ac24ab8b13a184e00ab7983bc65e8abe2ac0fb71",
+    "dirty": true
+  },
+  "time": "2026-11-04T05:38:15.352926+00:00",
+  "platform": "win32",
+  "host": "Windows-11-10.0.26300-SP0",
+  "python": "3.12.11 (main, Sep  3 2025, 20:15:31)  [GCC 15.2.0 64 bit (AMD64)]",
+  "cpu_count": 22,
+  "go": "go version go1.25.7 windows/amd64",
+  "settings": {
+    "redis_server": "bin/redis-build/redis-server",
+    "wsl": "Ubuntu",
+    "modes": [
+      "local-two",
+      "local-two-aa"
+    ],
+    "workload": "mixed",
+    "rates": [
+      500
+    ],
+    "gateways": 2,
+    "delay": 50,
+    "cold_delay": 500,
+    "max_age": 10,
+    "concurrency": 256,
+    "seconds": 30,
+    "warmup": 5,
+    "trials": 5,
+    "cold_trials": 0,
+    "soak": 0,
+    "soak_mode": "leased",
+    "affinity": "generator=16-19;gateways=10-15;support=2-3",
+    "quick": false,
+    "skip_build": true,
+    "complete": false,
+    "resume": null,
+    "race": false,
+    "attempt": 0
+  },
+  "budget": {
+    "aggregate_permits": 32,
+    "aggregate_permit_queue": 32,
+    "aggregate_cache_flights": 64,
+    "aggregate_cache_waiters": 1024,
+    "cache_entries_per_node": 1000,
+    "cache_payload_bytes_per_node": 16777216,
+    "redis_timeout_ms": 50,
+    "redis_maxmemory": 67108864,
+    "redis_policy": "noeviction"
+  },
+  "affinity": {
+    "spec": "generator=16-19;gateways=10-15;support=2-3",
+    "groups": {
+      "generator": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "gateways": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "support": [
+        2,
+        3
+      ]
+    },
+    "gomaxprocs": {
+      "generator": 4,
+      "gateways": 6,
+      "support": 2
+    },
+    "unpinned_cpus": [
+      0,
+      1,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      20,
+      21
+    ],
+    "cores": [
+      [
+        1,
+        [
+          0,
+          1
+        ]
+      ],
+      [
+        0,
+        [
+          2
+        ]
+      ],
+      [
+        0,
+        [
+          3
+        ]
+      ],
+      [
+        0,
+        [
+          4
+        ]
+      ],
+      [
+        0,
+        [
+          5
+        ]
+      ],
+      [
+        0,
+        [
+          6
+        ]
+      ],
+      [
+        0,
+        [
+          7
+        ]
+      ],
+      [
+        0,
+        [
+          8
+        ]
+      ],
+      [
+        0,
+        [
+          9
+        ]
+      ],
+      [
+        1,
+        [
+          10,
+          11
+        ]
+      ],
+      [
+        1,
+        [
+          12,
+          13
+        ]
+      ],
+      [
+        1,
+        [
+          14,
+          15
+        ]
+      ],
+      [
+        1,
+        [
+          16,
+          17
+        ]
+      ],
+      [
+        1,
+        [
+          18,
+          19
+        ]
+      ],
+      [
+        0,
+        [
+          20
+        ]
+      ],
+      [
+        0,
+        [
+          21
+        ]
+      ]
+    ],
+    "unpinned": "Redis (inside the WSL2 VM on Windows), the Python harness and the OS are not pinned."
+  },
+  "power": {
+    "ac_online": true,
+    "battery_percent": 100,
+    "power_plan": {
+      "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+      "name": "Balanced"
+    },
+    "power_mode_overlay": {
+      "guid": "00000000-0000-0000-0000-000000000000",
+      "name": "balanced"
+    }
+  },
+  "redis_version": "7.4.2",
+  "hashes": {
+    "cmd/bench/main.go": "d6203ab2f95dcf8a0d3a7c7264b63cf48f4c48b45807431fb68acf6556789988",
+    "cmd/bench/usage_other.go": "cbafc764c8e0d3925dc17f64d6aec954a3b9be7d69f511d23f3a92e2774d65cb",
+    "cmd/bench/usage_windows.go": "97882f0b523c5100396c0cd749779974820d638ae68939fadfd31d9b02dd2899",
+    "cmd/burst/main.go": "2de6c68f94bf185e7ffd21ad0355d1dafa253d0f3c81b0a9b82c148064dcfb68",
+    "cmd/frontproxy/main.go": "7bef757e67690572df4a4c69720e38e0b76b88fbebbec92f84963771d8429520",
+    "cmd/gateway/main.go": "536bcd1d808acee080962d6c3dcdff80885c589096d7b8a290510570f986805d",
+    "cmd/gateway/main_test.go": "0172d7071148fe20d59691dd5872f238dcb91145f68d8b0dd15d6f5fd117a3f6",
+    "cmd/loadgen/main.go": "1b2698863c6ca808b986827a2a679b5d1e242a830debf33b3743805b057918b5",
+    "cmd/loadgen/main_test.go": "fb3ed09fce9373c9c007a12b5541acbe43d4a14ae102fced44363c13f550b704",
+    "cmd/mockbackend/main.go": "8a5d6bda79bf0c81b0c945112285262853e8fead09da097d30063673e73fab56",
+    "internal/cache/lru.go": "3600bd414162a202e241d8b775eb57db87338f85539759880d692737786f8639",
+    "internal/cache/lru_bench_test.go": "b309e4dfe94784787993828df09b6e7631a79a23779220e7869500211984207d",
+    "internal/cache/lru_test.go": "e96ee08392d502221aeed20af0ebbd62b021f410344c262b04a8a6c8e9f902d4",
+    "internal/cache/policy.go": "b0f0e6ca183881d0e20a0bd163578dfbb2d0f7adafdf4df486063375f1f2201d",
+    "internal/cache/policy_test.go": "65ff9cefce91955716e7e41f5d1481f4d9bbe8a08715f93927b8261c3356fea1",
+    "internal/coalesce/group.go": "0081d31e5332510aa90172102f7cb0779a1b30ec19f00050a742dcf4862b4cc8",
+    "internal/coalesce/group_bench_test.go": "3afccd9a995eecf6a002ef7e09f0a0dc9d7ba5706e2072b1de908b5234e436cc",
+    "internal/coalesce/group_test.go": "0fa02ddcd9816fea09b1c157bcc3348471de8267930f52a1339d9666eed6d9c3",
+    "internal/front/front.go": "b99298fc885b086c337f8618c3b264da8a237621afcac3be1890a5f7b5d95e1e",
+    "internal/front/front_test.go": "78472d06bf8a461ca78048c0a66701c01616bc5b917c1b67bd95221b8c1325cb",
+    "internal/gateway/buffer.go": "0030ca21efce4b483a5224a68064f943708e5d13476b395ceb4d6b81a950278d",
+    "internal/gateway/buffer_test.go": "a2ba730bfea1ead85f0f2eb5f03df84e8a4b727a92597746c01ba15c8d2fb82b",
+    "internal/gateway/cache.go": "b8574ada3e2b3e6daaa430034947a628836574e2354b6dbca3fadd8983fe18b3",
+    "internal/gateway/cache_test.go": "aaa04ec226adc35c81833c3cf2f495dd586cc30e6d1c43034f8928a19ca16e4f",
+    "internal/gateway/concurrency_test.go": "9878fbc128eb87413d5570524f48848b1b3962ca20caab8b6cad5f00d3b399c4",
+    "internal/gateway/degradation_test.go": "0faba648b639d5da8cb6040bb7be14444bbf018f44333d15efe8700ada85216a",
+    "internal/gateway/lease.go": "6c9af7413ffee8532e110cfb84eba41388638b1830bdc6ff9513ba221753d0e4",
+    "internal/gateway/lease_test.go": "e79727894dd978ce6e693244e017dfd5a0daf1dfd039b567f53be3459b53baa8",
+    "internal/gateway/metrics_test.go": "298cea7b517f57dd5677792d10e1deec71dc833b35cdfbfc1fdc0a0340c403c0",
+    "internal/gateway/proxy.go": "642979f1abbf2896bef850ecfedff4df6759cbbf6bdeb4cc295fd36ab9964a89",
+    "internal/gateway/proxy_test.go": "b5afad9d2591ce7b8efd63b3a7a268f30858a70d794116301af6d029fe7a33a5",
+    "internal/gateway/shared_test.go": "789abfb38c4bcd8e19ebb452988747e2b499f03e7700ee6750455ad6aca16c54",
+    "internal/limiter/metrics_test.go": "376927d7a1d803c994a770be17129e7f9e6ec8876aee08205b54d8eaca035691",
+    "internal/limiter/queue_test.go": "55ab0f6171e93e24bbc4b8ff2d924a880ab02e3d15eda72412723cd1fd575a7d",
+    "internal/limiter/transport.go": "ee6868425c80ec52ac2519f546f14d78056c819e300a0b8d93d96615dd36381a",
+    "internal/limiter/transport_test.go": "247553628ef27bb150bcbb789c5166ee45a2c755f6af28b92852f7a023d8aec8",
+    "internal/mockbackend/handler.go": "435f651492385a28a7367429aa464426958fc7aa74272d766d56ec289d5c366a",
+    "internal/mockbackend/handler_test.go": "d38633479015f323b3eaf671dd203d211c0729785f08a0ad488377a61ff8811a",
+    "internal/observe/metrics.go": "f09dc3536b6318f3f06d6dde0f46af72aacfcd72917868e241641bf43510c2f7",
+    "internal/observe/metrics_test.go": "e3ec8f12eafd5a073638dfde26c87bfc46a178426dc852739a36c65fef44bd96",
+    "internal/sharedcache/errorkind_test.go": "9585a6f1ae7f475f06ad671c92be25e6e04c4daa3177e575dbf5e0df8282777e",
+    "internal/sharedcache/lease.go": "15ffe2ac26d9492088fde96df0764bd94de2398491f0d9f6a35ccfccc6f15f24",
+    "internal/sharedcache/lease_test.go": "a43c5d10ed34707210e6a89cd467690ea4c0586c03718fe0c45e7a1223673a71",
+    "internal/sharedcache/redis.go": "e32a302e8cb26545cf3923fb0b1a4a0c134983a7dfd83a2d787f9bcab9413f37",
+    "internal/sharedcache/redis_test.go": "0c727b146ed35c6ee2c95cd37e5b1d47df485700ac94111427eb0d30419a8e25",
+    "bench/host.py": "6aac28a9419017ded786d214a07368fb767237ec6bd210dd7d200fc85ab52ab6",
+    "bench/process_usage.py": "6edc40b72f590d43d72a60ec3f38d09704d364fabc6dc1b98196797756b9364e",
+    "bench/run-v24.py": "5b630be03a3345d5ccfa52689409d04d5e5888fc5d023ab4111242ee5598e168",
+    "bench/run-v25.py": "a1737ebee7d001a85004d83c78c9d929bf5eed6c114752a6ba9ca6373c7cce10",
+    "bench/run-v26.py": "ab2815343b497b5da0310c5f8b3f0a67589e3e19a96b83291d500ec4b6081825",
+    "bench/run-v27.py": "e58db2b00af96efc3720b8f6f90f8ae8657e0e5b1023ef055c333f11aec4678d",
+    "bench/run-v3.py": "079137bd57d3f3e98d1b47a60649715bcaf27422c616397a3795821a5d8164bb",
+    "bench/summarize-v2.py": "14e55891691961b73a02ce215c335cb6003d389357bdc3fd39d8d702e83e0b9f",
+    "bench/summarize-v22.py": "137142a9d94f80c07ec2d801717409747e489a38a5bd7849451984e99ad67446",
+    "bench/summarize-v23.py": "778dbb07b29bf6d7c462afcf5e01062823005c6e4a25fc840f5e1ae658d22c9f",
+    "bench/summarize-v27.py": "24dd7302836440297716f11afa93fc87fc4300927728439970a18fccca45f67a",
+    "bench/summarize-v3.py": "aa5f04400b9c5b79ceee0f93a069c0ace42bc20f7b4137fa02018614b47bcb11",
+    "go.mod": "0141342c01cf7bcaa9f5b95573f8814c509b6ccb8380e1c85bb179d6cb9fd4d7",
+    "go.sum": "20b32a79d23b98851ffb8aad43c1ada98624ad90e1a6a899539f0f6d3ad368d1",
+    "bin/gateway.exe": "fdd9ff38bc143de694d781409f361dfba2f44dadc9a64e354e41e64b8c3f0c3a",
+    "bin/mockbackend.exe": "1a19b763d51ebcbf37e2babc9dbcf0b69fbb49d1217c0edb2a8da24c320aeb38",
+    "bin/frontproxy.exe": "d3c82ba10185614f324ccbdacf6211d61aab728d902fe3095aef186676bf14c7",
+    "bin/loadgen.exe": "f28fdbc11711827ace21f96fd87d7fe5677f70272c273c763b639039b196db28",
+    "bin/burst.exe": "a0c27fef7c40643546e1cbdb62ac2218ca06cbbdf7a2fab4df1d9199444c43e8"
+  }
+}

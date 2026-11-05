@@ -1,0 +1,47 @@
+{
+  "rates": {
+    "500": {
+      "settings": {
+        "workload": "zipf",
+        "keys": 10000,
+        "zipf_s": 1.1,
+        "hot_keys": 100,
+        "rate": 500,
+        "seconds": 2,
+        "warmup": 1,
+        "trials": 1,
+        "restart_trials": 0,
+        "max_age": 10,
+        "delay": 50,
+        "cache_entries": 1000,
+        "gateways": 2
+      },
+      "ttl_seconds": 10,
+      "fill_seconds": 0.05,
+      "blocks": {
+        "1": {
+          "requests": 1000,
+          "distinct_keys": 407,
+          "fills": {
+            "one": 319,
+            "local": 372,
+            "shared": 319,
+            "leased": 319,
+            "shared_ideal": 319
+          },
+          "cross_node_duplicate_fraction": 0.1424731182795699
+        }
+      },
+      "restart": {},
+      "medians": {
+        "one": 319,
+        "local": 372,
+        "shared": 319,
+        "leased": 319,
+        "shared_ideal": 319,
+        "cross_node_duplicate_fraction": 0.1424731182795699
+      },
+      "restart_medians": {}
+    }
+  }
+}

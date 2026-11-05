@@ -68,6 +68,7 @@ Local coalescing must remain enabled; invalid combinations fail startup.
 | `-lease-fill-timeout` | 2s | owner recheck, backend/body, publication budget |
 | `-lease-wait` | 4s | nonowner polling/acquisition budget |
 | `-lease-poll` | 25ms | jittered delay in [25ms, 50ms) by default |
+| `-lease-protocol` | v2 | added in V3.2. `v2` uses one read-or-acquire script and skips the release after an acknowledged publish. `v1` is the V2.5 sequence and was the default before V3.2 was accepted; see [V3.2](../v3/lease-protocol.md) |
 
 The CLI safety margin is 250ms. Fill timeout must be strictly less than lease TTL
 minus margin. Lease/wait durations are capped at one minute; poll base is 1ms to

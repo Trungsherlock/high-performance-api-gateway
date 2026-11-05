@@ -1,0 +1,51 @@
+{
+  "slo": {
+    "success_ratio": 0.999,
+    "p99_delay_multiple": 3,
+    "generator_drops": 0
+  },
+  "limits": {
+    "permits": 32,
+    "permit_queue": 32,
+    "permit_wait_ms": 50,
+    "flights": 64
+  },
+  "rates": {
+    "1000": {
+      "local": {
+        "requests": 2000,
+        "fills": 633,
+        "fills_per_second": 316.5,
+        "backend_calls_per_request": 0.3165,
+        "backend_utilization": 0.9890625000000001,
+        "rejected": {
+          "wait_timeout": 51
+        },
+        "success_ratio": 0.9745,
+        "p99_ms": 146.0000000000008,
+        "passes": false
+      },
+      "shared": {
+        "requests": 2000,
+        "fills": 565,
+        "fills_per_second": 282.5,
+        "backend_calls_per_request": 0.2825,
+        "backend_utilization": 0.8828125,
+        "rejected": {
+          "wait_timeout": 4
+        },
+        "success_ratio": 0.998,
+        "p99_ms": 130.0000000000001,
+        "passes": false
+      }
+    }
+  },
+  "ceilings": {
+    "local": null,
+    "shared": null
+  },
+  "first_failures": {
+    "local": 1000,
+    "shared": 1000
+  }
+}

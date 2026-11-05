@@ -1,0 +1,20 @@
+local-one steady 500 1
+local-two steady 500 1
+shared steady 500 1
+leased steady 500 1
+local-one cold None 1
+local-two cold None 1
+shared cold None 1
+leased cold None 1
+Medians across steady trials; dependency errors by cause (timeout/pool/connection/other) are totals.
+  rate mode        n   ok rps  p95 ms  p99 ms  backend ops/fill ops/req  dep errors
+   500 local-one   1   487.89   50.80   51.17      189     0.00   0.000     0/0/0/0
+   500 local-two   1   487.62   52.09   54.54      189     0.00   0.000     0/0/0/0
+   500 shared      1   487.40   53.12   54.68      189     2.00   0.378     0/0/0/0
+   500 leased      1   486.76   56.00   57.12      189     5.00   0.945     0/0/0/0
+cold local-one: backend calls by trial [1]
+cold local-two: backend calls by trial [2]
+cold shared: backend calls by trial [2]
+cold leased: backend calls by trial [1]
+Reconciled 8 trials; summary: C:/Users/trung/projects/high-performance-api-gateway/bin/v3-clean-20261104-021159/bench/results/v3/20261104-021201-v3/summary.json
+C:/Users/trung/projects/high-performance-api-gateway/bin/v3-clean-20261104-021159/bench/results/v3/20261104-021201-v3

@@ -3,7 +3,7 @@
 A learning project exploring a single-upstream reverse proxy, bounded caching,
 request coalescing, and overload protection. See the project plan for the full scope.
 
-## Current status: V1 complete; V2.0-V2.7 complete
+## Current status: V1 complete; V2.0-V2.7 complete; V3 complete (optional V3.5 not run)
 
 The gateway forwards ordinary HTTP requests to one fixed upstream using a shared
 connection pool, bounded LRU/TTL cache, request coalescing, and downstream concurrency
@@ -323,3 +323,119 @@ python bench/run-v27.py --complete
 
 Use `--quick --complete` for a shorter functional reproduction. See the final
 report for safe resume and the limits of the measurements.
+
+## V3.0 frozen baseline and configurable harness
+
+V2.7 is tagged `v2-final`. The [V3 plan](high_performance_api_gateway_v3_plan.md)
+targets measured wins for shared storage and leases. V3.0 adds a parameterized
+runner (modes, workload, rate list, backend delay/max-age, gateway count), fixed
+dependency-error cause counters, and per-fill/per-request cost columns:
+
+```powershell
+python bench/run-v3.py --quick --complete
+```
+
+See [V3.0 harness, counters and acceptance evidence](docs/v3/README.md).
+
+## V3.1 noise floor and V3 baseline
+
+Every V3 block now also runs `local-two-aa`, a second copy of `local-two`. The
+largest gap between the two copies is the noise floor. The summary reports each
+mode's per-block difference from `local-two` against that floor.
+
+In the unpinned V3 baseline (5 blocks):
+- the floor was 0.40 ms at p95 and 2.63 ms at p99;
+- shared cost +1.93 ms at p95 and leased +4.39 ms, both beyond the floor in
+  every block;
+- backend calls matched V2.7 on V2.7's seeds.
+
+The plan's CPU pinning made the floor larger on this laptop, so `--affinity`
+is opt-in. See [V3.1 noise floor and baseline](docs/v3/noise-floor.md).
+
+## V3.2 lease protocol v2
+
+Lease protocol v2 replaces leased mode's five Redis calls per cache fill (read,
+`SET NX`, recheck, publish, release) with two: one Lua script that returns the
+cached response or takes the lease, and the existing token-checked publish. The
+publish already deletes the lease, so v2 skips the release after it succeeds.
+
+In 6 same-block comparisons:
+- Redis commands per fill fell from 12.01 to 8.01.
+- Leased p95 fell 2.11 ms and p99 3.77 ms (V3.6's final run measured 1.31 ms
+  and 1.77 ms, the latter within that run's floor), with leased mode faster in all 6
+  blocks.
+- Leased mode now matches the shared tier within the noise floor (+0.07 ms p95
+  against a 0.72 ms floor).
+- Backend calls, cold-burst coordination and the ten fault cases were
+  unchanged.
+
+`-lease-protocol` now defaults to `v2`; `v1` remains selectable. See
+[V3.2 lease protocol v2](docs/v3/lease-protocol.md).
+
+## V3.3 workloads with cross-node reuse
+
+The generator gains `zipf` and `hotset` workloads. `bench/predict-v3.py` replays
+a run's exact seeded key stream to predict its backend fills before the run.
+
+| Workload | Backend calls saved against independent gateways (shared / leases) | Predicted |
+|---|---|---|
+| Zipf (10k keys, s = 1.1) | 18.0% / 18.7% | 18.0% / 18.7% |
+| Hot set (100 keys, 1 s TTL) | 35.1% / 41.8% | 35.7% / 41.9% |
+| `mixed` control | 0 / 0.1% | 0 / 0.1% |
+
+- **Accuracy:** every block was within 1% of prediction.
+- **Leases:** worth the most where gateways often miss the same key together
+  (hot set: 289 fewer fills than shared per block). They cost no p95 beyond
+  the shared tier's 1–1.7 ms.
+- **Restart:** after a gateway restart, Redis kept the empty gateway's backend
+  rate at steady state.
+
+See [V3.3 reuse workloads](docs/v3/reuse-workloads.md).
+
+## V3.4 capacity at a fixed SLO
+
+`bench/capacity-v3.py` climbs a rate ladder per mode until the SLO breaks:
+99.9% success, scheduled p99 at most 3× the backend delay, no generator drops.
+Each ceiling needs 3 confirmations and gets a backend- or host-bound label.
+
+The host-ceiling control set the bound first: 1,250 req/s, limited by host
+stalls. So the backend was set to 32 permits / 250 ms (128 fills/s), which
+keeps every predicted ceiling at or below half of that.
+
+| Workload | local-one | local-two | shared | leased-v2 |
+|---|---|---|---|---|
+| `mixed` (no reuse) | 472 | 390 | 390 | 390 |
+| `zipf` | 293 (host-bound) | 242 | **293** | **293** |
+
+- **zipf:** the shared tier carries 21% more load before the SLO breaks, as
+  predicted from its backend-call saving.
+- **mixed:** shared and leases neither gain nor lose capacity.
+- **local-one:** one gateway with the whole permit budget beats two with half
+  each, from pooled queueing, which the model predicted.
+
+See [V3.4 capacity](docs/v3/capacity.md).
+
+## V3 final comparison and reproduction
+
+[The final report](docs/v3/final.md) brings V3 together, including every prediction
+against its measurement and every unfavorable result.
+
+| Result | Measured |
+|---|---|
+| Backend calls saved against independent gateways | Zipf 18.0% (shared), 18.7% (leases); hot set 35.1%, 41.8%; `mixed` none |
+| Zipf capacity at the SLO, same backend budget | 242 → 293 req/s (+21%), as predicted |
+| Redis operations per leased fill | 5 → 2, taking 1.3–2.1 ms off leased p95, to within noise of shared |
+| Cost of the Redis tier | 1–2 ms at p95 |
+| Host ceiling | 1,250 req/s, set by host stalls, so capacity ran behind a slow backend |
+
+All of it was measured on one laptop. With the documented Go, Python and Redis
+prerequisites, one command runs the six-mode `mixed` comparison, cold bursts, a
+five-minute soak, tests, race tests, all ten fault cases under each lease protocol,
+and a source-only rebuild:
+
+```powershell
+python bench/run-v3.py --complete
+```
+
+The final report lists the commands for the reuse and capacity runs.
+

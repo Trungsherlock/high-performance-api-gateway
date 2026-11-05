@@ -1,0 +1,991 @@
+{
+  "workload": "hot",
+  "slo": {
+    "success_ratio": 0.999,
+    "p99_delay_multiple": 3,
+    "generator_drops": 0
+  },
+  "p99_limit_ms": 300,
+  "delay_ms": 1,
+  "backend_capacity_fills_per_second": 32000.0,
+  "grid": [
+    2000,
+    2500,
+    3125,
+    3906,
+    4883,
+    6104,
+    7629,
+    9537,
+    11921,
+    14901,
+    18626
+  ],
+  "host": null,
+  "ladders": {
+    "local-two": {
+      "mode": "local-two",
+      "complete": true,
+      "ceiling": null,
+      "confirmations": null,
+      "top_of_grid_passed": false,
+      "first_failing_rate": 2000,
+      "cause": "host",
+      "bound": "host ceiling",
+      "failing_trials": [
+        {
+          "rate": 3125,
+          "trial": 1,
+          "checks": {
+            "success_ratio": true,
+            "scheduled_p99": true,
+            "generator_drops": false
+          },
+          "success_ratio": 1.0,
+          "scheduled_p99_ms": 93.0867,
+          "generator_drops": 637,
+          "failure_causes": {
+            "permit": 0,
+            "admission": 0,
+            "coordination": 0,
+            "front_unavailable": 0,
+            "transport": 0,
+            "other": 0
+          },
+          "cause": "host"
+        },
+        {
+          "rate": 3125,
+          "trial": 2,
+          "checks": {
+            "success_ratio": true,
+            "scheduled_p99": true,
+            "generator_drops": false
+          },
+          "success_ratio": 1.0,
+          "scheduled_p99_ms": 109.5498,
+          "generator_drops": 671,
+          "failure_causes": {
+            "permit": 0,
+            "admission": 0,
+            "coordination": 0,
+            "front_unavailable": 0,
+            "transport": 0,
+            "other": 0
+          },
+          "cause": "host"
+        },
+        {
+          "rate": 2500,
+          "trial": 3,
+          "checks": {
+            "success_ratio": true,
+            "scheduled_p99": true,
+            "generator_drops": false
+          },
+          "success_ratio": 1.0,
+          "scheduled_p99_ms": 66.7638,
+          "generator_drops": 123,
+          "failure_causes": {
+            "permit": 0,
+            "admission": 0,
+            "coordination": 0,
+            "front_unavailable": 0,
+            "transport": 0,
+            "other": 0
+          },
+          "cause": "host"
+        },
+        {
+          "rate": 2000,
+          "trial": 3,
+          "checks": {
+            "success_ratio": true,
+            "scheduled_p99": true,
+            "generator_drops": false
+          },
+          "success_ratio": 1.0,
+          "scheduled_p99_ms": 24.189,
+          "generator_drops": 8,
+          "failure_causes": {
+            "permit": 0,
+            "admission": 0,
+            "coordination": 0,
+            "front_unavailable": 0,
+            "transport": 0,
+            "other": 0
+          },
+          "cause": "host"
+        }
+      ],
+      "at_ceiling": null,
+      "at_first_failure": {
+        "trials": 1,
+        "passed": 0,
+        "successful_rps": 1998.5090932946598,
+        "success_ratio": 1.0,
+        "scheduled_p99_ms": 24.189,
+        "send_p99_ms": 20.3347,
+        "backend_calls_per_request": 0.00010001333511134818,
+        "backend_utilization": 6.25e-06,
+        "shared_lookup_hit_ratio": null,
+        "generator_drops": 8,
+        "rejection_reasons": {},
+        "cpu_cores": 1.8807222444691696
+      },
+      "predicted_ceiling": null,
+      "predicted_first_failure": null,
+      "trials": [
+        [
+          2000,
+          1,
+          true
+        ],
+        [
+          2500,
+          1,
+          true
+        ],
+        [
+          3125,
+          1,
+          false
+        ],
+        [
+          3125,
+          2,
+          false
+        ],
+        [
+          2500,
+          3,
+          false
+        ],
+        [
+          2000,
+          3,
+          false
+        ]
+      ]
+    }
+  },
+  "ratios_vs_local_two": {},
+  "trials": [
+    {
+      "mode": "local-two",
+      "kind": "capacity",
+      "rate": 2000,
+      "trial": 1,
+      "gateways": 2,
+      "offered": 60000,
+      "sent": 60000,
+      "success": 60000,
+      "successful_rps": 1998.930359038676,
+      "generator_drops": 0,
+      "late_arrivals": 12527,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 171.9016,
+        "p50": 0.5568,
+        "p95": 5.8871,
+        "p99": 40.9727
+      },
+      "scheduled_latency_ms": {
+        "p100": 172.1907,
+        "p50": 0.9216,
+        "p95": 7.0086,
+        "p99": 42.5251
+      },
+      "scheduling_lag_ms": {
+        "p100": 19.1647,
+        "p50": 0.3036,
+        "p95": 0.9614,
+        "p99": 2.7927
+      },
+      "backend_calls": 6,
+      "backend_peak_process_lifetime": 2,
+      "cache_l1_hits": 59987,
+      "cache_misses": 13,
+      "l1_hit_ratio": 0.9997833333333334,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.0001,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": null,
+      "measured_over_predicted": null,
+      "local_followers": 7,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 30,
+          "sampled_cpu_seconds": 0.046875,
+          "sampled_span_seconds": 29.7994647026062,
+          "max_sampled_rss_mib": 8.76171875,
+          "early_median_rss_mib": 8.583984375,
+          "late_median_rss_mib": 8.74609375
+        },
+        "front": {
+          "samples": 30,
+          "sampled_cpu_seconds": 31.484375,
+          "sampled_span_seconds": 29.7994647026062,
+          "max_sampled_rss_mib": 34.453125,
+          "early_median_rss_mib": 30.26953125,
+          "late_median_rss_mib": 31.046875
+        },
+        "gateway-0": {
+          "samples": 30,
+          "sampled_cpu_seconds": 10.328125,
+          "sampled_span_seconds": 29.7994647026062,
+          "max_sampled_rss_mib": 18.921875,
+          "early_median_rss_mib": 17.240234375,
+          "late_median_rss_mib": 18.232421875
+        },
+        "gateway-1": {
+          "samples": 30,
+          "sampled_cpu_seconds": 10.1875,
+          "sampled_span_seconds": 29.7994647026062,
+          "max_sampled_rss_mib": 19.59375,
+          "early_median_rss_mib": 17.5390625,
+          "late_median_rss_mib": 18.9609375
+        },
+        "generator": {
+          "samples": 30,
+          "sampled_cpu_seconds": 17.390625,
+          "sampled_span_seconds": 29.7994647026062,
+          "max_sampled_rss_mib": 46.6875,
+          "early_median_rss_mib": 30.072265625,
+          "late_median_rss_mib": 43.724609375
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      },
+      "verdict": {
+        "passed": true,
+        "checks": {
+          "success_ratio": true,
+          "scheduled_p99": true,
+          "generator_drops": true
+        },
+        "success_ratio": 1.0,
+        "scheduled_p99_ms": 42.5251,
+        "failed": 0,
+        "failure_causes": {
+          "permit": 0,
+          "admission": 0,
+          "coordination": 0,
+          "front_unavailable": 0,
+          "transport": 0,
+          "other": 0
+        },
+        "cause": null
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "capacity",
+      "rate": 2500,
+      "trial": 1,
+      "gateways": 2,
+      "offered": 75000,
+      "sent": 75000,
+      "success": 75000,
+      "successful_rps": 2498.221224850886,
+      "generator_drops": 0,
+      "late_arrivals": 27709,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 145.7319,
+        "p50": 0.5114,
+        "p95": 2.5807,
+        "p99": 17.0973
+      },
+      "scheduled_latency_ms": {
+        "p100": 146.2613,
+        "p50": 0.6782,
+        "p95": 3.2189,
+        "p99": 18.3414
+      },
+      "scheduling_lag_ms": {
+        "p100": 12.5145,
+        "p50": 0.3231,
+        "p95": 0.8114,
+        "p99": 1.7598
+      },
+      "backend_calls": 6,
+      "backend_peak_process_lifetime": 2,
+      "cache_l1_hits": 74986,
+      "cache_misses": 14,
+      "l1_hit_ratio": 0.9998133333333333,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 8e-05,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": null,
+      "measured_over_predicted": null,
+      "local_followers": 8,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 0.015625,
+          "sampled_span_seconds": 28.90599513053894,
+          "max_sampled_rss_mib": 8.734375,
+          "early_median_rss_mib": 8.5625,
+          "late_median_rss_mib": 8.6875
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 29.9375,
+          "sampled_span_seconds": 28.90599513053894,
+          "max_sampled_rss_mib": 36.26171875,
+          "early_median_rss_mib": 33.837890625,
+          "late_median_rss_mib": 34.18359375
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 10.609375,
+          "sampled_span_seconds": 28.90599513053894,
+          "max_sampled_rss_mib": 19.1875,
+          "early_median_rss_mib": 18.056640625,
+          "late_median_rss_mib": 18.73046875
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 10.265625,
+          "sampled_span_seconds": 28.90599513053894,
+          "max_sampled_rss_mib": 19.3828125,
+          "early_median_rss_mib": 18.033203125,
+          "late_median_rss_mib": 18.89453125
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 16.390625,
+          "sampled_span_seconds": 28.90599513053894,
+          "max_sampled_rss_mib": 54.08984375,
+          "early_median_rss_mib": 31.853515625,
+          "late_median_rss_mib": 48.55859375
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      },
+      "verdict": {
+        "passed": true,
+        "checks": {
+          "success_ratio": true,
+          "scheduled_p99": true,
+          "generator_drops": true
+        },
+        "success_ratio": 1.0,
+        "scheduled_p99_ms": 18.3414,
+        "failed": 0,
+        "failure_causes": {
+          "permit": 0,
+          "admission": 0,
+          "coordination": 0,
+          "front_unavailable": 0,
+          "transport": 0,
+          "other": 0
+        },
+        "cause": null
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "capacity",
+      "rate": 3125,
+      "trial": 1,
+      "gateways": 2,
+      "offered": 93750,
+      "sent": 93113,
+      "success": 93113,
+      "successful_rps": 3101.7182299132674,
+      "generator_drops": 637,
+      "late_arrivals": 46464,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 244.2162,
+        "p50": 0.5301,
+        "p95": 11.7956,
+        "p99": 85.6892
+      },
+      "scheduled_latency_ms": {
+        "p100": 255.7162,
+        "p50": 0.7305,
+        "p95": 13.634,
+        "p99": 93.0867
+      },
+      "scheduling_lag_ms": {
+        "p100": 95.5721,
+        "p50": 0.3158,
+        "p95": 0.9728,
+        "p99": 4.5661
+      },
+      "backend_calls": 6,
+      "backend_peak_process_lifetime": 2,
+      "cache_l1_hits": 93098,
+      "cache_misses": 15,
+      "l1_hit_ratio": 0.999838905416,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 6.443783360003437e-05,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": null,
+      "measured_over_predicted": null,
+      "local_followers": 9,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 0.0625,
+          "sampled_span_seconds": 29.032071828842163,
+          "max_sampled_rss_mib": 8.70703125,
+          "early_median_rss_mib": 8.546875,
+          "late_median_rss_mib": 8.703125
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 38.0625,
+          "sampled_span_seconds": 29.032071828842163,
+          "max_sampled_rss_mib": 47.01171875,
+          "early_median_rss_mib": 39.05859375,
+          "late_median_rss_mib": 37.5
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 12.671875,
+          "sampled_span_seconds": 29.032071828842163,
+          "max_sampled_rss_mib": 20.46484375,
+          "early_median_rss_mib": 18.30859375,
+          "late_median_rss_mib": 19.3203125
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 13.296875,
+          "sampled_span_seconds": 29.032071828842163,
+          "max_sampled_rss_mib": 20.01953125,
+          "early_median_rss_mib": 18.546875,
+          "late_median_rss_mib": 18.921875
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 20.28125,
+          "sampled_span_seconds": 29.032071828842163,
+          "max_sampled_rss_mib": 62.296875,
+          "early_median_rss_mib": 35.94921875,
+          "late_median_rss_mib": 51.79296875
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      },
+      "verdict": {
+        "passed": false,
+        "checks": {
+          "success_ratio": true,
+          "scheduled_p99": true,
+          "generator_drops": false
+        },
+        "success_ratio": 1.0,
+        "scheduled_p99_ms": 93.0867,
+        "failed": 0,
+        "failure_causes": {
+          "permit": 0,
+          "admission": 0,
+          "coordination": 0,
+          "front_unavailable": 0,
+          "transport": 0,
+          "other": 0
+        },
+        "cause": "host"
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "capacity",
+      "rate": 3125,
+      "trial": 2,
+      "gateways": 2,
+      "offered": 93750,
+      "sent": 93079,
+      "success": 93079,
+      "successful_rps": 3100.6327017597346,
+      "generator_drops": 671,
+      "late_arrivals": 47117,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 343.5425,
+        "p50": 0.5317,
+        "p95": 18.4538,
+        "p99": 105.6774
+      },
+      "scheduled_latency_ms": {
+        "p100": 344.3282,
+        "p50": 0.7299,
+        "p95": 20.9697,
+        "p99": 109.5498
+      },
+      "scheduling_lag_ms": {
+        "p100": 63.025,
+        "p50": 0.321,
+        "p95": 1.0334,
+        "p99": 7.8079
+      },
+      "backend_calls": 6,
+      "backend_peak_process_lifetime": 2,
+      "cache_l1_hits": 93040,
+      "cache_misses": 39,
+      "l1_hit_ratio": 0.9995810010850997,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 6.446137152311477e-05,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": null,
+      "measured_over_predicted": null,
+      "local_followers": 33,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 0.0,
+          "sampled_span_seconds": 29.11278009414673,
+          "max_sampled_rss_mib": 8.69921875,
+          "early_median_rss_mib": 8.5859375,
+          "late_median_rss_mib": 8.6875
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 37.59375,
+          "sampled_span_seconds": 29.11278009414673,
+          "max_sampled_rss_mib": 42.0703125,
+          "early_median_rss_mib": 34.32421875,
+          "late_median_rss_mib": 35.3203125
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 13.625,
+          "sampled_span_seconds": 29.11278009414673,
+          "max_sampled_rss_mib": 19.93359375,
+          "early_median_rss_mib": 18.486328125,
+          "late_median_rss_mib": 18.93359375
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 13.125,
+          "sampled_span_seconds": 29.11278009414673,
+          "max_sampled_rss_mib": 19.40234375,
+          "early_median_rss_mib": 18.345703125,
+          "late_median_rss_mib": 18.53125
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 19.25,
+          "sampled_span_seconds": 29.11278009414673,
+          "max_sampled_rss_mib": 69.57421875,
+          "early_median_rss_mib": 34.603515625,
+          "late_median_rss_mib": 51.94140625
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      },
+      "verdict": {
+        "passed": false,
+        "checks": {
+          "success_ratio": true,
+          "scheduled_p99": true,
+          "generator_drops": false
+        },
+        "success_ratio": 1.0,
+        "scheduled_p99_ms": 109.5498,
+        "failed": 0,
+        "failure_causes": {
+          "permit": 0,
+          "admission": 0,
+          "coordination": 0,
+          "front_unavailable": 0,
+          "transport": 0,
+          "other": 0
+        },
+        "cause": "host"
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "capacity",
+      "rate": 2500,
+      "trial": 3,
+      "gateways": 2,
+      "offered": 75000,
+      "sent": 74877,
+      "success": 74877,
+      "successful_rps": 2493.988582210708,
+      "generator_drops": 123,
+      "late_arrivals": 29221,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 218.4312,
+        "p50": 0.5311,
+        "p95": 5.7139,
+        "p99": 64.3525
+      },
+      "scheduled_latency_ms": {
+        "p100": 218.6761,
+        "p50": 0.7456,
+        "p95": 6.7215,
+        "p99": 66.7638
+      },
+      "scheduling_lag_ms": {
+        "p100": 43.1638,
+        "p50": 0.3307,
+        "p95": 0.9489,
+        "p99": 3.024
+      },
+      "backend_calls": 6,
+      "backend_peak_process_lifetime": 2,
+      "cache_l1_hits": 74861,
+      "cache_misses": 16,
+      "l1_hit_ratio": 0.9997863162252761,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 8.013141552145518e-05,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": null,
+      "measured_over_predicted": null,
+      "local_followers": 10,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 0.015625,
+          "sampled_span_seconds": 28.960774421691895,
+          "max_sampled_rss_mib": 8.96484375,
+          "early_median_rss_mib": 8.57421875,
+          "late_median_rss_mib": 8.9609375
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 29.78125,
+          "sampled_span_seconds": 28.960774421691895,
+          "max_sampled_rss_mib": 36.6171875,
+          "early_median_rss_mib": 27.345703125,
+          "late_median_rss_mib": 33.59765625
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 9.6875,
+          "sampled_span_seconds": 28.960774421691895,
+          "max_sampled_rss_mib": 19.4296875,
+          "early_median_rss_mib": 17.572265625,
+          "late_median_rss_mib": 18.8671875
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 10.21875,
+          "sampled_span_seconds": 28.960774421691895,
+          "max_sampled_rss_mib": 19.82421875,
+          "early_median_rss_mib": 17.8984375,
+          "late_median_rss_mib": 18.91796875
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 16.375,
+          "sampled_span_seconds": 28.960774421691895,
+          "max_sampled_rss_mib": 52.875,
+          "early_median_rss_mib": 28.224609375,
+          "late_median_rss_mib": 47.01953125
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      },
+      "verdict": {
+        "passed": false,
+        "checks": {
+          "success_ratio": true,
+          "scheduled_p99": true,
+          "generator_drops": false
+        },
+        "success_ratio": 1.0,
+        "scheduled_p99_ms": 66.7638,
+        "failed": 0,
+        "failure_causes": {
+          "permit": 0,
+          "admission": 0,
+          "coordination": 0,
+          "front_unavailable": 0,
+          "transport": 0,
+          "other": 0
+        },
+        "cause": "host"
+      }
+    },
+    {
+      "mode": "local-two",
+      "kind": "capacity",
+      "rate": 2000,
+      "trial": 3,
+      "gateways": 2,
+      "offered": 60000,
+      "sent": 59992,
+      "success": 59992,
+      "successful_rps": 1998.5090932946598,
+      "generator_drops": 8,
+      "late_arrivals": 12659,
+      "transport_errors": 0,
+      "rejected": 0,
+      "rejection_reasons": {},
+      "degraded_reasons": {},
+      "front_unavailable": 0,
+      "send_latency_ms": {
+        "p100": 204.4144,
+        "p50": 0.5165,
+        "p95": 1.9214,
+        "p99": 20.3347
+      },
+      "scheduled_latency_ms": {
+        "p100": 204.6688,
+        "p50": 0.6547,
+        "p95": 2.4879,
+        "p99": 24.189
+      },
+      "scheduling_lag_ms": {
+        "p100": 39.3095,
+        "p50": 0.3015,
+        "p95": 0.8119,
+        "p99": 1.8148
+      },
+      "backend_calls": 6,
+      "backend_peak_process_lifetime": 2,
+      "cache_l1_hits": 59977,
+      "cache_misses": 15,
+      "l1_hit_ratio": 0.9997499666622216,
+      "shared_hits": 0,
+      "shared_misses": 0,
+      "shared_lookup_hit_ratio": null,
+      "dependency_operations": 0,
+      "dependency_errors": 0,
+      "dependency_error_causes": {
+        "timeout": 0,
+        "pool_timeout": 0,
+        "connection": 0,
+        "other": 0
+      },
+      "dependency_ops_per_fill": 0.0,
+      "dependency_ops_per_request": 0.0,
+      "backend_calls_per_request": 0.00010001333511134818,
+      "redis_commands": null,
+      "redis_commands_per_fill": null,
+      "predicted_backend_calls": null,
+      "measured_over_predicted": null,
+      "local_followers": 9,
+      "distributed_followers": 0,
+      "degraded_flights": 0,
+      "resources": {
+        "backend": {
+          "samples": 29,
+          "sampled_cpu_seconds": 0.015625,
+          "sampled_span_seconds": 28.886841297149658,
+          "max_sampled_rss_mib": 8.6875,
+          "early_median_rss_mib": 8.51171875,
+          "late_median_rss_mib": 8.66796875
+        },
+        "front": {
+          "samples": 29,
+          "sampled_cpu_seconds": 24.734375,
+          "sampled_span_seconds": 28.886841297149658,
+          "max_sampled_rss_mib": 30.9140625,
+          "early_median_rss_mib": 22.470703125,
+          "late_median_rss_mib": 30.046875
+        },
+        "gateway-0": {
+          "samples": 29,
+          "sampled_cpu_seconds": 7.71875,
+          "sampled_span_seconds": 28.886841297149658,
+          "max_sampled_rss_mib": 18.765625,
+          "early_median_rss_mib": 17.759765625,
+          "late_median_rss_mib": 18.4375
+        },
+        "gateway-1": {
+          "samples": 29,
+          "sampled_cpu_seconds": 8.125,
+          "sampled_span_seconds": 28.886841297149658,
+          "max_sampled_rss_mib": 19.1328125,
+          "early_median_rss_mib": 17.869140625,
+          "late_median_rss_mib": 18.26953125
+        },
+        "generator": {
+          "samples": 29,
+          "sampled_cpu_seconds": 13.734375,
+          "sampled_span_seconds": 28.886841297149658,
+          "max_sampled_rss_mib": 43.875,
+          "early_median_rss_mib": 22.947265625,
+          "late_median_rss_mib": 40.57421875
+        }
+      },
+      "power": {
+        "ac_online": true,
+        "battery_percent": 100,
+        "power_plan": {
+          "guid": "381b4222-f694-41f0-9685-ff5bb260df2e",
+          "name": "Balanced"
+        },
+        "power_mode_overlay": {
+          "guid": "00000000-0000-0000-0000-000000000000",
+          "name": "balanced"
+        }
+      },
+      "verdict": {
+        "passed": false,
+        "checks": {
+          "success_ratio": true,
+          "scheduled_p99": true,
+          "generator_drops": false
+        },
+        "success_ratio": 1.0,
+        "scheduled_p99_ms": 24.189,
+        "failed": 0,
+        "failure_causes": {
+          "permit": 0,
+          "admission": 0,
+          "coordination": 0,
+          "front_unavailable": 0,
+          "transport": 0,
+          "other": 0
+        },
+        "cause": "host"
+      }
+    }
+  ]
+}

@@ -41,14 +41,24 @@ func main() {
 	leaseWait := flag.Duration("lease-wait", 4*time.Second, "maximum nonowner polling wait")
 	leasePoll := flag.Duration("lease-poll", 25*time.Millisecond, "poll jitter base, up to twice this interval")
 	degradation := flag.String("degradation", "protection-first", "lease-dependent misses: protection-first or available-local")
+	// v2 became the default when V3.2 was accepted; v1 remains selectable for A/B runs.
+	leaseProtocol := flag.String("lease-protocol", "v2", "v2: one read-or-acquire script, no release after an acknowledged publish; v1: read, SET NX, recheck, publish, release")
 	cacheFlights := flag.Int("max-cache-flights", 64, "maximum registered distinct cache keys with local coalescing")
 	cacheWaiters := flag.Int("max-cache-waiters", 1024, "maximum cache-miss clients including leaders; hits bypass admission")
+	cacheEntries := flag.Int("cache-entries", 1000, "local (L1) cache entry limit")
+	cacheBytes := flag.Int64("cache-bytes", 16<<20, "local (L1) cache body-byte limit")
 	flag.Parse()
 	if *degradation != "protection-first" && *degradation != "available-local" {
 		log.Fatal("invalid degradation policy")
 	}
+	if *leaseProtocol != "v1" && *leaseProtocol != "v2" {
+		log.Fatal("invalid lease protocol")
+	}
 	if *cacheFlights < 1 || *cacheWaiters < 1 {
 		log.Fatal("cache admission limits must be positive")
+	}
+	if *cacheEntries < 1 || *cacheBytes < 1 {
+		log.Fatal("cache entry and byte limits must be positive")
 	}
 	if *cacheMode != "local" && *cacheMode != "shared" && *cacheMode != "layered" {
 		log.Fatal("invalid cache-mode")
@@ -83,7 +93,7 @@ func main() {
 	}
 	var storage *cache.Cache
 	if enabled && *cacheMode != "shared" {
-		storage = cache.New(1000, 16<<20, nil)
+		storage = cache.New(*cacheEntries, *cacheBytes, nil)
 	}
 	var shared sharedcache.Store
 	if enabled && *cacheMode != "local" {
@@ -96,7 +106,7 @@ func main() {
 	}
 	var lease *gateway.LeaseOptions
 	if *leases {
-		lease = &gateway.LeaseOptions{Degradation: *degradation, Duration: *leaseDuration, FillTimeout: *leaseFill, WaitTimeout: *leaseWait, PollInterval: *leasePoll, Margin: 250 * time.Millisecond}
+		lease = &gateway.LeaseOptions{Degradation: *degradation, Protocol: *leaseProtocol, Duration: *leaseDuration, FillTimeout: *leaseFill, WaitTimeout: *leaseWait, PollInterval: *leasePoll, Margin: 250 * time.Millisecond}
 	}
 	var cacheAdmission *gateway.CacheAdmission
 	if enabled && *coalescing {
